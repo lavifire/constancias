@@ -1,0 +1,19 @@
+
+
+a {
+  color: #00B7FF;
+}
+
+.centered {
+  background-color: white;
+  border-radius: 5px;
+  position: absolute;
+  width: 400px;
+  height: 300px;
+  z-index: 15;
+  top: 50%;
+  left: 50%;
+  margin: -100px 0 0 -200px;
+}
+
+
