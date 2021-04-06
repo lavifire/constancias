@@ -1,7 +1,6 @@
 var inputFile = document.getElementById("input");
 var cmbEstados = document.getElementById("cmbEstados");
 var codigos = [""];
-import {} from ""
 
 inputFile.addEventListener("change", function() {
   if (codigos[0] != ""){
@@ -68,7 +67,7 @@ cmbEstados.addEventListener("change", function() {
 generatePDF = () => {
   var doc = new jsPDF('l', 'cm', [19.05, 25.4])
   var esquina = new Image()
-  esquina.src = "";
+  esquina.src = "../img/esquina.png";
   doc.addImage(esquina, "png", 20, 0, 10, 10);
   doc.addPage(25.4, 19.05)
   doc.text('Hello world!', 1, 1)
