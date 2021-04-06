@@ -66,9 +66,8 @@ cmbEstados.addEventListener("change", function() {
 
 generatePDF = () => {
   var doc = new jsPDF('l', 'cm', [19.05, 25.4])
-  var esquina = new Image()
-  esquina.src = "../img/esquina.png";
-  doc.addImage(esquina, "png", 20, 0, 10, 10);
+  doc.addImage(document.getElementById("esquina"), "PNG", 18, 0, 8, 8);
+  doc.addImage(document.getElementById("borde"), "PNG", 0, 17);
   doc.addPage(25.4, 19.05)
   doc.text('Hello world!', 1, 1)
   doc.save('a4.pdf')
