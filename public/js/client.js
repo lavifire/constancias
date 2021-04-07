@@ -1,6 +1,98 @@
 var inputFile = document.getElementById("input");
+var color01 = document.getElementById("color01");
+var color02 = document.getElementById("color02");
+var color03 = document.getElementById("color03");
+var color04 = document.getElementById("color04");
+var color05 = document.getElementById("color05");
+var color06 = document.getElementById("color06");
+var color07 = document.getElementById("color07");
+var color08 = document.getElementById("color08");
+var color09 = document.getElementById("color09");
+var color10 = document.getElementById("color10");
+var txtFile = document.getElementById("txtFile");
 var cmbEstados = document.getElementById("cmbEstados");
 var codigos = [""];
+
+
+color01.addEventListener("mouseover", function() {
+  color01.style.zIndex = 50;
+})
+
+color01.addEventListener("mouseout", function() {
+  color01.style.zIndex = 49;
+})
+
+color02.addEventListener("mouseover", function() {
+  color02.style.zIndex = 50;
+})
+
+color02.addEventListener("mouseout", function() {
+  color01.style.zIndex = 49;
+})
+
+color03.addEventListener("mouseover", function() {
+  color03.style.zIndex = 50;
+})
+
+color03.addEventListener("mouseout", function() {
+  color03.style.zIndex = 49;
+})
+
+color04.addEventListener("mouseover", function() {
+  color04.style.zIndex = 50;
+})
+
+color04.addEventListener("mouseout", function() {
+  color04.style.zIndex = 49;
+})
+
+color05.addEventListener("mouseover", function() {
+  color05.style.zIndex = 50;
+})
+
+color05.addEventListener("mouseout", function() {
+  color05.style.zIndex = 49;
+})
+
+color06.addEventListener("mouseover", function() {
+  color06.style.zIndex = 50;
+})
+
+color06.addEventListener("mouseout", function() {
+  color06.style.zIndex = 49;
+})
+
+color07.addEventListener("mouseover", function() {
+  color07.style.zIndex = 50;
+})
+
+color07.addEventListener("mouseout", function() {
+  color07.style.zIndex = 49;
+})
+
+color08.addEventListener("mouseover", function() {
+  color08.style.zIndex = 50;
+})
+
+color08.addEventListener("mouseout", function() {
+  color08.style.zIndex = 49;
+})
+
+color09.addEventListener("mouseover", function() {
+  color09.style.zIndex = 50;
+})
+
+color09.addEventListener("mouseout", function() {
+  color09.style.zIndex = 49;
+})
+
+color10.addEventListener("mouseover", function() {
+  color10.style.zIndex = 50;
+})
+
+color10.addEventListener("mouseout", function() {
+  color10.style.zIndex = 49;
+})
 
 inputFile.addEventListener("change", function() {
   if (codigos[0] != ""){
@@ -12,12 +104,15 @@ inputFile.addEventListener("change", function() {
       }
       console.log(sheets);
     })
+    txtFile.innerHTML = inputFile.files[0].name;
+    txtFile.style.height = "auto"
   }
   else {
     alert("No se ha elegido un estado");
   }
   
 })
+
 
 cmbEstados.addEventListener("change", function() {
   switch(cmbEstados.value) {
