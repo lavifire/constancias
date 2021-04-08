@@ -1,4 +1,6 @@
 var inputFile = document.getElementById("input");
+var borde = document.getElementById("borde");
+var esquina = document.getElementById("esquina");
 var color01 = document.getElementById("color01");
 var color02 = document.getElementById("color02");
 var color03 = document.getElementById("color03");
@@ -38,12 +40,22 @@ color03.addEventListener("mouseout", function() {
   color03.style.zIndex = 49;
 })
 
+color03.addEventListener("click", function() {
+  borde.src = "../img/borde/borde-verde-claro.png";
+  esquina.src = "../img/esquina/esquina-verde-claro.png"
+})
+
 color04.addEventListener("mouseover", function() {
   color04.style.zIndex = 50;
 })
 
 color04.addEventListener("mouseout", function() {
   color04.style.zIndex = 49;
+})
+
+color04.addEventListener("click", function() {
+  borde.src = "../img/borde/borde-amarillo.png";
+  esquina.src = "../img/esquina/esquina-amarillo.png"
 })
 
 color05.addEventListener("mouseover", function() {
@@ -54,12 +66,22 @@ color05.addEventListener("mouseout", function() {
   color05.style.zIndex = 49;
 })
 
+color05.addEventListener("click", function() {
+  borde.src = "../img/borde/borde-naranja.png";
+  esquina.src = "../img/esquina/esquina-naranja.png"
+})
+
 color06.addEventListener("mouseover", function() {
   color06.style.zIndex = 50;
 })
 
 color06.addEventListener("mouseout", function() {
   color06.style.zIndex = 49;
+})
+
+color06.addEventListener("click", function() {
+  borde.src = "../img/borde/borde-rojo.png";
+  esquina.src = "../img/esquina/esquina-rojo.png"
 })
 
 color07.addEventListener("mouseover", function() {

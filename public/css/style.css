@@ -108,8 +108,16 @@ input[type="radio"] {
   border-color: #43a1cd transparent transparent transparent;
 }
 
+@keyframes color01A {
+  from {top: 0px}
+  to {top: -20px;}
+}
+
 #colorWheel span.color01:hover {
   cursor: pointer;
+  animation-name: color01A;
+  animation-duration: 1s;
+  animation-direction: alternate;
   top: -20px;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
@@ -130,6 +138,11 @@ input[type="radio"] {
   border-color: #639b47 transparent transparent transparent;
 }
 
+@keyframes color02A {
+  from {left: 12px; top: 0px;}
+  to {top: -10px; left: 20px;}
+}
+
 #colorWheel span.color02:hover {
   cursor: pointer;
   -webkit-transform: rotate(36deg);
@@ -137,10 +150,15 @@ input[type="radio"] {
   -ms-transform: rotate(36deg);
   -o-transform: rotate(36deg);
   transform: rotate(36deg);
+  animation-name: color02A;
+  animation-duration: 1s;
+  animation-direction: alternate;
   top: -10px;
   left: 20px;
   border-color: #639b47 transparent transparent transparent;
 }
+
+
 
 #colorWheel span.color03 {
   cursor: pointer;
@@ -152,6 +170,11 @@ input[type="radio"] {
   border-color: #9ac147 transparent transparent transparent;
 }
 
+@keyframes color03A {
+  from {left: 12px; top: 0px;}
+  to {top: -5px; left: 30px;}
+}
+
 #colorWheel span.color03:hover {
   cursor: pointer;
   -webkit-transform: rotate(72deg);
@@ -159,6 +182,9 @@ input[type="radio"] {
   -ms-transform: rotate(72deg);
   -o-transform: rotate(72deg);
   transform: rotate(72deg);
+  animation-name: color03A;
+  animation-duration: 1s;
+  animation-direction: alternate;
   top: -5px;
   left: 30px;
   border-color: #9ac147 transparent transparent transparent;
@@ -174,6 +200,11 @@ input[type="radio"] {
   border-color: #e1e23b transparent transparent transparent;
 }
 
+@keyframes color04A {
+  from {left: 12px; top: 0px;}
+  to {top: 5px; left: 30px;}
+}
+
 #colorWheel span.color04:hover {
   cursor: pointer;
   -webkit-transform: rotate(108deg);
@@ -181,6 +212,9 @@ input[type="radio"] {
   -ms-transform: rotate(108deg);
   -o-transform: rotate(108deg);
   transform: rotate(108deg);
+  animation-name: color04A;
+  animation-duration: 1s;
+  animation-direction: alternate;
   top: 5px;
   left: 30px;
   border-color: #e1e23b transparent transparent transparent;
@@ -196,6 +230,11 @@ input[type="radio"] {
   border-color: #f7941e transparent transparent transparent;
 }
 
+@keyframes color05A {
+  from {left: 12px; top: 0px;}
+  to {top: 15px; left: 22px;}
+}
+
 #colorWheel span.color05:hover {
   cursor: pointer;
   -webkit-transform: rotate(144deg);
@@ -203,6 +242,9 @@ input[type="radio"] {
   -ms-transform: rotate(144deg);
   -o-transform: rotate(144deg);
   transform: rotate(144deg);
+  animation-name: color05A;
+  animation-duration: 1s;
+  animation-direction: alternate;
   top: 15px;
   left: 22px;
   border-color: #f7941e transparent transparent transparent;
@@ -218,6 +260,11 @@ input[type="radio"] {
   border-color: #ba3e2e transparent transparent transparent;
 }
 
+@keyframes color06A {
+  from {top: 0px;}
+  to {top: 20px;}
+}
+
 #colorWheel span.color06:hover {
   cursor: pointer;
   -webkit-transform: rotate(180deg);
@@ -225,7 +272,9 @@ input[type="radio"] {
   -ms-transform: rotate(180deg);
   -o-transform: rotate(180deg);
   transform: rotate(180deg);
-  transition: 1ms;
+  animation-name: color06A;
+  animation-duration: 1s;
+  animation-direction: alternate;
   top: 20px;
   border-color: #ba3e2e transparent transparent transparent;
 }
@@ -240,6 +289,11 @@ input[type="radio"] {
   border-color: #9a1d34 transparent transparent transparent;
 }
 
+@keyframes color07A {
+  from {top: 0px; left: 12px;}
+  to {top: 10px; left: 3px;}
+}
+
 #colorWheel span.color07:hover {
   cursor: pointer;
   -webkit-transform: rotate(216deg);
@@ -247,6 +301,9 @@ input[type="radio"] {
   -ms-transform: rotate(216deg);
   -o-transform: rotate(216deg);
   transform: rotate(216deg);
+  animation-name: color07A;
+  animation-duration: 1s;
+  animation-direction: alternate;
   top: 10px;
   left: 3px;
   border-color: #9a1d34 transparent transparent transparent;
@@ -262,6 +319,11 @@ input[type="radio"] {
   border-color: #662a6c transparent transparent transparent;
 }
 
+@keyframes color08A {
+  from {top: 0px; left: 12px;}
+  to {top: 6px; left: -6px;}
+}
+
 #colorWheel span.color08:hover {
   cursor: pointer;
   -webkit-transform: rotate(252deg);
@@ -269,6 +331,9 @@ input[type="radio"] {
   -ms-transform: rotate(252deg);
   -o-transform: rotate(252deg);
   transform: rotate(252deg);
+  animation-name: color08A;
+  animation-duration: 1s;
+  animation-direction: alternate;
   top: 6px;
   left: -6px;
   border-color: #662a6c transparent transparent transparent;
@@ -284,6 +349,11 @@ input[type="radio"] {
   border-color: #272b66 transparent transparent transparent;
 }
 
+@keyframes color09A {
+  from {top: 0px; left: 12px;}
+  to {top: -5px; left: -6px;}
+}
+
 #colorWheel span.color09:hover {
   cursor: pointer;
   -webkit-transform: rotate(288deg);
@@ -291,6 +361,9 @@ input[type="radio"] {
   -ms-transform: rotate(288deg);
   -o-transform: rotate(288deg);
   transform: rotate(288deg);
+  animation-name: color09A;
+  animation-duration: 1s;
+  animation-direction: alternate;
   top: -5px;
   left: -6px;
   border-color: #272b66 transparent transparent transparent;
@@ -306,6 +379,11 @@ input[type="radio"] {
   border-color: #2d559f transparent transparent transparent;
 }
 
+@keyframes color10A {
+  from {top: 0px; left: 12px;}
+  to {top: -10px; left: 3px;}
+}
+
 #colorWheel span.color10:hover{
   cursor: pointer;
   -webkit-transform: rotate(324deg);
@@ -313,6 +391,9 @@ input[type="radio"] {
   -ms-transform: rotate(324deg);
   -o-transform: rotate(324deg);
   transform: rotate(324deg);
+  animation-name: color10A;
+  animation-duration: 1s;
+  animation-direction: alternate;
   top: -10px;
   left: 3px;
   border-color: #2d559f transparent transparent transparent;
@@ -345,13 +426,29 @@ input[type="radio"] {
 
 .labelStyle {
   font-weight: bold;
-  background-color: red;
+  background-color: rgb(175, 0, 0);;
   border-radius: 25px; 
   color: white; 
   text-align: center;
 }
 
 .labelStyle.Estados {
+  width: 300px;
+}
+
+.city {
+  width: 300px;
+}
+
+.txtCity {
+  border: 1px solid black; 
+  width: 75%;
+  top: 275px; 
+  left: 12%;
+  height: 25px;
+}
+
+.pre {
   width: 300px;
 }
 
@@ -384,4 +481,13 @@ input[type="file"] {
   position:relative;
   top: 200px;
   left: 50px;
+}
+
+.constancia {
+  position: relative;
+  border: solid;
+  border-width: 2px;
+  border-color: black;
+  width: 620px;
+  height: 440px;
 }
