@@ -68,7 +68,7 @@ color05.addEventListener("mouseout", function() {
 
 color05.addEventListener("click", function() {
   borde.src = "../img/borde/borde-naranja.PNG";
-  esquina.src = "../img/esquina/esquina-naranja.PNG"
+  esquina.src = "https://raw.githubusercontent.com/Javier-debug/Constancias/master/public/img/borde/borde-naranja.png"
 })
 
 color06.addEventListener("mouseover", function() {
