@@ -41,8 +41,8 @@ color03.addEventListener("mouseout", function() {
 })
 
 color03.addEventListener("click", function() {
-  borde.src = "../img/borde/borde-verde-claro.png";
-  esquina.src = "../../public/img/esquina/esquinaverde.png"
+  borde.src = "./img/borde/borde-verde-claro.png";
+  esquina.src = "./img/esquina/esquinaverde.png"
 })
 
 color04.addEventListener("mouseover", function() {
