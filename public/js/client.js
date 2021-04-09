@@ -42,7 +42,7 @@ color03.addEventListener("mouseout", function() {
 
 color03.addEventListener("click", function() {
   borde.src = "../img/borde/borde-verde-claro.png";
-  esquina.src = "../img/esquina/esquina-verde-claro.png"
+  esquina.src = "../img/esquina/esquinaverde.png"
 })
 
 color04.addEventListener("mouseover", function() {
@@ -67,8 +67,8 @@ color05.addEventListener("mouseout", function() {
 })
 
 color05.addEventListener("click", function() {
-  borde.src = "../img/borde/borde-naranja.PNG";
-  esquina.src = "https://raw.githubusercontent.com/Javier-debug/Constancias/master/public/img/borde/borde-naranja.png"
+  borde.src = "../img/borde/borde-naranja.png";
+  esquina.src = "../img/esquina/esquina-naranja.png"
 })
 
 color06.addEventListener("mouseover", function() {
