@@ -42,7 +42,7 @@ color03.addEventListener("mouseout", function() {
 
 color03.addEventListener("click", function() {
   borde.src = "./img/borde/borde-verde-claro.png";
-  esquina.src = "./img/esquina/esquinaverde.png"
+  esquina.src = "./img/esquina/esquina-verde-claro.png"
 })
 
 color04.addEventListener("mouseover", function() {
@@ -54,8 +54,8 @@ color04.addEventListener("mouseout", function() {
 })
 
 color04.addEventListener("click", function() {
-  borde.src = "../img/borde/borde-amarillo.png";
-  esquina.src = "../img/esquina/esquina-amarillo.png"
+  borde.src = "./img/borde/borde-amarillo.png";
+  esquina.src = "./img/esquina/esquina-amarillo.png"
 })
 
 color05.addEventListener("mouseover", function() {
@@ -67,8 +67,8 @@ color05.addEventListener("mouseout", function() {
 })
 
 color05.addEventListener("click", function() {
-  borde.src = "../img/borde/borde-naranja.png";
-  esquina.src = "../img/esquina/esquina-naranja.png"
+  borde.src = "./img/borde/borde-naranja.png";
+  esquina.src = "./img/esquina/esquina-naranja.png"
 })
 
 color06.addEventListener("mouseover", function() {
@@ -80,8 +80,8 @@ color06.addEventListener("mouseout", function() {
 })
 
 color06.addEventListener("click", function() {
-  borde.src = "../img/borde/borde-rojo.png";
-  esquina.src = "../img/esquina/esquina-rojo.png"
+  borde.src = "./img/borde/borde-rojo.png";
+  esquina.src = "./img/esquina/esquina-rojo.png"
 })
 
 color07.addEventListener("mouseover", function() {
