@@ -67,8 +67,8 @@ color05.addEventListener("mouseout", function() {
 })
 
 color05.addEventListener("click", function() {
-  borde.src = "../img/borde/borde-naranja.png";
-  esquina.src = "../img/esquina/esquina-naranja.png"
+  borde.src = "../img/borde/borde-naranja.PNG";
+  esquina.src = "../img/esquina/esquina-naranja.PNG"
 })
 
 color06.addEventListener("mouseover", function() {
