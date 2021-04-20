@@ -1,3 +1,5 @@
+import { font_normal } from '../css/calibril-normal.js';
+import { font_bold } from '../css/calibril-bold.js';
 var inputFile = document.getElementById("input");
 var inputLogo = document.getElementById("inputLogo");
 var imgLogo = document.getElementById("imgLogo");
@@ -25,9 +27,11 @@ var txtInfo = "";
 var text = "";
 var image = new Image()
 image.src = "./img/LAVI Fire Profile Pic.png"
-finished = 0;
+var finished = 0;
 var fraccion = 0;
 var actual = 0;
+var calibri_light_b64;
+
 
 
 color01.addEventListener("mouseover", function() {
@@ -130,7 +134,7 @@ color10.addEventListener("mouseout", function() {
   color10.style.zIndex = 49;
 })
 
-inputFile.addEventListener("change",function() {
+inputFile.addEventListener("change", async function() {
   if (codigos[0] != ""){
     console.log(inputFile.files[0])
     loader.style.display = "block"
@@ -242,7 +246,7 @@ cmbEstados.addEventListener("change", function() {
     case "Aguascalientes":
       codigos[0] = "CAP-012-CMPC-2021";
       codigos.push("CON-046-LAFIWO-CEPC-2021");
-      tipo = "Capacitador";
+      tipo = "Capacitador en Materia de Protección Civil";
       console.log(codigos)
       break;
       case "Colima":
@@ -250,7 +254,7 @@ cmbEstados.addEventListener("change", function() {
           codigos.pop();
         }
         codigos[0] = "UEPC-CAP-855/19"
-        tipo = "Capacitador";
+        tipo = "Capacitador en Materia de Protección Civil";
         console.log(codigos);
       break;
       case "Guanajuato":
@@ -266,7 +270,7 @@ cmbEstados.addEventListener("change", function() {
           codigos.pop();
         }
         codigos[0] = "IEPC-060-07/2020"
-        tipo = "Capacitador";
+        tipo = "Capacitador en Materia de Protección Civil";
         console.log(codigos)
       break;
       case "Michoacán":
@@ -288,18 +292,26 @@ cmbEstados.addEventListener("change", function() {
   }
 })
 
- generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength) => {
+var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength) => {
 
   for (var a = 5; a < sheetData.length; a++)
   {
     if (a == 5)
     {
       var doc = new jsPDF('l', 'cm', [19.05, 25.4])
+      console.log("Entro")
+      doc.addFileToVFS("calibril-normal.ttf", font_normal)
+      doc.addFont("calibril-normal.ttf", "calibri-normal", "normal");
+      doc.addFont("calibril-normal.ttf", "calibri-normal", "bold");
+      doc.addFileToVFS("calibril-bold.ttf", font_bold)
+      doc.addFont("calibril-bold.ttf", "calibri-bold", "normal");
+      doc.addFont("calibril-bold.ttf", "calibri-bold", "bold");
     }
     else
     {
       doc.addPage(25.4, 19.05)
     }
+    doc.setFont("calibri-normal");
     doc.setTextColor( 0, 0, 0 )
     doc.addImage(esquina, "PNG", 20.4, 0, 5, 5);
     doc.addImage(borde, "PNG", 0, 17.5, 30, 1.5);
@@ -335,22 +347,31 @@ cmbEstados.addEventListener("change", function() {
     doc.text("Por haber participado en el curso de:", 25.4/2, 7, 'center');
     doc.text(nombreComercial, 25.4/2, 9.5, 'center')
     var textWidth = doc.getStringUnitWidth(text) * doc.internal.getFontSize() / doc.internal.scaleFactor;
-    var textOffset = (doc.internal.pageSize.width - textWidth) / 2;
+    console.log(textWidth)
+    var textOffset = (doc.internal.pageSize.getWidth() - (textWidth / 800)) / 2;
+    console.log(textOffset)
     const fontSize = 12;
     let startX = textOffset - 0.2;
     let startY = 9;
     const arrayOfNormalAndBoldText = txtInfo.split('**');
     arrayOfNormalAndBoldText.map((text, i) => {
-      doc.setFontType("bold");
+      doc.setFont("calibri-bold");
     // every even item is a normal font weight item
     if (i % 2 === 0) {
-      doc.setFontType("normal");
-    }
+      doc.setFont("calibri-normal");
       doc.text(text, startX, startY);
-      startX = startX + (doc.getStringUnitWidth(text) / 28.4) * fontSize;
+      startX = startX + ( (doc.getStringUnitWidth(text) / 800 ) / 2);
+    }
+    else
+    {
+      doc.text(text, startX, startY);
+      startX = startX + ( (doc.getStringUnitWidth(text) / 2600 ) / 2);
+    }
+      console.log(startX)
     });
-    doc.setFontSize(22);
-    doc.setFontType("normal");
+    doc.setFontSize(22); // 22
+    doc.setFont("calibri-normal");
+    
     doc.text(sheetData[a][4] + " " + sheetData[a][2] + " " + sheetData[a][3], 25.4/2, 6, 'center');
     doc.text(sheetData[2][1], 25.4/2, 8, 'center');
     doc.setFontSize(10);
@@ -377,7 +398,7 @@ cmbEstados.addEventListener("change", function() {
   //doc.fromHTML(htmlinfo, 15.5, 2)
 }
 
-imageSelected = () => {
+var imageSelected = () => {
   var reader = new FileReader();
   reader.onloadend = function() {
     imgLogo.src = reader.result;
