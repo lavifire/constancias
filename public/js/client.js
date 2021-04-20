@@ -321,6 +321,8 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
 
     doc.setFontSize(10);
     doc.text(ciudadFecha, 16, 3);
+    doc.text(ciudadFecha, 23, 4);
+    var xposition = (doc.getStringUnitWidth(ciudadFecha) / 800 ) / 2
     doc.text("LAVI Fire Workshop México, S.A. de C.V.", 25.4/2, 11, 'center');
     doc.text(tipo, 25.4/2, 11.5, 'center');
     doc.text(codigos[0], 25.4/2, 12, 'center');
@@ -347,9 +349,7 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
     doc.text("Por haber participado en el curso de:", 25.4/2, 7, 'center');
     doc.text(nombreComercial, 25.4/2, 9.5, 'center')
     var textWidth = doc.getStringUnitWidth(text) * doc.internal.getFontSize() / doc.internal.scaleFactor;
-    console.log(textWidth)
     var textOffset = (doc.internal.pageSize.getWidth() - (textWidth / 800)) / 2;
-    console.log(textOffset)
     const fontSize = 12;
     let startX = textOffset - 0.2;
     let startY = 9;
@@ -367,7 +367,6 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.text(text, startX, startY);
       startX = startX + ( (doc.getStringUnitWidth(text) / 2600 ) / 2);
     }
-      console.log(startX)
     });
     doc.setFontSize(22); // 22
     doc.setFont("calibri-normal");
