@@ -500,11 +500,11 @@ input[type="file"] {
 
 .loader-container
 {
+  align-content: center;
   position: absolute;
   top: 0;
   text-align: center;
   z-index: 1000;
-  
   left: 0;
   width: 100vw;
   height: 115vh;

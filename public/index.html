@@ -19,6 +19,7 @@
 </head>
 <body style="margin-top: 10px;">
 <div class="loader-container" id="loader" style="display: none;">
+  <h1 id="lblActual" style="color: white;"></h1>
   <div class="loader"></div>
   
 </div>
@@ -41,35 +42,19 @@
           <div class="container info">
             <div class="row">
               <label class="labelStyle custom-file-upload">
-                <input type="file" id="inputLogo" onchange="imageSelected()"/>
+                <input type="file" id="inputLogo"/>
                 LOGO DEL CLIENTE
             </label>
             
             <label style="height: 10px;"></label>
             <img src="./img/404-error.png" id="imgLogo">
             <label style="height: 10px;"></label>
-              <label class="labelStyle Estados">SELECCIONA UN ESTADO</label>
-              <label style="height: 10px;"></label>
-              <select name="cmbEstados" id="cmbEstados" class="cmbEstados">
-                <option value="Aguascalientes">Aguascalientes</option>
-                <option value="Colima">Colima</option>
-                <option value="Guanajuato">Guanajuato</option>
-                <option value="Jalisco">Jalisco</option>
-                <option value="Michoacán">Michoacán</option>
-                <option value="Zacatecas">Zacatecas</option>
-              </select>
-              <label style="height: 25px;"></label>
-              <label class="labelStyle city">CIUDAD</label>
-              <label style="height: 10px;"></label>
-              <input type="text" id="txtCity" class="txtCity"/>
-              <label style="height: 25px;"></label>
               <label class="labelStyle custom-file-upload">
                 <input id="input" type="file"/>
                 EXAMINAR
             </label>
             <label style="height: 10px;"></label>
             <label id="txtFile" class="txtFile"></label>
-            <input style="display: none;" id="txtInfo"/>
             
             </div>
             
@@ -94,7 +79,6 @@
         </div>
       </div>
     </div>
-    
     <!--
     <div class="centered">
       <div class="row" style="text-align: center;">
