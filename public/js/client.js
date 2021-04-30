@@ -141,14 +141,11 @@ color10.addEventListener("mouseout", function() {
 
 inputFile.addEventListener("change", function() {
   //if (codigos[0] != ""){
-    console.log(inputFile.files[0])
     loader.style.display = "block"
     readXlsxFile(inputFile.files[0], { getSheets: true }).then(function(sheets) {
-      console.log(sheets)
       for (var i = sheets.length; i > 0; i--) {
         if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Estados Municipios") {
           readXlsxFile(inputFile.files[0], { sheet: i }).then(function(sheetData) {
-            console.log(sheetData)
             var date = sheetData[3];
             var fecha = new Date(Date.parse(date[1]))
             var mes = "";
@@ -214,19 +211,8 @@ inputFile.addEventListener("change", function() {
               codigos.push(sheetData[3][4]);
             }
 
-            for (var b = 3; b < RegistrosData.length; b++)
-            {
-              if (codigos[0] == RegistrosData[b][4])
-              {
-                tipo = RegistrosData[b][2]
-                console.log(tipo)
-              }
-            }
-
             var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
             var ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + fecha.getFullYear();
-            console.log(ciudadFecha)
-            console.log(codigos);
             var razonSocial = sheetData[0]
             txtInfo = 'Impartido el día **'+ dia + " de " + mes + " de " + fecha.getFullYear() +'**, para personal de **'+ razonSocial[1]
             text = 'Impartido el día '+ dia + " de " + mes + " de " + fecha.getFullYear() +', para personal de '+ razonSocial[1]
@@ -257,15 +243,6 @@ inputFile.addEventListener("change", function() {
             generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
           })
         }
-        else {
-          if (sheets[i - 1].name == "Registros PC")
-          {
-            readXlsxFile(inputFile.files[0], { sheet: i }).then(function(sheetData) {
-              RegistrosData = sheetData;
-            })
-            wait(1500)
-          }
-        }
       }
     })
     txtFile.innerHTML = inputFile.files[0].name;
@@ -278,7 +255,6 @@ inputFile.addEventListener("change", function() {
 })
 
 var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets) => {
-  console.log(filename)
   for (var a = 5; a < sheetData.length; a++)
   {
     if (a == 5)
@@ -286,7 +262,6 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       if (sheetData[5][2] != null)
       {
         var doc = new jsPDF('l', 'pt', [540, 720]) //19.05, 25.4
-        console.log("Entro")
         doc.addFileToVFS("calibril-normal.ttf", font_normal)
         doc.addFont("calibril-normal.ttf", "calibri-normal", "normal");
         doc.addFont("calibril-normal.ttf", "calibri-normal", "bold");
@@ -315,13 +290,13 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.addImage(telefono, "PNG", 435, 465, 15, 15);
       doc.addImage(ubicacion, "PNG", 170, 465, 15, 15);
       
-      doc.addImage(image, "png", 56.6929, 445.0394, 51.0236, 51.0236) // 2, 15.7, 1.8, 1.8
+      doc.addImage(image, "png", 56.6929, 452.5, 40, 40) // 2, 15.7, 1.8, 1.8
   
       doc.setFontSize(10);
       //doc.text(text, 720/2, 85.0394, 'center') // 25.4/2, 3
       doc.text(ciudadFecha, 651.969 - doc.getTextDimensions(ciudadFecha).w, 85.0394);
       doc.text("LAVI Fire Workshop México, S.A. de C.V.", 720/2, 322.2443, 'center'); // 25.4/2, 11
-      doc.text(tipo, 720/2, 336.4176, 'center'); // 25.4/2, 11.5
+      doc.text("Capacitador en Materia de Protección Civil", 720/2, 336.4176, 'center'); // 25.4/2, 11.5
       doc.text(codigos[0], 720/2, 350.5903, 'center'); // 25.4/2, 12
       if (codigos.length > 1)
       {
@@ -344,11 +319,11 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.setFontSize(12);
       doc.text("Otorga la presente constancia a:", 720/2, 121.831, 'center'); // 25.4/2, 5
       doc.text("Por haber participado en el curso de:", 720/2, 198.425, 'center'); // 25.4/2, 7
-      doc.text(nombreComercial, 720/2, 289.291, 'center') // 25.4/2, 9.5
+      doc.text(nombreComercial, 720/2, 294.291, 'center') // 25.4/2, 9.5
       var startX = (720 / 2) - (doc.getTextDimensions(text).w / 2);
       const arrayOfNormalAndBoldText = txtInfo.split('**');
       arrayOfNormalAndBoldText.map((mytext, i) => {
-      // every even item is a normal font weight item
+      // every even item is a normal font weight itemS
       doc.setFont("calibri-bold");
       // every even item is a normal font weight item
       if (i % 2 === 0) {
