@@ -78,7 +78,6 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.setTextColor( 0, 0, 0 )
       
       doc.addImage(imgEsquina, "PNG", 578.2677, 0, 141.732, 141.732); // 20.4, 0, 5, 5
-      console.log("Paso ")
       doc.addImage(borde, "PNG", 0, 496.063, 850.394, 42.5197); // 20.4, 0, 5, 5
       doc.addImage(imgLavi, "JPEG", 14.1732, 14.1732, 220.9448, 67.3622); // 0.5, 0.5, 9, 2.7
       doc.addImage(logoClient, "JPEG", 620, 452.5, 40, 40);
@@ -87,7 +86,6 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.addImage(ubicacion, "PNG", 170, 465, 15, 15);
       
       doc.addImage(image, "png", 56.6929, 452.5, 40, 40) // 2, 15.7, 1.8, 1.8
-      console.log("Paso 2")
       doc.setFontSize(10);
       //doc.text(text, 720/2, 85.0394, 'center') // 25.4/2, 3
       doc.text(ciudadFecha, 651.969 - doc.getTextDimensions(ciudadFecha).w, 85.0394);
