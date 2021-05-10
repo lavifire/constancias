@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%;">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,38 +8,66 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
   <link rel="stylesheet" href="./css/style.css">
     <!-- Just an image -->
-      <div style="background-color: rgb(175, 0, 0); height: 10px;"></div>
+      <div style="height: 10px;"></div>
       <nav class="navbar" style="width: 100%; background-color: white;">
         <a class="navbar-brand" href="#">
           <img src="./img/LAVI Fire_HI-RES.jpg" width="180" alt="" loading="lazy"> <!--180-->
         </a>
       </nav>
-      <div style="background-color: rgb(175, 0, 0); height: 10px;"></div>
+      <div style="height: 10px;"></div>
 
 </head>
-<body style="margin-top: 10px;">
+<body class="gradientBC">
 <div class="loader-container" id="loader" style="display: none;">
   <h1 id="lblActual" style="color: white;"></h1>
-  <div class="loader"></div>
-  
+  <div class="loader" id="loaderIcon" style="display: none;"></div>
+  <div class="alert" id="displayError" style="display: none;">
+    <span class="closebtn" id="closebtn" onclick="document.getElementById('loader').style.display='none'; this.parentElement.style.display='none';">&times;</span> 
+    <strong>Error!</strong>
+    <div id="alertError">
+      
+    </div>
+  </div>
+  <div class="alert success" id="displaySuccess" style="display: none;">
+    <span class="closebtn" id="closebtn" onclick="document.getElementById('loader').style.display='none'; this.parentElement.style.display='none';">&times;</span>  
+    <div id="alertSuccess">
+      
+    </div>
+  </div>
 </div>
 
+<div class="row" style="background-color: white; height: 50%; width: 85%; margin-left: 7%; margin-top: 4%;">
+  <div class="col-6" style="height: 100%; text-align: center;">
+    <div style="height: 100%; width: 100%; padding-top: 5%;">
+      <label class="labelStyle custom-file-upload" style="width: 100%;">
+        <input type="file" id="inputLogo"/>
+        Logo del cliente
+      </label>
+      <div style="width: auto; height: 80%;">
+        <img src="./img/404-error.png" id="imgLogo" style=" margin-top: 20px; height: auto;">
+      </div>
+    </div>
+    <!--<img src="./img/404-error.png" id="imgLogo" style="width: auto; position: relative; left: 10px;">-->
+  </div>
+  <div class="col-6" style="height: 100%; width: 50%;">
+    <div style="height: 100%; width: 100%; padding-top: 5%;">
+      <label class="labelStyle custom-file-upload" style="width: auto;">
+        <input type="file" id="input"/>
+        Lista de asistencia
+      </label>
+      <label id="txtFile" class="txtFile" style="margin-top: 20px;"></label>
+      <!--<button id="btnGenerate" style="background-color: rgb(214, 0, 0); color: white; border-style: none; position: relative; top: 30%; width: auto;">Generar constancias</button>-->
+      <!--<button id="btnGenerate" style="background-color: rgb(214, 0, 0); color: white; border-style: none; float: right; position: relative; bottom: -50%; width: 220px; height: 50px;">Generar constancias</button>-->
+    </div>
+    <button id="btnGenerate" class="btnGenerate">Generar constancias</button>
+  </div>
+  </div>
+</div>
+<!--
     <div class="row" style="margin-top: 20px;">
       <div class="col-4">
         <div class="row" id="prueba">
-          <div id="colorWheel">
-            <span class="color01" id="color01"></span>
-            <span class="color02" id="color02"></span>
-            <span class="color03" id="color03"></span>
-            <span class="color04" id="color04"></span>
-            <span class="color05" id="color05"></span>
-            <span class="color06" id="color06"></span>
-            <span class="color07" id="color07"></span>
-            <span class="color08" id="color08"></span>
-            <span class="color09" id="color09"></span>
-            <span class="color10" id="color10"></span>
-          </div>
-          <div class="container info">
+          <div class="container" style="margin-left: 25px;">
             <div class="row">
               <label class="labelStyle custom-file-upload">
                 <input type="file" id="inputLogo"/>
@@ -55,30 +83,24 @@
             </label>
             <label style="height: 10px;"></label>
             <label id="txtFile" class="txtFile"></label>
-            
+            <div class="alert ">
+              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+              <strong>Error!</strong> Faltan datos
+            </div>
+            <div class="alert success">
+              <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>  
+              <div class="row" id="alertSuccess">
+                
+              </div>
+            </div>
             </div>
             
           </div>
           
         </div>
-          
-        
-      </div>
-      <div class="col-8">
-        <label class="labelStyle pre">PREVISUALIZACION</label>
-        <br>
-        <br>
-        <div>
-          <div class="constancia">
-            <img src="./img/LAVI Fire_HI-RES.jpg" style="position: relative; z-index: 100" width="180" alt="" loading="lazy">
-            <img src="./img/esquina/esquina-rojo.png" style="position: relative; float: right; z-index: 100;" width="125px" id="esquina" height="125px">
-            <br>
-            <img src="./img/Prev.PNG" style="position: relative; top: -20%; z-index: 50;"  width="100%" height="80%">
-            <img src="./img/borde/borde-rojo.png" style="bottom: 0; left: 0; position: absolute;" width="100%" height="50px" id="borde">
-          </div>
-        </div>
       </div>
     </div>
+  -->
     <!--
     <div class="centered">
       <div class="row" style="text-align: center;">
