@@ -48,6 +48,9 @@ inputFile.addEventListener("change", function() {
 
 
 var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets) => {
+  try {
+
+  
   for (var a = 5; a < sheetData.length; a++)
   {
     if (a == 5)
@@ -175,6 +178,13 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
     {
       finished++;
     }
+  }
+  catch (error) {
+    document.getElementById("alertError").innerHTML='Algo paso, vuelvalo a intentar'
+    loaderIcon.style.display = "none"
+    loader.style.display = "block"
+    displayError.style.display = "block"
+  }
   // addImage(image, format, X, Y, width, height)
   //htmlinfo.innerHTML = 'León, <b>Guanajuato</b>'
   //doc.fromHTML(htmlinfo, 15.5, 2)
@@ -200,125 +210,133 @@ function wait(ms){
 
 btnGenerate.addEventListener("click", () => 
 {
-  if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null){
-    loader.style.display = "block"
-    loaderIcon.style.display = "block"
-    readXlsxFile(file, { getSheets: true }).then(function(sheets) {
-      for (var i = sheets.length; i > 0; i--) {
-        if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Estados Municipios") {
-          readXlsxFile(file, { sheet: i }).then(function(sheetData) {
-            if (sheetData[3][1] == null || sheetData[0] == null || sheetData[2][4] == null || sheetData[1][4] == null || sheetData[0][4] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[0][1] == null){
-              document.getElementById("alertError").innerHTML='Faltan datos en el excel'
-              loaderIcon.style.display = "none";
-              displayError.style.display = "block";
-              return 
-            }
-            var date = sheetData[3];
-            var fecha = new Date(Date.parse(date[1]))
-            var mes = "";
-            var mesNumber = "";
-            switch (fecha.getMonth())
-            {
-              case 0:
-                mes = "Enero";
-                mesNumber = "01";
-              break;
-              case 1:
-                mes = "Febrero";
-                mesNumber = "02";
-              break;
-              case 2:
-                mes = "Marzo";
-                mesNumber = "03";
-              break;
-              case 3:
-                mes = "Abril";
-                mesNumber = "04";
-              break;
-              case 4:
-                mes = "Mayo";
-                mesNumber = "05";
-              break;
-              case 5:
-                mes = "Junio";
-                mesNumber = "06";
-              break;
-              case 6:
-                mes = "Julio";
-                mesNumber = "07";
-              break;
-              case 7:
-                mes = "Agosto";
-                mesNumber = "08";
-              break;
-              case 8:
-                mes = "Septiembre";
-                mesNumber = "09";
-              break;
-              case 9:
-                mes = "Octubre";
-                mesNumber = "10";
-              break;
-              case 10:
-                mes = "Noviembre";
-                mesNumber = "11";
-              break;
-              case 11:
-                mes = "Diciembre";
-                mesNumber = "12";
-              break;
-            }
-            if (codigos.length > 1)
-            {
-              codigos.pop();
-            }
-            codigos[0] = sheetData[2][4];
-            if (sheetData[3][4] != null)
-            {
-              codigos.push(sheetData[3][4]);
-            }
-
-            var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
-            var ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + fecha.getFullYear();
-            var razonSocial = sheetData[0]
-            txtInfo = 'Impartido el día **'+ dia + " de " + mes + " de " + fecha.getFullYear() +'**, para personal de **'+ razonSocial[1]
-            text = 'Impartido el día '+ dia + " de " + mes + " de " + fecha.getFullYear() +', para personal de '+ razonSocial[1]
-            var nombreComercial = sheetData[1][1]
-            var nombreCurso = sheetData[2][1]
-            var founded = true;
-            var position = 0;
-            do
-            {
-              
-              position = nombreCurso.indexOf("/")
-              
-              if (position != -1) 
+  try {
+    if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null){
+      loader.style.display = "block"
+      loaderIcon.style.display = "block"
+      readXlsxFile(file, { getSheets: true }).then(function(sheets) {
+        for (var i = sheets.length; i > 0; i--) {
+          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Estados Municipios") {
+            readXlsxFile(file, { sheet: i }).then(function(sheetData) {
+              if (sheetData[3][1] == null || sheetData[0] == null || sheetData[2][4] == null || sheetData[1][4] == null || sheetData[0][4] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[0][1] == null){
+                document.getElementById("alertError").innerHTML='Faltan datos en el excel'
+                loaderIcon.style.display = "none";
+                displayError.style.display = "block";
+                return 
+              }
+              var date = sheetData[3];
+              var fecha = new Date(Date.parse(date[1]))
+              var mes = "";
+              var mesNumber = "";
+              switch (fecha.getMonth())
+              {
+                case 0:
+                  mes = "Enero";
+                  mesNumber = "01";
+                break;
+                case 1:
+                  mes = "Febrero";
+                  mesNumber = "02";
+                break;
+                case 2:
+                  mes = "Marzo";
+                  mesNumber = "03";
+                break;
+                case 3:
+                  mes = "Abril";
+                  mesNumber = "04";
+                break;
+                case 4:
+                  mes = "Mayo";
+                  mesNumber = "05";
+                break;
+                case 5:
+                  mes = "Junio";
+                  mesNumber = "06";
+                break;
+                case 6:
+                  mes = "Julio";
+                  mesNumber = "07";
+                break;
+                case 7:
+                  mes = "Agosto";
+                  mesNumber = "08";
+                break;
+                case 8:
+                  mes = "Septiembre";
+                  mesNumber = "09";
+                break;
+                case 9:
+                  mes = "Octubre";
+                  mesNumber = "10";
+                break;
+                case 10:
+                  mes = "Noviembre";
+                  mesNumber = "11";
+                break;
+                case 11:
+                  mes = "Diciembre";
+                  mesNumber = "12";
+                break;
+              }
+              if (codigos.length > 1)
+              {
+                codigos.pop();
+              }
+              codigos[0] = sheetData[2][4];
+              if (sheetData[3][4] != null)
+              {
+                codigos.push(sheetData[3][4]);
+              }
+  
+              var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
+              var ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + fecha.getFullYear();
+              var razonSocial = sheetData[0]
+              txtInfo = 'Impartido el día **'+ dia + " de " + mes + " de " + fecha.getFullYear() +'**, para personal de **'+ razonSocial[1]
+              text = 'Impartido el día '+ dia + " de " + mes + " de " + fecha.getFullYear() +', para personal de '+ razonSocial[1]
+              var nombreComercial = sheetData[1][1]
+              var nombreCurso = sheetData[2][1]
+              var founded = true;
+              var position = 0;
+              do
               {
                 
-                nombreCurso = nombreCurso.replace('/', '-')
+                position = nombreCurso.indexOf("/")
+                
+                if (position != -1) 
+                {
+                  
+                  nombreCurso = nombreCurso.replace('/', '-')
+                }
+                else 
+                {
+                  founded = false;
+                }
               }
-              else 
-              {
-                founded = false;
-              }
-            }
-            while (founded == true);
-            var filename = dia + mesNumber + fecha.getFullYear().toString().substr(-2) + "_Constancias - " + nombreCurso + " - " + nombreComercial
-            // .getDate devuelve el dia
-            // .getMonth devuelve el mes 0= Enero, 1 = Febrero, etc
-            // .getFullYear devuelve el año completo ej: 1995
-            generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
-          })
+              while (founded == true);
+              var filename = dia + mesNumber + fecha.getFullYear().toString().substr(-2) + "_Constancias - " + nombreCurso + " - " + nombreComercial
+              // .getDate devuelve el dia
+              // .getMonth devuelve el mes 0= Enero, 1 = Febrero, etc
+              // .getFullYear devuelve el año completo ej: 1995
+              generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
+            })
+          }
         }
-      }
-    })
-  }
-  else {
-    document.getElementById("alertError").innerHTML='Falta logo y/o archivo excel por seleccionar'
+      })
+    }
+    else {
+      document.getElementById("alertError").innerHTML='Falta logo y/o archivo excel por seleccionar'
+      loaderIcon.style.display = "none"
+      loader.style.display = "block"
+      displayError.style.display = "block"
+      
+    }
+  } catch(error) {
+    document.getElementById("alertError").innerHTML='Algo paso, vuelvalo a intentar'
     loaderIcon.style.display = "none"
     loader.style.display = "block"
     displayError.style.display = "block"
-    
   }
+  
 }
 )
