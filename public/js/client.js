@@ -323,19 +323,30 @@ btnGenerate.addEventListener("click", () =>
           }
         }
       })
+      document.getElementById('imgLogo').src = './img/404-error.png'; 
+    document.getElementById('input').files = null; 
+    document.getElementById('txtFile').innerHTML = ''; 
+    document.getElementById('txtFile').style.height = '25px';
     }
     else {
       document.getElementById("alertError").innerHTML='Falta logo y/o archivo excel por seleccionar'
       loaderIcon.style.display = "none"
       loader.style.display = "block"
       displayError.style.display = "block"
-      
+      document.getElementById('imgLogo').src = './img/404-error.png'; 
+    document.getElementById('input').files = null; 
+    document.getElementById('txtFile').innerHTML = ''; 
+    document.getElementById('txtFile').style.height = '25px';
     }
   } catch(error) {
     document.getElementById("alertError").innerHTML='Algo paso, vuelvalo a intentar'
     loaderIcon.style.display = "none"
     loader.style.display = "block"
     displayError.style.display = "block"
+    document.getElementById('imgLogo').src = './img/404-error.png'; 
+    document.getElementById('input').files = null; 
+    document.getElementById('txtFile').innerHTML = ''; 
+    document.getElementById('txtFile').style.height = '25px';
   }
   
 }
