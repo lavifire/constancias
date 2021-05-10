@@ -1,13 +1,13 @@
-import { font_normal } from '../css/calibril-normal.js';
-import { font_bold } from '../css/calibril-bold.js';
+import { font_normal } from './css/calibril-normal.js';
+import { font_bold } from './css/calibril-bold.js';
 var inputFile = document.getElementById("input");
 var inputLogo = document.getElementById("inputLogo");
 var imgLogo = document.getElementById("imgLogo");
 var btnGenerate = document.getElementById("btnGenerate")
 var imgLavi = new Image()
-imgLavi.src = "../img/LAVI Fire_HI-RES.jpg"
+imgLavi.src = "./img/LAVI Fire_HI-RES.jpg"
 var imgEsquina = new Image()
-imgEsquina.src = "../img/esquina/esquina-rojo.png"
+imgEsquina.src = "./img/esquina/esquina-rojo.png"
 var borde = new Image()
 var displayError = document.getElementById("displayError")
 var displaySuccess = document.getElementById("displaySuccess")
@@ -16,7 +16,7 @@ loaderIcon.style.display = 'block'
 displaySuccess.style.display = 'none';
 displayError.style.display = 'none';
 
-borde.src = "../img/borde/borde-rojo.png"
+borde.src = "./img/borde/borde-rojo.png"
 var loader = document.getElementById("loader");
 var txtFile = document.getElementById("txtFile");
 var codigos = [""];
@@ -24,14 +24,14 @@ var txtInfo = "";
 var text = "";
 var logoClient = new Image()
 var image = new Image()
-image.src = "../img/LAVI Fire Profile Pic.png"
+image.src = "./img/LAVI Fire Profile Pic.png"
 var finished = 0;
 var correo = new Image()
-correo.src = "../img/Correo.png"
+correo.src = "./img/Correo.png"
 var telefono = new Image()
-telefono.src = "../img/Telefono.png"
+telefono.src = "./img/Telefono.png"
 var ubicacion = new Image()
-ubicacion.src = "../img/Ubicacion.png"
+ubicacion.src = "./img/Ubicacion.png"
 var file = null;
 
 var alertSuccess = document.getElementById("alertSuccess");
