@@ -1,5 +1,5 @@
 import { font_normal } from '../css/calibril-normal.js';
-import { font_bold } from './css/calibril-bold.js';
+import { font_bold } from '../css/calibril-bold.js';
 var inputFile = document.getElementById("input");
 var inputLogo = document.getElementById("inputLogo");
 var imgLogo = document.getElementById("imgLogo");
