@@ -108,14 +108,16 @@ input[type="file"] {
 }
 
 .labelStyle.custom-file-upload {
-  width: 300px;
+  width: 250px;
   padding: 6px 12px;
   cursor: pointer;
+  height: 50px;
 }
 
 .txtFile {
   border: 1px solid black; 
-  width: 100%;
+  width: 50%;
+  margin-bottom: 50px;
   height: 25px;
 }
 
@@ -135,10 +137,6 @@ input[type="file"] {
   height: 440px;
 }
 
-#imgLogo {
-  width: 150px; 
-  height: 100px;
-}
 
 .loader-container
 {
@@ -195,7 +193,8 @@ input[type="file"] {
   font-size: 22px;
   line-height: 20px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s; 
+  
 }
 
 .closebtn:hover {
@@ -204,7 +203,7 @@ input[type="file"] {
 
 .alert.success {
   background-color: #04AA6D;
-
+  
 }
 
 .gradientBC {
@@ -220,12 +219,42 @@ input[type="file"] {
   background-color: rgb(214, 0, 0); 
   color: white; 
   border-style: none; 
-  float: right; 
-  position: relative; 
-  bottom: 30%; 
   width: 220px; 
   height: 50px;
   -webkit-box-shadow: -4px -2px 5px 0px rgba(171,171,171,1);
 -moz-box-shadow: -4px -2px 5px 0px rgba(171,171,171,1);
 box-shadow: -4px -2px 5px 0px rgba(171,171,171,1);
+}
+
+.main {
+  margin-top: 25px; 
+  background-color: white;
+}
+
+.buttonsContainer {
+  display: flex; 
+  justify-content: center;  
+  padding-top: 25px;
+}
+
+.leftLabel {
+  height: 60px; 
+  justify-content: center; 
+  margin-top: 40px;
+}
+
+.leftImage {
+  height: 260px; 
+  justify-content: center;
+}
+
+.imageStyle {
+  margin-top: 20px; 
+  width: 250px; 
+  height: 200px;
+}
+
+.rightLabel {
+  margin-top: 25%; 
+  margin-left: 25px;
 }

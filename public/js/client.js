@@ -1,9 +1,12 @@
 import { font_normal } from '../css/calibril-normal.js';
 import { font_bold } from '../css/calibril-bold.js';
+import { font } from '../css/opensans-bold.js';
 var inputFile = document.getElementById("input");
 var inputLogo = document.getElementById("inputLogo");
 var imgLogo = document.getElementById("imgLogo");
-var btnGenerate = document.getElementById("btnGenerate")
+var btnGenerateI = document.getElementById("btnGenerateI")
+var btnGenerateG = document.getElementById("btnGenerateG")
+var btnGenerateDC = document.getElementById("btnGenerateDC")
 var imgLavi = new Image()
 imgLavi.src = "./img/LAVI Fire_HI-RES.jpg"
 var imgEsquina = new Image()
@@ -49,13 +52,11 @@ inputFile.addEventListener("change", function() {
 
 var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets) => {
   try {
-
-  
-  for (var a = 5; a < sheetData.length; a++)
+  for (var a = 6; a < sheetData.length; a++)
   {
-    if (a == 5)
+    if (a == 6)
     {
-      if (sheetData[5][2] != null)
+      if (sheetData[6][2] != null)
       {
         var doc = new jsPDF('l', 'pt', [540, 720]) //19.05, 25.4
         doc.addFileToVFS("calibril-normal.ttf", font_normal)
@@ -164,12 +165,12 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       //doc.fromHTML(htmlinfo.innerHTML, 5, 8.5) 
     }
   }
-  if (sheetData[5][2] != null)
+  if (sheetData[6][2] != null)
   {
     doc.save(filename + '.pdf')
   }
-    
-  if (finished >= sheetsLength - 1)
+    console.log(sheetsLength)
+  if (finished >= sheetsLength - 3)
     {
       loaderIcon.style.display = "none"
       displaySuccess.style.display = "block";
@@ -208,17 +209,21 @@ function wait(ms){
  }
 }
 
-btnGenerate.addEventListener("click", () => 
+btnGenerateI.addEventListener("click", () => 
 {
   try {
     if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null){
       loader.style.display = "block"
       loaderIcon.style.display = "block"
+      finished = 0;
       readXlsxFile(file, { getSheets: true }).then(function(sheets) {
         for (var i = sheets.length; i > 0; i--) {
-          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Estados Municipios") {
+          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
-              if (sheetData[3][1] == null || sheetData[0] == null || sheetData[2][4] == null || sheetData[1][4] == null || sheetData[0][4] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[0][1] == null){
+              console.log(sheetData)
+              if (sheetData[0][1] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[3][1] == null 
+                && sheetData[4][1] == null || sheetData[0][4] == null || sheetData[1][4] == null || sheetData[2][4] == null
+                && sheetData[3][4] == null || sheetData[2][6] == null || sheetData[6][2] == null){
                 document.getElementById("alertError").innerHTML='Faltan datos en el excel'
                 loaderIcon.style.display = "none";
                 displayError.style.display = "block";
@@ -351,3 +356,410 @@ btnGenerate.addEventListener("click", () =>
   
 }
 )
+
+
+btnGenerateDC.addEventListener("click", () => {
+  var doc = new jsPDF();
+  doc.addFileToVFS("open-sans-condensed.bold.ttf", font)
+  doc.addFont('open-sans-condensed.bold.ttf', 'custom', 'normal');
+
+  doc.setFont('custom');
+  doc.text(15, 15, 'Hello World');
+  doc.save('prueba.pdf')
+  if (file != null){
+    loader.style.display = "block"
+    loaderIcon.style.display = "block"
+    readXlsxFile(file, { getSheets: true }).then(function(sheets) {
+      for (var i = sheets.length; i > 0; i--) {
+        if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
+          readXlsxFile(file, { sheet: i }).then(function(sheetData) {
+            console.log(sheetData)
+          })
+        }
+      }
+    })
+  }
+})
+
+btnGenerateG.addEventListener("click", () => {
+  try {
+    if (file != null){
+      loader.style.display = "block"
+      loaderIcon.style.display = "block"
+      finished = 0;
+      readXlsxFile(file, { getSheets: true }).then(function(sheets) {
+        for (var i = sheets.length; i > 0; i--) {
+          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
+            readXlsxFile(file, { sheet: i }).then(function(sheetData) {
+              console.log(sheetData)
+              if (sheetData[0][1] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[3][1] == null 
+                && sheetData[4][1] == null || sheetData[0][4] == null || sheetData[1][4] == null || sheetData[2][4] == null
+                && sheetData[3][4] == null || sheetData[2][6] == null || sheetData[6][2] == null){
+                document.getElementById("alertError").innerHTML='Faltan datos en el excel'
+                loaderIcon.style.display = "none";
+                displayError.style.display = "block";
+                return 
+              }
+              var date = sheetData[3];
+              var fecha = new Date(Date.parse(date[1]))
+              var mes = "";
+              var mesNumber = "";
+              switch (fecha.getMonth())
+              {
+                case 0:
+                  mes = "Enero";
+                  mesNumber = "01";
+                break;
+                case 1:
+                  mes = "Febrero";
+                  mesNumber = "02";
+                break;
+                case 2:
+                  mes = "Marzo";
+                  mesNumber = "03";
+                break;
+                case 3:
+                  mes = "Abril";
+                  mesNumber = "04";
+                break;
+                case 4:
+                  mes = "Mayo";
+                  mesNumber = "05";
+                break;
+                case 5:
+                  mes = "Junio";
+                  mesNumber = "06";
+                break;
+                case 6:
+                  mes = "Julio";
+                  mesNumber = "07";
+                break;
+                case 7:
+                  mes = "Agosto";
+                  mesNumber = "08";
+                break;
+                case 8:
+                  mes = "Septiembre";
+                  mesNumber = "09";
+                break;
+                case 9:
+                  mes = "Octubre";
+                  mesNumber = "10";
+                break;
+                case 10:
+                  mes = "Noviembre";
+                  mesNumber = "11";
+                break;
+                case 11:
+                  mes = "Diciembre";
+                  mesNumber = "12";
+                break;
+              }
+              if (codigos.length > 1)
+              {
+                codigos.pop();
+              }
+              codigos[0] = sheetData[2][4];
+              if (sheetData[3][4] != null)
+              {
+                codigos.push(sheetData[3][4]);
+              }
+  
+              var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
+              var ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + fecha.getFullYear();
+              var fechaConstancia = dia  + " de " + mes + " de " + fecha.getFullYear();
+              var razonSocial = sheetData[0]
+              //razonSocial[1]
+              var nombreComercial = sheetData[1][1]
+              var nombreCurso = sheetData[2][1]
+              var founded = true;
+              var position = 0;
+              do
+              {
+                
+                position = nombreCurso.indexOf("/")
+                
+                if (position != -1) 
+                {
+                  
+                  nombreCurso = nombreCurso.replace('/', '-')
+                }
+                else 
+                {
+                  founded = false;
+                }
+              }
+              while (founded == true);
+              var filename = dia + mesNumber + fecha.getFullYear().toString().substr(-2) + "_Constancias - " + nombreCurso + " - " + nombreComercial
+              // .getDate devuelve el dia
+              // .getMonth devuelve el mes 0= Enero, 1 = Febrero, etc
+              // .getFullYear devuelve el año completo ej: 1995
+              generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia);
+            })
+          }
+        }
+      })
+      document.getElementById('imgLogo').src = './img/404-error.png'; 
+    document.getElementById('input').files = null; 
+    document.getElementById('txtFile').innerHTML = ''; 
+    document.getElementById('txtFile').style.height = '25px';
+    }
+    else {
+      document.getElementById("alertError").innerHTML='Falta logo y/o archivo excel por seleccionar'
+      loaderIcon.style.display = "none"
+      loader.style.display = "block"
+      displayError.style.display = "block"
+      document.getElementById('imgLogo').src = './img/404-error.png'; 
+    document.getElementById('input').files = null; 
+    document.getElementById('txtFile').innerHTML = ''; 
+    document.getElementById('txtFile').style.height = '25px';
+    }
+  } catch(error) {
+    document.getElementById("alertError").innerHTML='Algo paso, vuelvalo a intentar'
+    loaderIcon.style.display = "none"
+    loader.style.display = "block"
+    displayError.style.display = "block"
+    document.getElementById('imgLogo').src = './img/404-error.png'; 
+    document.getElementById('input').files = null; 
+    document.getElementById('txtFile').innerHTML = ''; 
+    document.getElementById('txtFile').style.height = '25px';
+  }
+})
+
+var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets, fechaConstancia) => {
+  try {
+    if (sheetData[6][2] != null)
+      {
+        var doc = new jsPDF('p', 'pt', [612, 792]);
+        doc.addFileToVFS("calibril-normal.ttf", font_normal)
+        doc.addFileToVFS("open-sans-condensed.bold.ttf", font)
+        doc.addFont("calibril-normal.ttf", "calibri-normal", "normal");
+        doc.addFont("calibril-normal.ttf", "calibri-normal", "bold");
+        doc.addFont('open-sans-condensed.bold.ttf', 'custom', 'normal');
+        doc.addFileToVFS("calibril-bold.ttf", font_bold)
+        doc.addFont("calibril-bold.ttf", "calibri-bold", "normal");
+        doc.addFont("calibril-bold.ttf", "calibri-bold", "bold");
+        doc.addImage(imgLavi, "JPEG", 57, 26, 149.9015, 42.6811); //220.9448 x 67.3622 
+        doc.setDrawColor(255, 0, 0);
+        doc.setLineWidth(2.0);
+        doc.line(57, 95, 557, 95); // donde empieza en X, x, donde termina en X, 87 527
+        doc.setFont("calibri-normal");
+        doc.setTextColor( 0, 0, 0 )
+        doc.setFontSize(9.5);
+        var dim = doc.getTextDimensions(ciudadFecha, {fontSize: 9.5});
+        doc.text(ciudadFecha, 557 - dim.w, 125);
+        doc.setFont("custom");
+        doc.setFontSize(20.0);
+        doc.text("CONSTANCIA DE CAPACITACION", 612/2, 160, 'center');
+        doc.setFontSize(9.0);
+        doc.setFont("calibri-normal");
+        var info = "Hago constar que el personal que labora en " + razonSocial[1] + " (" + nombreComercial +"), ubicado en Av. México No.3300 D-8-A. Col. Monraz, CP.44670, " 
+        + sheetData[1][4] + ", " + sheetData[0][4] + ", participó de manera satisfactoria en el *CURSO BASICO DE " + sheetData[2][1].toUpperCase() 
+        + ", *con una carga horaria de 08 h. "
+        var info2 = "La capacitación se impartió el día *"+ fechaConstancia +" *de manera virtual; con el programa y participantes siguientes: "
+        const arrayOfNormalAndBoldText = info.split('');
+        const arrayOfNormalAndBoldText2 = info2.split('');
+
+        var startX = 90; // 120
+        var BoldFont = false;
+        var startY = 185;
+        var palabra = "";
+        var letrasMayusculas = 0;
+        var invalid = false;
+        arrayOfNormalAndBoldText.map((mytext, i) => {
+          if (mytext == ' ' || mytext == '*') {
+            if (mytext == ' ') {
+              if (doc.getTextDimensions(palabra, {fontSize: 9.0}).w + startX < 557) { // 527
+                doc.text(palabra, startX, startY);
+                //if(palabra[palabra.length -1])
+                if (palabra == palabra.toUpperCase()) {
+                  for (var b = 0; b < palabra.length; b++) {
+                    if (palabra[b] >= '0' && palabra[b] <= '9') {
+                      invalid = true;
+                      letrasMayusculas = 0;
+                    }
+                    else {
+                      if (invalid == false) {
+                        letrasMayusculas++;
+                      }
+                    }
+                  }
+                }
+                startX += doc.getTextDimensions(palabra, {fontSize: 9.0}).w + 2 - (letrasMayusculas * 0.8);
+                palabra = "";
+                letrasMayusculas = 0;
+                palabra = "";
+                invalid = false;
+              }
+              else {
+                startX = 57; // 95
+                startY += 11;
+                doc.text(palabra, startX, startY);
+                if (palabra == palabra.toUpperCase()) {
+                  for (var b = 0; b < palabra.length; b++) {
+                    if (palabra[b] >= '0' && palabra[b] <= '9') {
+                      invalid = true;
+                      letrasMayusculas = 0;
+                    }
+                    else {
+                      if (invalid == false) {
+                        letrasMayusculas++;
+                      }
+                    }
+                  }
+                }
+                startX += doc.getTextDimensions(palabra, {fontSize: 9.0}).w + 2 - (letrasMayusculas * 0.6);
+                palabra = "";
+                letrasMayusculas = 0;
+                invalid = false;
+              }
+            }
+            else {
+              BoldFont = !BoldFont;
+              if (BoldFont) {
+                doc.setFont("calibri-bold");
+      
+              }
+              else {
+                doc.setFont("calibri-normal");
+              }
+            }
+          }
+          else {
+            palabra += mytext;
+          }
+        });
+
+        startX = 90; // 120
+        startY = 225;
+        arrayOfNormalAndBoldText2.map((mytext, i) => {
+          if (mytext == ' ' || mytext == '*') {
+            if (mytext == ' ') {
+              if (doc.getTextDimensions(palabra, {fontSize: 9.0}).w + startX < 557) { // 527
+                doc.text(palabra, startX, startY);
+                //if(palabra[palabra.length -1])
+                startX += doc.getTextDimensions(palabra, {fontSize: 9.0}).w + 2;
+                if (palabra.indexOf(";") != -1) {
+                  startX -= 1;
+                }
+                palabra = "";
+              }
+              else {
+                startX = 57; // 95
+                startY += 11;
+                doc.text(palabra, startX, startY);
+                startX += doc.getTextDimensions(palabra, {fontSize: 9.0}).w + 2;
+                if (palabra.indexOf(";") != -1) {
+                  startX -= 1;
+                }
+                palabra = "";
+              }
+            }
+            else {
+              BoldFont = !BoldFont;
+              if (BoldFont) {
+                doc.setFont("calibri-bold");
+            
+              }
+              else {
+                doc.setFont("calibri-normal");
+              }
+            }
+          }
+          else {
+            palabra += mytext;
+          }
+        });
+
+        doc.setFont("calibri-bold");
+    
+        doc.text("PROGRAMA: CURSO BASICO DE " + sheetData[2][1].toUpperCase(), 90, 255) // 120
+        doc.setFont("calibri-normal");
+        doc.text("a.      Principios Generales de los Primeros Auxilios.", 125, 266)
+        doc.text("b.      Evaluación Primaria.", 125, 277)
+        doc.text("c.      Soporte Básico de Vida.", 125, 288)
+        doc.text("d.      Atención General a Hemorragias.", 125, 299)
+        doc.text("e.      Manejo del Estado de Shock.", 125, 310)
+        doc.text("f.      Heridas y Quemaduras.", 125, 321)
+        doc.text("g.      Lesiones Traumáticas en Huesos.", 125, 332)
+        doc.text("h.      Movilización y traslado de lesionados.", 125, 343)
+        doc.setFont("calibri-bold");
+    
+        doc.text("IMPARTIDO POR EL INSTRUCTOR:", 57, 365)
+
+        doc.setFont("calibri-normal");
+        doc.text("T.B.G.I.R. Arq. Antonio Lavín Villa. (LAVI Fire Workshop México, S.A. de C.V.)", 90, 376)
+
+        doc.setFont("calibri-bold");
+    
+        doc.text("PERSONAL APROBADO:", 57, 405)
+        doc.setFillColor(0, 0, 0);
+        startX = 60;
+        startY = 425; 
+        doc.setFont("calibri-normal");
+        for (var a = 6; a < sheetData.length; a++) {
+          if (sheetData[a][2] != null) {
+            doc.circle(startX, startY, 2, 'F');
+            doc.text(sheetData[a][8], startX + 15, startY +3)
+            if (startY + 10 <= 525) {
+              startY += 10;
+            }
+            else {
+              startY = 425;
+              startX += 180;
+            }
+          }
+        }
+        doc.circle(447, 425, 2, 'F');
+        doc.text(sheetData[6][8], 447 + 15, 425 +3)
+        doc.setFont("calibri-bold");
+        doc.text("Importante:", 57, 550)
+        doc.setFont("calibri-normal");
+        doc.text("El presente documento tiene 1 año de validez a partir de la fecha de expedición.", 107, 550)
+        doc.text("Atentamente", 612/2, 570, 'center')
+        doc.text("Arq. Antonio Lavín Villa", 612/2, 620, 'center')
+        doc.text("LAVI Fire Workshop México, S.A. de C.V.", 612/2, 630, 'center')
+        doc.text("Capacitador en Materia de Protección Civil", 612/2, 640, 'center')
+        doc.text(sheetData[2][4], 612/2, 650, 'center')
+        doc.text("REG. DE S.T.P.S LFW-160516-NJ1-0013", 612/2, 660, 'center')
+        doc.setFontSize(7.5);
+        doc.text("Se emite la presente, bajo lo dispuesto por los Artículos 19 Fracción XVII, 41, 42, 43 Fracción I, II, III, IV, V, VI, 45,56, de la Ley General de Protección Civil, 98 del", 612/2, 675, 'center')
+        doc.text("Reglamento de la Ley General de Protección Civil.", 612/2, 685, 'center')
+        doc.setFontSize(9.0);
+        doc.setDrawColor(255, 0, 0);
+        doc.line(57, 695, 557, 695);
+        doc.text("Av. Las Américas 401-B | Col. Andrade CP 37020 | León, Guanajuato",  612/2, 706, 'center')
+        doc.setFont("calibri-bold");
+        doc.text("O.",  236, 717)
+        doc.setFont("calibri-normal");
+        doc.text("(477).713.0016 |",  246, 717)
+        doc.setFont("calibri-bold");
+        doc.text("M.",  309, 717)
+        doc.setFont("calibri-normal");
+        doc.text("(477).670.2737",  322, 717)
+        doc.text("lavifire@lavi.com.mx",  612/2, 728, 'center')
+
+      }
+    
+    if (sheetData[6][2] != null)
+    {
+      doc.save(filename + '.pdf')
+    }
+      console.log(finished)
+    if (finished >= sheetsLength - 3)
+      {
+        loaderIcon.style.display = "none"
+        displaySuccess.style.display = "block";
+      }
+      else
+      {
+        finished++;
+      }
+    }
+    catch (error) {
+      document.getElementById("alertError").innerHTML='Algo paso, vuelvalo a intentar'
+      loaderIcon.style.display = "none"
+      loader.style.display = "block"
+      displayError.style.display = "block"
+    }
+}
