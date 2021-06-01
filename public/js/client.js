@@ -7,7 +7,12 @@ var imgLogo = document.getElementById("imgLogo");
 var btnGenerateI = document.getElementById("btnGenerateI")
 var btnGenerateG = document.getElementById("btnGenerateG")
 var btnGenerateDC = document.getElementById("btnGenerateDC")
+var firmaElectronica = document.getElementById("flexSwitchCheckDefault");
 var imgLavi = new Image()
+var firmaALV = new Image()
+firmaALV.src = "./img/Firma ALV.PNG"
+var firmaCapacitador = new Image()
+firmaCapacitador.src = "./img/Firma Javier Capacitador.PNG"
 imgLavi.src = "./img/LAVI Fire_HI-RES.jpg"
 var imgEsquina = new Image()
 imgEsquina.src = "./img/esquina/esquina-rojo.png"
@@ -18,6 +23,7 @@ var loaderIcon = document.getElementById("loaderIcon")
 loaderIcon.style.display = 'block'
 displaySuccess.style.display = 'none';
 displayError.style.display = 'none';
+
 
 borde.src = "./img/borde/borde-rojo.png"
 var loader = document.getElementById("loader");
@@ -51,6 +57,7 @@ inputFile.addEventListener("change", function() {
 
 
 var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets) => {
+  //console.log(firmaElectronica.checked)
   try {
   for (var a = 6; a < sheetData.length; a++)
   {
@@ -88,6 +95,15 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.addImage(correo, "PNG", 310, 465, 15, 15);
       doc.addImage(telefono, "PNG", 435, 465, 15, 15);
       doc.addImage(ubicacion, "PNG", 170, 465, 15, 15);
+      if (firmaElectronica.checked == true) {
+        if (sheetData[1][4] == "León") {
+          doc.addImage(firmaALV, "PNG", 99.999055, 354.0236, 135, 90)
+          doc.addImage(firmaCapacitador, "PNG", 499.9990551, 354.0236, 90, 90)
+        }
+        else {
+          doc.addImage(firmaALV, "PNG", 300, 354.0236, 135, 90)
+        }
+      }
       
       doc.addImage(image, "png", 56.6929, 452.5, 40, 40) // 2, 15.7, 1.8, 1.8
       doc.setFontSize(10);
@@ -102,17 +118,17 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       }
       if (sheetData[1][4] == "León")
       {
-        doc.text("Arq. Antonio Lavín Villa", 119.999055, 411.0236); // 4.2333, 14.5
-        doc.text("Javier Everardo Hernández Moreno", 479.9990551, 411.0236); // 16.9333, 14.5
+        doc.text("Arq. Antonio Lavín Villa", 119.999055, 424.0236); // 4.2333, 14.5
+        doc.text("Javier Everardo Hernández Moreno", 479.9990551, 424.0236); // 16.9333, 14.5
         doc.setFontSize(8.5);
-        doc.text("Representante Legal", 131.337638, 425.197); // 4.6333, 15
-        doc.text("Instructor del curso", 522.5187402, 425.197); // 18.4333, 15
+        doc.text("Representante Legal", 131.337638, 435.197); // 4.6333, 15
+        doc.text("Instructor del curso", 522.5187402, 435.197); // 18.4333, 15
       }
       else
       {
-        doc.text("Arq. Antonio Lavín Villa", 720/2, 411.0236, 'center'); // 25.4/2, 14.5
+        doc.text("Arq. Antonio Lavín Villa", 720/2, 424.0236, 'center'); // 25.4/2, 14.5
         doc.setFontSize(8.5);
-        doc.text("Representante Legal", 720/2, 425.197, 'center'); // 25.4/2, 15
+        doc.text("Representante Legal", 720/2, 435.197, 'center'); // 25.4/2, 15
       }
       doc.setFontSize(12);
       doc.text("Otorga la presente constancia a:", 720/2, 121.831, 'center'); // 25.4/2, 5
@@ -673,16 +689,16 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
 
         doc.setFont("calibri-bold");
     
-        doc.text("PROGRAMA: CURSO BASICO DE " + sheetData[2][1].toUpperCase(), 90, 255) // 120
+        doc.text("PROGRAMA: CURSO BASICO DE " + sheetData[2][1].toUpperCase(), 57, 255) // 120
         doc.setFont("calibri-normal");
-        doc.text("a.      Principios Generales de los Primeros Auxilios.", 125, 266)
-        doc.text("b.      Evaluación Primaria.", 125, 277)
-        doc.text("c.      Soporte Básico de Vida.", 125, 288)
-        doc.text("d.      Atención General a Hemorragias.", 125, 299)
-        doc.text("e.      Manejo del Estado de Shock.", 125, 310)
-        doc.text("f.      Heridas y Quemaduras.", 125, 321)
-        doc.text("g.      Lesiones Traumáticas en Huesos.", 125, 332)
-        doc.text("h.      Movilización y traslado de lesionados.", 125, 343)
+        doc.text("a.      Principios Generales de los Primeros Auxilios.", 90, 266)
+        doc.text("b.      Evaluación Primaria.", 90, 277)
+        doc.text("c.      Soporte Básico de Vida.", 90, 288)
+        doc.text("d.      Atención General a Hemorragias.", 90, 299)
+        doc.text("e.      Manejo del Estado de Shock.", 90, 310)
+        doc.text("f.      Heridas y Quemaduras.", 90, 321)
+        doc.text("g.      Lesiones Traumáticas en Huesos.", 90, 332)
+        doc.text("h.      Movilización y traslado de lesionados.", 90, 343)
         doc.setFont("calibri-bold");
     
         doc.text("IMPARTIDO POR EL INSTRUCTOR:", 57, 365)
@@ -723,8 +739,8 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.text(sheetData[2][4], 612/2, 650, 'center')
         doc.text("REG. DE S.T.P.S LFW-160516-NJ1-0013", 612/2, 660, 'center')
         doc.setFontSize(7.5);
-        doc.text("Se emite la presente, bajo lo dispuesto por los Artículos 19 Fracción XVII, 41, 42, 43 Fracción I, II, III, IV, V, VI, 45,56, de la Ley General de Protección Civil, 98 del", 612/2, 675, 'center')
-        doc.text("Reglamento de la Ley General de Protección Civil.", 612/2, 685, 'center')
+        doc.text("Se emite la presente, bajo lo dispuesto por los Artículos 19 Fracción XVII, 41, 42, 43 Fracción I, II, III, IV, V, VI, 45,56, de la Ley General de Protección Civil,", 612/2, 675, 'center')
+        doc.text("98 del Reglamento de la Ley General de Protección Civil.", 612/2, 685, 'center')
         doc.setFontSize(9.0);
         doc.setDrawColor(255, 0, 0);
         doc.line(57, 695, 557, 695);
