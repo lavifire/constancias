@@ -506,11 +506,27 @@ btnGenerateG.addEventListener("click", () => {
                 }
               }
               while (founded == true);
-              var filename = dia + mesNumber + fecha.getFullYear().toString().substr(-2) + "_Constancias - " + nombreCurso + " - " + nombreComercial
+              var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - " + nombreCurso + " - " + nombreComercial
               // .getDate devuelve el dia
               // .getMonth devuelve el mes 0= Enero, 1 = Febrero, etc
               // .getFullYear devuelve el año completo ej: 1995
-              generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia);
+              if (sheetData[0][4] == "Jalisco") {
+                if(sheetData[2][1] == "Evacuación, Búsqueda y Rescate"){
+                  nombreCurso = "Evacuación"
+                  filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Evacuación - " + nombreComercial
+                  for (var i = 0; i < 2; i++) {
+                    generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso);
+                    nombreCurso = "Búsqueda y Rescate"
+                    filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Búsqueda y Rescate - " + nombreComercial
+                  }
+                }
+                else {
+                  generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso);
+                }
+              }
+              else {
+                generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso);
+              }
             })
           }
         }
@@ -542,7 +558,7 @@ btnGenerateG.addEventListener("click", () => {
   }
 })
 
-var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets, fechaConstancia) => {
+var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets, fechaConstancia, nombreCurso) => {
   try {
     if (sheetData[6][2] != null)
       {
@@ -556,21 +572,24 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.addFont("calibril-bold.ttf", "calibri-bold", "normal");
         doc.addFont("calibril-bold.ttf", "calibri-bold", "bold");
         doc.addImage(imgLavi, "JPEG", 57, 26, 149.9015, 42.6811); //220.9448 x 67.3622 
+        if(firmaElectronica.checked == true) {
+          doc.addImage(firmaALV, "PNG", 250, 559, 135, 90)
+        }
         doc.setDrawColor(255, 0, 0);
         doc.setLineWidth(2.0);
-        doc.line(57, 95, 557, 95); // donde empieza en X, x, donde termina en X, 87 527
+        doc.line(57, 75, 557, 75); // donde empieza en X, x, donde termina en X, 87 527
         doc.setFont("calibri-normal");
         doc.setTextColor( 0, 0, 0 )
         doc.setFontSize(9.5);
         var dim = doc.getTextDimensions(ciudadFecha, {fontSize: 9.5});
-        doc.text(ciudadFecha, 557 - dim.w, 125);
+        doc.text(ciudadFecha, 557 - dim.w, 105);
         doc.setFont("custom");
         doc.setFontSize(20.0);
-        doc.text("CONSTANCIA DE CAPACITACION", 612/2, 160, 'center');
+        doc.text("CONSTANCIA DE CAPACITACION", 612/2, 140, 'center');
         doc.setFontSize(9.0);
         doc.setFont("calibri-normal");
         var info = "Hago constar que el personal que labora en " + razonSocial[1] + " (" + nombreComercial +"), ubicado en Av. México No.3300 D-8-A. Col. Monraz, CP.44670, " 
-        + sheetData[1][4] + ", " + sheetData[0][4] + ", participó de manera satisfactoria en el *CURSO BASICO DE " + sheetData[2][1].toUpperCase() 
+        + sheetData[1][4] + ", " + sheetData[0][4] + ", participó de manera satisfactoria en el *CURSO BASICO DE " + nombreCurso.toUpperCase() 
         + ", *con una carga horaria de 08 h. "
         var info2 = "La capacitación se impartió el día *"+ fechaConstancia +" *de manera virtual; con el programa y participantes siguientes: "
         const arrayOfNormalAndBoldText = info.split('');
@@ -578,7 +597,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
 
         var startX = 90; // 120
         var BoldFont = false;
-        var startY = 185;
+        var startY = 165;
         var palabra = "";
         var letrasMayusculas = 0;
         var invalid = false;
@@ -647,7 +666,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         });
 
         startX = 90; // 120
-        startY = 225;
+        startY = 205;
         arrayOfNormalAndBoldText2.map((mytext, i) => {
           if (mytext == ' ' || mytext == '*') {
             if (mytext == ' ') {
@@ -689,29 +708,62 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
 
         doc.setFont("calibri-bold");
     
-        doc.text("PROGRAMA: CURSO BASICO DE " + sheetData[2][1].toUpperCase(), 57, 255) // 120
+        doc.text("PROGRAMA: CURSO BASICO DE " + nombreCurso.toUpperCase(), 57, 235) // 120
         doc.setFont("calibri-normal");
-        doc.text("a.      Principios Generales de los Primeros Auxilios.", 90, 266)
-        doc.text("b.      Evaluación Primaria.", 90, 277)
-        doc.text("c.      Soporte Básico de Vida.", 90, 288)
-        doc.text("d.      Atención General a Hemorragias.", 90, 299)
-        doc.text("e.      Manejo del Estado de Shock.", 90, 310)
-        doc.text("f.      Heridas y Quemaduras.", 90, 321)
-        doc.text("g.      Lesiones Traumáticas en Huesos.", 90, 332)
-        doc.text("h.      Movilización y traslado de lesionados.", 90, 343)
+        switch(nombreCurso) {
+          case "Búsqueda y Rescate":
+            doc.text("a.      Introducción. ¿Qué es Búsqueda y Rescate?", 90, 246)
+            doc.text("b.      Búsqueda y Rescate Urbano.", 90, 257)
+            doc.text("c.      Organización e inicio de una operación.", 90, 268)
+            doc.text("d.      Búsqueda y Localización.", 90, 279)
+            doc.text("e.      Consideraciones de Seguridad.", 90, 290)
+            break;
+          case "Primeros Auxilios":
+            doc.text("a.      Principios Generales de los Primeros Auxilios.", 90, 246)
+            doc.text("b.      Evaluación Primaria.", 90, 257)
+            doc.text("c.      Soporte Básico de Vida.", 90, 268)
+            doc.text("d.      Atención General a Hemorragias.", 90, 279)
+            doc.text("e.      Manejo del Estado de Shock.", 90, 290)
+            doc.text("f.      Heridas y Quemaduras.", 90, 301)
+            doc.text("g.      Lesiones Traumáticas en Huesos.", 90, 312)
+            doc.text("h.      Movilización y traslado de lesionados.", 90, 323)
+            break;
+          case "Prevención y Combate de Incendios": 
+            doc.text("a.      Conceptos Generales para la Prevención y Combate de Incendios.", 90, 246)
+            doc.text("b.      Química del Fuego.", 90, 257)
+            doc.text("c.      Prevención y Control de Incendio.", 90, 268)
+            doc.text("d.      Acciones durante un incendio.", 90, 279)
+            break;
+          case "Evacuación":
+            doc.text("a.      Generalidades.", 90, 246)
+            doc.text("b.      Integración y actividades. Antes, Durante y Después de la Emergencia.", 90, 257)
+            doc.text("c.      Simulacros.", 90, 268)
+            doc.text("d.      Caso Práctico.", 90, 279)
+            break;
+          default:
+            doc.text("a.      Principios Generales de los Primeros Auxilios.", 90, 246)
+            doc.text("b.      Evaluación Primaria.", 90, 257)
+            doc.text("c.      Soporte Básico de Vida.", 90, 268)
+            doc.text("d.      Atención General a Hemorragias.", 90, 279)
+            doc.text("e.      Manejo del Estado de Shock.", 90, 290)
+            doc.text("f.      Heridas y Quemaduras.", 90, 301)
+            doc.text("g.      Lesiones Traumáticas en Huesos.", 90, 312)
+            doc.text("h.      Movilización y traslado de lesionados.", 90, 323)
+            break;
+        }
         doc.setFont("calibri-bold");
     
-        doc.text("IMPARTIDO POR EL INSTRUCTOR:", 57, 365)
+        doc.text("IMPARTIDO POR EL INSTRUCTOR:", 57, 345)
 
         doc.setFont("calibri-normal");
-        doc.text("T.B.G.I.R. Arq. Antonio Lavín Villa. (LAVI Fire Workshop México, S.A. de C.V.)", 90, 376)
+        doc.text("T.B.G.I.R. Arq. Antonio Lavín Villa. (LAVI Fire Workshop México, S.A. de C.V.)", 90, 356)
 
         doc.setFont("calibri-bold");
     
-        doc.text("PERSONAL APROBADO:", 57, 405)
+        doc.text("PERSONAL APROBADO:", 57, 385)
         doc.setFillColor(0, 0, 0);
         startX = 60;
-        startY = 425; 
+        startY = 405; 
         doc.setFont("calibri-normal");
         for (var a = 6; a < sheetData.length; a++) {
           if (sheetData[a][2] != null) {
@@ -721,39 +773,39 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
               startY += 10;
             }
             else {
-              startY = 425;
+              startY = 405;
               startX += 180;
             }
           }
         }
-        doc.circle(447, 425, 2, 'F');
-        doc.text(sheetData[6][8], 447 + 15, 425 +3)
+        doc.circle(420, 405, 2, 'F');
+        doc.text(sheetData[6][8], 420 + 15, 405 +3)
         doc.setFont("calibri-bold");
         doc.text("Importante:", 57, 550)
         doc.setFont("calibri-normal");
         doc.text("El presente documento tiene 1 año de validez a partir de la fecha de expedición.", 107, 550)
         doc.text("Atentamente", 612/2, 570, 'center')
-        doc.text("Arq. Antonio Lavín Villa", 612/2, 620, 'center')
-        doc.text("LAVI Fire Workshop México, S.A. de C.V.", 612/2, 630, 'center')
-        doc.text("Capacitador en Materia de Protección Civil", 612/2, 640, 'center')
-        doc.text(sheetData[2][4], 612/2, 650, 'center')
-        doc.text("REG. DE S.T.P.S LFW-160516-NJ1-0013", 612/2, 660, 'center')
+        doc.text("Arq. Antonio Lavín Villa", 612/2, 640, 'center')
+        doc.text("LAVI Fire Workshop México, S.A. de C.V.", 612/2, 650, 'center')
+        doc.text("Capacitador en Materia de Protección Civil", 612/2, 660, 'center')
+        doc.text(sheetData[2][4], 612/2, 670, 'center')
+        doc.text("REG. DE S.T.P.S LFW-160516-NJ1-0013", 612/2, 680, 'center')
         doc.setFontSize(7.5);
-        doc.text("Se emite la presente, bajo lo dispuesto por los Artículos 19 Fracción XVII, 41, 42, 43 Fracción I, II, III, IV, V, VI, 45,56, de la Ley General de Protección Civil,", 612/2, 675, 'center')
-        doc.text("98 del Reglamento de la Ley General de Protección Civil.", 612/2, 685, 'center')
+        doc.text("Se emite la presente, bajo lo dispuesto por los Artículos 19 Fracción XVII, 41, 42, 43 Fracción I, II, III, IV, V, VI, 45,56, de la Ley General de Protección Civil,", 612/2, 695, 'center')
+        doc.text("98 del Reglamento de la Ley General de Protección Civil.", 612/2, 705, 'center')
         doc.setFontSize(9.0);
         doc.setDrawColor(255, 0, 0);
-        doc.line(57, 695, 557, 695);
-        doc.text("Av. Las Américas 401-B | Col. Andrade CP 37020 | León, Guanajuato",  612/2, 706, 'center')
+        doc.line(57, 715, 557, 715);
+        doc.text("Av. Las Américas 401-B | Col. Andrade CP 37020 | León, Guanajuato",  612/2, 726, 'center')
         doc.setFont("calibri-bold");
-        doc.text("O.",  236, 717)
+        doc.text("O.",  236, 737)
         doc.setFont("calibri-normal");
-        doc.text("(477).713.0016 |",  246, 717)
+        doc.text("(477).713.0016 |",  246, 737)
         doc.setFont("calibri-bold");
-        doc.text("M.",  309, 717)
+        doc.text("M.",  309, 737)
         doc.setFont("calibri-normal");
-        doc.text("(477).670.2737",  322, 717)
-        doc.text("lavifire@lavi.com.mx",  612/2, 728, 'center')
+        doc.text("(477).670.2737",  322, 737)
+        doc.text("lavifire@lavi.com.mx",  612/2, 748, 'center')
 
       }
     
