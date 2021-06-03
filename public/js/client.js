@@ -97,11 +97,11 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.addImage(ubicacion, "PNG", 170, 465, 15, 15);
       if (firmaElectronica.checked == true) {
         if (sheetData[1][4] == "León") {
-          doc.addImage(firmaALV, "PNG", 99.999055, 354.0236, 135, 90)
+          doc.addImage(firmaALV, "PNG", 89.999055, 344.0236, 175, 110)
           doc.addImage(firmaCapacitador, "PNG", 499.9990551, 354.0236, 90, 90)
         }
         else {
-          doc.addImage(firmaALV, "PNG", 300, 354.0236, 135, 90)
+          doc.addImage(firmaALV, "PNG", 280, 344.0236, 175, 110)
         }
       }
       
@@ -573,7 +573,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.addFont("calibril-bold.ttf", "calibri-bold", "bold");
         doc.addImage(imgLavi, "JPEG", 57, 26, 149.9015, 42.6811); //220.9448 x 67.3622 
         if(firmaElectronica.checked == true) {
-          doc.addImage(firmaALV, "PNG", 250, 559, 135, 90)
+          doc.addImage(firmaALV, "PNG", 227, 564, 175, 110)
         }
         doc.setDrawColor(255, 0, 0);
         doc.setLineWidth(2.0);
