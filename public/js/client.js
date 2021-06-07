@@ -95,15 +95,7 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.addImage(correo, "PNG", 310, 465, 15, 15);
       doc.addImage(telefono, "PNG", 435, 465, 15, 15);
       doc.addImage(ubicacion, "PNG", 170, 465, 15, 15);
-      if (firmaElectronica.checked == true) {
-        if (sheetData[1][4] == "León") {
-          doc.addImage(firmaALV, "PNG", 89.999055, 344.0236, 175, 110)
-          doc.addImage(firmaCapacitador, "PNG", 499.9990551, 354.0236, 90, 90)
-        }
-        else {
-          doc.addImage(firmaALV, "PNG", 280, 344.0236, 175, 110)
-        }
-      }
+      
       
       doc.addImage(image, "png", 56.6929, 452.5, 40, 40) // 2, 15.7, 1.8, 1.8
       doc.setFontSize(10);
@@ -170,6 +162,15 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.setFontSize(10);
       doc.setTextColor( 206, 206, 206 )
       doc.text("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------", 720/2, 447.874, 'center') // 25.4/2, 15.8
+      if (firmaElectronica.checked == true) {
+        if (sheetData[1][4] == "León") {
+          doc.addImage(firmaALV, "PNG", 89.999055, 344.0236, 175, 110)
+          doc.addImage(firmaCapacitador, "PNG", 494.9990551, 349.0236, 120, 120)
+        }
+        else {
+          doc.addImage(firmaALV, "PNG", 280, 344.0236, 175, 110)
+        }
+      }
       doc.setTextColor( 177, 177, 177 )
       doc.setFontSize(8.5);
       doc.text("info@lavi.com.mx", 720/2, 475, 'center'); // 360
@@ -510,22 +511,57 @@ btnGenerateG.addEventListener("click", () => {
               // .getDate devuelve el dia
               // .getMonth devuelve el mes 0= Enero, 1 = Febrero, etc
               // .getFullYear devuelve el año completo ej: 1995
-              if (sheetData[0][4] == "Jalisco") {
-                if(sheetData[2][1] == "Evacuación, Búsqueda y Rescate"){
-                  nombreCurso = "Evacuación"
-                  filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Evacuación - " + nombreComercial
-                  for (var i = 0; i < 2; i++) {
-                    generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso);
-                    nombreCurso = "Búsqueda y Rescate"
-                    filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Búsqueda y Rescate - " + nombreComercial
+              var participantes = [];
+              var mult = false;
+              var numC = 1;
+              for (var a = 6; a < sheetData.length; a++) {
+                if (sheetData[a][2] != null) {
+                  if(participantes.length < 45) {
+                    participantes.push(sheetData[a][8])
+                  }
+                  else {
+                    mult = true;
+                    if (sheetData[0][4] == "Jalisco") {
+                      if(sheetData[2][1] == "Evacuación, Búsqueda y Rescate"){
+                        nombreCurso = "Evacuación"
+                        filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Evacuación - " + nombreComercial
+                        for (var i = 0; i < 2; i++) {
+                          generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
+                          nombreCurso = "Búsqueda y Rescate"
+                          filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Búsqueda y Rescate - " + nombreComercial
+                        }
+                      }
+                      else {
+                        generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
+                      }
+                    }
+                    else {
+                      generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
+                    }
+                    participantes = [];
+                    participantes.push(sheetData[a][8])
+                    numC++;
+                  }
+                }
+              }
+              if (participantes.length > 0) {
+                if (sheetData[0][4] == "Jalisco") {
+                  if(sheetData[2][1] == "Evacuación, Búsqueda y Rescate"){
+                    nombreCurso = "Evacuación"
+                    filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Evacuación - " + nombreComercial
+                    for (var i = 0; i < 2; i++) {
+                      generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
+                      nombreCurso = "Búsqueda y Rescate"
+                      filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Búsqueda y Rescate - " + nombreComercial
+                    }
+                  }
+                  else {
+                    generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
                   }
                 }
                 else {
-                  generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso);
+                  generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
                 }
-              }
-              else {
-                generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso);
               }
             })
           }
@@ -558,10 +594,11 @@ btnGenerateG.addEventListener("click", () => {
   }
 })
 
-var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets, fechaConstancia, nombreCurso) => {
+var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets, fechaConstancia, nombreCurso, participantes, mult, numC) => {
   try {
     if (sheetData[6][2] != null)
       {
+        console.log("Entro")
         var doc = new jsPDF('p', 'pt', [612, 792]);
         doc.addFileToVFS("calibril-normal.ttf", font_normal)
         doc.addFileToVFS("open-sans-condensed.bold.ttf", font)
@@ -708,78 +745,87 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
 
         doc.setFont("calibri-bold");
     
-        doc.text("PROGRAMA: CURSO BASICO DE " + nombreCurso.toUpperCase(), 57, 235) // 120
+        doc.text("PROGRAMA: CURSO BASICO DE " + nombreCurso.toUpperCase(), 57, 225) // 120
         doc.setFont("calibri-normal");
         switch(nombreCurso) {
           case "Búsqueda y Rescate":
-            doc.text("a.      Introducción. ¿Qué es Búsqueda y Rescate?", 90, 246)
-            doc.text("b.      Búsqueda y Rescate Urbano.", 90, 257)
-            doc.text("c.      Organización e inicio de una operación.", 90, 268)
-            doc.text("d.      Búsqueda y Localización.", 90, 279)
-            doc.text("e.      Consideraciones de Seguridad.", 90, 290)
+            doc.text("a.      Introducción. ¿Qué es Búsqueda y Rescate?", 90, 236)
+            doc.text("b.      Búsqueda y Rescate Urbano.", 90, 247)
+            doc.text("a.      Búsqueda y Rescate en estructuras colapsadas.", 120, 258)
+            doc.text("c.      Organización e inicio de una operación.", 90, 269)
+            doc.text("a.      Etapas para la respuesta de una operación.", 120, 280)
+            doc.text("d.      Búsqueda y Localización.", 90, 291)
+            doc.text("e.      Consideraciones de Seguridad.", 90, 302)
+            doc.text("e.      Equipo de seguridad personal.", 120, 313)
             break;
           case "Primeros Auxilios":
-            doc.text("a.      Principios Generales de los Primeros Auxilios.", 90, 246)
-            doc.text("b.      Evaluación Primaria.", 90, 257)
-            doc.text("c.      Soporte Básico de Vida.", 90, 268)
-            doc.text("d.      Atención General a Hemorragias.", 90, 279)
-            doc.text("e.      Manejo del Estado de Shock.", 90, 290)
-            doc.text("f.      Heridas y Quemaduras.", 90, 301)
-            doc.text("g.      Lesiones Traumáticas en Huesos.", 90, 312)
-            doc.text("h.      Movilización y traslado de lesionados.", 90, 323)
+            doc.text("a.      Principios Generales de los Primeros Auxilios.", 90, 236)
+            doc.text("b.      Evaluación Primaria.", 90, 247)
+            doc.text("c.      Soporte Básico de Vida.", 90, 258)
+            doc.text("d.      Atención General a Hemorragias.", 90, 269)
+            doc.text("e.      Manejo del Estado de Shock.", 90, 280)
+            doc.text("f.      Heridas y Quemaduras.", 90, 291)
+            doc.text("g.      Lesiones Traumáticas en Huesos.", 90, 302)
+            doc.text("h.      Movilización y traslado de lesionados.", 90, 313)
             break;
           case "Prevención y Combate de Incendios": 
-            doc.text("a.      Conceptos Generales para la Prevención y Combate de Incendios.", 90, 246)
-            doc.text("b.      Química del Fuego.", 90, 257)
-            doc.text("c.      Prevención y Control de Incendio.", 90, 268)
-            doc.text("d.      Acciones durante un incendio.", 90, 279)
+            doc.text("a.      Conceptos Generales para la Prevención y Combate de Incendios.", 90, 236)
+            doc.text("b.      Química del Fuego.", 90, 247)
+            doc.text("c.      Prevención y Control de Incendio.", 90, 258)
+            doc.text("a.      Clasificación del fuego.", 120, 269)
+            doc.text("b.      Agentes extinguidores del fuego.", 120, 280)
+            doc.text("d.      Acciones durante un incendio.", 90, 291)
+            doc.text("a.      Uso y manejo de extintores.", 120, 302)
+            doc.text("b.      ¿Qué hacer en caso de un incendio?", 120, 313)
             break;
           case "Evacuación":
-            doc.text("a.      Generalidades.", 90, 246)
-            doc.text("b.      Integración y actividades. Antes, Durante y Después de la Emergencia.", 90, 257)
-            doc.text("c.      Simulacros.", 90, 268)
-            doc.text("d.      Caso Práctico.", 90, 279)
+            doc.text("a.      Generalidades.", 90, 236)
+            doc.text("a.      Agentes perturbadores.", 120, 247)
+            doc.text("b.      Principios básicos de acción.", 120, 258)
+            doc.text("b.      Integración y actividades. Antes, Durante y Después de la Emergencia.", 90, 269)
+            doc.text("a.      Identificación del personal brigadista.", 120, 280)
+            doc.text("b.      Equipo de seguridad personal.", 120, 291)
+            doc.text("c.      Simulacros.", 90, 302)
+            doc.text("d.      Caso Práctico.", 90, 313)
             break;
           default:
-            doc.text("a.      Principios Generales de los Primeros Auxilios.", 90, 246)
-            doc.text("b.      Evaluación Primaria.", 90, 257)
-            doc.text("c.      Soporte Básico de Vida.", 90, 268)
-            doc.text("d.      Atención General a Hemorragias.", 90, 279)
-            doc.text("e.      Manejo del Estado de Shock.", 90, 290)
-            doc.text("f.      Heridas y Quemaduras.", 90, 301)
-            doc.text("g.      Lesiones Traumáticas en Huesos.", 90, 312)
-            doc.text("h.      Movilización y traslado de lesionados.", 90, 323)
+            doc.text("a.      Integración y actividades. Antes, Durante y Después de la Emergencia.", 90, 236)
+            doc.text("a.      Identificación del personal brigadista.", 120, 247)
+            doc.text("b.      Equipo de seguridad personal.", 120, 258)
+            doc.text("b.      Simulacros.", 90, 269)
+            doc.text("c.      Caso Práctico Simulacro de Evacuación / Repliegue.", 90, 280)
+            doc.text("d.      ¿Qué es Búsqueda y Rescate?", 90, 291)
+            doc.text("e.      Búsqueda y Rescate Urbano.", 90, 302)
+            doc.text("f.      Búsqueda y Localización.", 90, 313)
             break;
         }
         doc.setFont("calibri-bold");
     
-        doc.text("IMPARTIDO POR EL INSTRUCTOR:", 57, 345)
+        doc.text("IMPARTIDO POR EL INSTRUCTOR:", 57, 335)
 
         doc.setFont("calibri-normal");
-        doc.text("T.B.G.I.R. Arq. Antonio Lavín Villa. (LAVI Fire Workshop México, S.A. de C.V.)", 90, 356)
+        doc.text("T.B.G.I.R. Arq. Antonio Lavín Villa. (LAVI Fire Workshop México, S.A. de C.V.)", 90, 346)
 
         doc.setFont("calibri-bold");
     
-        doc.text("PERSONAL APROBADO:", 57, 385)
+        doc.text("PERSONAL APROBADO:", 57, 375)
         doc.setFillColor(0, 0, 0);
         startX = 60;
-        startY = 405; 
+        startY = 385; 
         doc.setFont("calibri-normal");
-        for (var a = 6; a < sheetData.length; a++) {
-          if (sheetData[a][2] != null) {
+        for (var a = 0; a < participantes.length; a++) {
+          if (participantes[a] != null) {
             doc.circle(startX, startY, 2, 'F');
-            doc.text(sheetData[a][8], startX + 15, startY +3)
+            doc.text(participantes[a], startX + 15, startY +3)
             if (startY + 10 <= 525) {
               startY += 10;
             }
             else {
-              startY = 405;
+              startY = 385;
               startX += 180;
             }
           }
         }
-        doc.circle(420, 405, 2, 'F');
-        doc.text(sheetData[6][8], 420 + 15, 405 +3)
         doc.setFont("calibri-bold");
         doc.text("Importante:", 57, 550)
         doc.setFont("calibri-normal");
@@ -811,7 +857,12 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
     
     if (sheetData[6][2] != null)
     {
-      doc.save(filename + '.pdf')
+      if (mult == true) {
+        doc.save(filename + '_' + numC  + '.pdf')
+      }
+      else {
+        doc.save(filename +'.pdf')
+      }
     }
       console.log(finished)
     if (finished >= sheetsLength - 3)
