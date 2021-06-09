@@ -117,7 +117,7 @@ input[type="file"] {
 .txtFile {
   border: 1px solid black; 
   width: 50%;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   height: 25px;
 }
 
@@ -154,8 +154,8 @@ input[type="file"] {
 
 .loader {
   position: relative;
-  left: 35%;
-  top: 35%;
+  left: 45%;
+  top: 40%;
   border: 16px solid #f3f3f3;
   border-radius: 50%;
   border-top: 16px solid #3498db;
@@ -234,13 +234,13 @@ box-shadow: -4px -2px 5px 0px rgba(171,171,171,1);
 .buttonsContainer {
   display: flex; 
   justify-content: center;  
-  padding-top: 25px;
+  padding-bottom: 35px;
 }
 
 .leftLabel {
   height: 60px; 
   justify-content: center; 
-  margin-top: 40px;
+  margin-top: 10px;
 }
 
 .leftImage {
@@ -255,11 +255,15 @@ box-shadow: -4px -2px 5px 0px rgba(171,171,171,1);
 }
 
 .rightLabel {
-  margin-top: 15%; 
+  margin-top: 10%; 
   margin-left: 25px;
 }
 
-.buttonFile {
-  margin-top: 30px;
-  margin-left: 25px;
+.switches {
+  margin-left: 37px;
+  padding-bottom: 5px;
+}
+
+h1 {
+  font-family: 'Fjalla One';
 }

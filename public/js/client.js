@@ -8,6 +8,8 @@ var btnGenerateI = document.getElementById("btnGenerateI")
 var btnGenerateG = document.getElementById("btnGenerateG")
 var btnGenerateDC = document.getElementById("btnGenerateDC")
 var firmaElectronica = document.getElementById("flexSwitchCheckDefault");
+var switchVirtual = document.getElementById("switchVirtual");
+var switchBomberos = document.getElementById("switchBomberos");
 var imgLavi = new Image()
 var firmaALV = new Image()
 firmaALV.src = "./img/Firma ALV.PNG"
@@ -55,6 +57,21 @@ inputFile.addEventListener("change", function() {
   //}
 })
 
+switchVirtual.addEventListener("change", () => {
+  if(switchVirtual.checked) {
+    if(switchBomberos.checked) {
+      switchBomberos.checked = false;
+    }
+  }
+})
+
+switchBomberos.addEventListener("change", () => {
+  if(switchBomberos.checked) {
+    if(switchVirtual.checked) {
+      switchVirtual.checked = false;
+    }
+  }
+})
 
 var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets) => {
   //console.log(firmaElectronica.checked)
@@ -173,9 +190,10 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       }
       doc.setTextColor( 177, 177, 177 )
       doc.setFontSize(8.5);
-      doc.text("info@lavi.com.mx", 720/2, 475, 'center'); // 360
-      doc.text("O. (477).713.0016", 490, 470, 'center');
-      doc.text("M. (477).670.2737", 490, 480, 'center');
+      doc.text("lavifire@lavi.com.mx", 330, 475); // 360
+      doc.text("O.    (477) 713 0016", 460, 465);
+      doc.text("M1. (477) 670 2737", 460, 475);
+      doc.text("M2. (477) 144 3124", 460, 485);
       doc.text("Av. Las Américas 401-B", 230, 465, 'center');
       doc.text("Col. Andrade CP 37020", 230, 475, 'center');
       doc.text("León, Guanajuato", 230, 485, 'center');
