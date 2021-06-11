@@ -354,7 +354,7 @@ btnGenerateI.addEventListener("click", () =>
                 }
               }
               while (founded == true);
-              var filename = dia + mesNumber + fecha.getFullYear().toString().substr(-2) + "_Constancias - " + nombreCurso + " - " + nombreComercial
+              var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - " + nombreCurso + " - " + nombreComercial
               // .getDate devuelve el dia
               // .getMonth devuelve el mes 0= Enero, 1 = Febrero, etc
               // .getFullYear devuelve el año completo ej: 1995
@@ -643,16 +643,26 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.text("CONSTANCIA DE CAPACITACION", 612/2, 140, 'center');
         doc.setFontSize(9.0);
         doc.setFont("calibri-normal");
-        var info = "Hago constar que el personal que labora en " + razonSocial[1] + " (" + nombreComercial +"), ubicado en Av. México No.3300 D-8-A. Col. Monraz, CP.44670, " 
+        var info = "Hago constar que el personal que labora en " + razonSocial[1] + " (" + nombreComercial +"), ubicado en " + sheetData[4][1] + " "
         + sheetData[1][4] + ", " + sheetData[0][4] + ", participó de manera satisfactoria en el *CURSO BASICO DE " + nombreCurso.toUpperCase() 
         + ", *con una carga horaria de 08 h. "
-        var info2 = "La capacitación se impartió el día *"+ fechaConstancia +" *de manera virtual; con el programa y participantes siguientes: "
+        var info2 = "";
+        if (switchVirtual.checked) {
+          info2 = "La capacitación se impartió el día *"+ fechaConstancia +" *de manera virtual; con el programa y participantes siguientes: "
+        }
+        else if (switchBomberos.checked) {
+          info2 = "La capacitación se impartió el día *"+ fechaConstancia +" *en las instalaciones del Campo de Entrenamiento para Bomberos, ubicado en Prado de los Nardos No. 1016. Col. San Gaspar de las Flores, Tonalá, Jalisco; con el programa y participantes siguientes: "
+        }
+        else {
+          info2 = "La capacitación se impartió el día *"+ fechaConstancia +" *en las instalaciones de " + nombreComercial + "; con el programa y participantes siguientes: "
+        }
+        
         const arrayOfNormalAndBoldText = info.split('');
         const arrayOfNormalAndBoldText2 = info2.split('');
 
         var startX = 90; // 120
         var BoldFont = false;
-        var startY = 165;
+        var startY = 160;
         var palabra = "";
         var letrasMayusculas = 0;
         var invalid = false;
@@ -721,7 +731,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         });
 
         startX = 90; // 120
-        startY = 205;
+        startY = 200;
         arrayOfNormalAndBoldText2.map((mytext, i) => {
           if (mytext == ' ' || mytext == '*') {
             if (mytext == ' ') {
@@ -763,66 +773,106 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
 
         doc.setFont("calibri-bold");
     
-        doc.text("PROGRAMA: CURSO BASICO DE " + nombreCurso.toUpperCase(), 57, 225) // 120
+        doc.text("PROGRAMA: CURSO BASICO DE " + nombreCurso.toUpperCase(), 57, 235) // 120
         doc.setFont("calibri-normal");
         switch(nombreCurso) {
           case "Búsqueda y Rescate":
-            doc.text("a.      Introducción. ¿Qué es Búsqueda y Rescate?", 90, 236)
-            doc.text("b.      Búsqueda y Rescate Urbano.", 90, 247)
-            doc.text("a.      Búsqueda y Rescate en estructuras colapsadas.", 120, 258)
-            doc.text("c.      Organización e inicio de una operación.", 90, 269)
-            doc.text("a.      Etapas para la respuesta de una operación.", 120, 280)
-            doc.text("d.      Búsqueda y Localización.", 90, 291)
-            doc.text("e.      Consideraciones de Seguridad.", 90, 302)
-            doc.text("e.      Equipo de seguridad personal.", 120, 313)
+            doc.text("a.", 90, 246)
+            doc.text("Introducción. ¿Qué es Búsqueda y Rescate?", 107, 246)
+            doc.text("b.", 90, 257)
+            doc.text("Búsqueda y Rescate Urbano.", 107, 257)
+            doc.text("a.", 120, 268)
+            doc.text("Búsqueda y Rescate en estructuras colapsadas.", 137, 268)
+            doc.text("c.", 90, 279)
+            doc.text("Organización e inicio de una operación.", 107, 279)
+            doc.text("a.", 120, 290)
+            doc.text("Etapas para la respuesta de una operación.", 137, 290)
+            doc.text("d.", 90, 301)
+            doc.text("Búsqueda y Localización.", 107, 301)
+            doc.text("e.", 90, 312)
+            doc.text("Consideraciones de Seguridad.", 107, 312)
+            doc.text("a.", 120, 323)
+            doc.text("Equipo de seguridad personal.", 137, 323)
             break;
           case "Primeros Auxilios":
-            doc.text("a.      Principios Generales de los Primeros Auxilios.", 90, 236)
-            doc.text("b.      Evaluación Primaria.", 90, 247)
-            doc.text("c.      Soporte Básico de Vida.", 90, 258)
-            doc.text("d.      Atención General a Hemorragias.", 90, 269)
-            doc.text("e.      Manejo del Estado de Shock.", 90, 280)
-            doc.text("f.      Heridas y Quemaduras.", 90, 291)
-            doc.text("g.      Lesiones Traumáticas en Huesos.", 90, 302)
-            doc.text("h.      Movilización y traslado de lesionados.", 90, 313)
+            doc.text("a.", 90, 246)
+            doc.text("Principios Generales de los Primeros Auxilios.", 107, 246)
+            doc.text("b.", 90, 257)
+            doc.text("Evaluación Primaria.", 107, 257)
+            doc.text("c.", 90, 268)
+            doc.text("Soporte Básico de Vida.", 107, 268)
+            doc.text("d.", 90, 279)
+            doc.text("Atención General a Hemorragias.", 107, 279)
+            doc.text("e.", 90, 290)
+            doc.text("Manejo del Estado de Shock.", 107, 290)
+            doc.text("f.", 90, 301)
+            doc.text("Heridas y Quemaduras.", 107, 301)
+            doc.text("g.", 90, 312)
+            doc.text("Lesiones Traumáticas en Huesos.", 107, 312)
+            doc.text("h.", 90, 323)
+            doc.text("Movilización y traslado de lesionados.", 107, 323)
             break;
           case "Prevención y Combate de Incendios": 
-            doc.text("a.      Conceptos Generales para la Prevención y Combate de Incendios.", 90, 236)
-            doc.text("b.      Química del Fuego.", 90, 247)
-            doc.text("c.      Prevención y Control de Incendio.", 90, 258)
-            doc.text("a.      Clasificación del fuego.", 120, 269)
-            doc.text("b.      Agentes extinguidores del fuego.", 120, 280)
-            doc.text("d.      Acciones durante un incendio.", 90, 291)
-            doc.text("a.      Uso y manejo de extintores.", 120, 302)
-            doc.text("b.      ¿Qué hacer en caso de un incendio?", 120, 313)
+            doc.text("a.", 90, 246)
+            doc.text("Conceptos Generales para la Prevención y Combate de Incendios.", 107, 246)
+            doc.text("b.", 90, 257)
+            doc.text("Química del Fuego.", 107, 257)
+            doc.text("c.", 90, 268)
+            doc.text("Prevención y Control de Incendio.", 107, 268)
+            doc.text("a.", 120, 279)
+            doc.text("Clasificación del fuego.", 137, 279)
+            doc.text("b.", 120, 290)
+            doc.text("Agentes extinguidores del fuego.", 137, 290)
+            doc.text("d.", 90, 301)
+            doc.text("Acciones durante un incendio.", 107, 301)
+            doc.text("a.", 120, 312)
+            doc.text("Uso y manejo de extintores.", 137, 312)
+            doc.text("b.", 120, 323)
+            doc.text("¿Qué hacer en caso de un incendio?", 137, 323)
             break;
           case "Evacuación":
-            doc.text("a.      Generalidades.", 90, 236)
-            doc.text("a.      Agentes perturbadores.", 120, 247)
-            doc.text("b.      Principios básicos de acción.", 120, 258)
-            doc.text("b.      Integración y actividades. Antes, Durante y Después de la Emergencia.", 90, 269)
-            doc.text("a.      Identificación del personal brigadista.", 120, 280)
-            doc.text("b.      Equipo de seguridad personal.", 120, 291)
-            doc.text("c.      Simulacros.", 90, 302)
-            doc.text("d.      Caso Práctico.", 90, 313)
+            doc.text("a.", 90, 246)
+            doc.text("Generalidades.", 107, 246)
+            doc.text("a.", 120, 257)
+            doc.text("Agentes perturbadores.", 137, 257)
+            doc.text("b.", 120, 268)
+            doc.text("Principios básicos de acción.", 137, 268)
+            doc.text("b.", 90, 279)
+            doc.text("Integración y actividades. Antes, Durante y Después de la Emergencia.", 107, 279)
+            doc.text("a.", 120, 290)
+            doc.text("Identificación del personal brigadista.", 137, 290)
+            doc.text("b.", 120, 301)
+            doc.text("Equipo de seguridad personal.", 137, 301)
+            doc.text("c.", 90, 312)
+            doc.text("Simulacros.", 107, 312)
+            doc.text("d.", 90, 323)
+            doc.text("Caso Práctico.", 107, 323)
             break;
           default:
-            doc.text("a.      Integración y actividades. Antes, Durante y Después de la Emergencia.", 90, 236)
-            doc.text("a.      Identificación del personal brigadista.", 120, 247)
-            doc.text("b.      Equipo de seguridad personal.", 120, 258)
-            doc.text("b.      Simulacros.", 90, 269)
-            doc.text("c.      Caso Práctico Simulacro de Evacuación / Repliegue.", 90, 280)
-            doc.text("d.      ¿Qué es Búsqueda y Rescate?", 90, 291)
-            doc.text("e.      Búsqueda y Rescate Urbano.", 90, 302)
-            doc.text("f.      Búsqueda y Localización.", 90, 313)
+            doc.text("a.", 90, 246)
+            doc.text("Integración y actividades. Antes, Durante y Después de la Emergencia.", 107, 246)
+            doc.text("a.", 120, 257)
+            doc.text("Identificación del personal brigadista.", 137, 257)
+            doc.text("b.", 120, 268)
+            doc.text("Equipo de seguridad personal.", 137, 268)
+            doc.text("b.", 90, 279)
+            doc.text("Simulacros.", 107, 279)
+            doc.text("c.", 90, 290)
+            doc.text("Caso Práctico Simulacro de Evacuación / Repliegue.", 107, 290)
+            doc.text("d.", 90, 301)
+            doc.text("¿Qué es Búsqueda y Rescate?", 107, 301)
+            doc.text("e.", 90, 312)
+            doc.text("Búsqueda y Rescate Urbano.", 107, 312)
+            doc.text("f.", 90, 323)
+            doc.text("Búsqueda y Localización.", 107, 323)
             break;
         }
         doc.setFont("calibri-bold");
     
-        doc.text("IMPARTIDO POR EL INSTRUCTOR:", 57, 335)
+        doc.text("IMPARTIDO POR EL INSTRUCTOR:", 57, 345)
 
         doc.setFont("calibri-normal");
-        doc.text("T.B.G.I.R. Arq. Antonio Lavín Villa. (LAVI Fire Workshop México, S.A. de C.V.)", 90, 346)
+        doc.text("T.B.G.I.R. Arq. Antonio Lavín Villa. (LAVI Fire Workshop México, S.A. de C.V.)", 90, 356)
 
         doc.setFont("calibri-bold");
     
@@ -862,15 +912,18 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.line(57, 715, 557, 715);
         doc.text("Av. Las Américas 401-B | Col. Andrade CP 37020 | León, Guanajuato",  612/2, 726, 'center')
         doc.setFont("calibri-bold");
-        doc.text("O.",  236, 737)
+        doc.text("O.",  194, 737)
         doc.setFont("calibri-normal");
-        doc.text("(477).713.0016 |",  246, 737)
+        doc.text("(477) 713 0016 |",  204, 737)
         doc.setFont("calibri-bold");
-        doc.text("M.",  309, 737)
+        doc.text("M1.",  267, 737)
         doc.setFont("calibri-normal");
-        doc.text("(477).670.2737",  322, 737)
+        doc.text("(477) 670 2737 |",  284, 737)
+        doc.setFont("calibri-bold");
+        doc.text("M2.",  347, 737)
+        doc.setFont("calibri-normal");
+        doc.text("(477) 144 3124",  364, 737)
         doc.text("lavifire@lavi.com.mx",  612/2, 748, 'center')
-
       }
     
     if (sheetData[6][2] != null)
