@@ -1093,7 +1093,7 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
       {
         if (sheetData[a][2] != null)
         {
-          doc.addPage(720, 540) //19.05, 25.4
+          doc.addPage(612, 792) //19.05, 25.4
         }
       }
   
