@@ -480,6 +480,7 @@ btnGenerateDC.addEventListener("click", () => {
               var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
               var razonSocial = sheetData[0]
               var date = fecha.getFullYear() + "-" + mesNumber + "-" + dia;
+              var nombreComercial = sheetData[1][1]
               var nombreCurso = sheetData[2][1]
               var founded = true;
               var position = 0;
