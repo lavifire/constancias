@@ -394,25 +394,141 @@ btnGenerateI.addEventListener("click", () =>
 
 
 btnGenerateDC.addEventListener("click", () => {
-  var doc = new jsPDF();
-  doc.addFileToVFS("open-sans-condensed.bold.ttf", font)
-  doc.addFont('open-sans-condensed.bold.ttf', 'custom', 'normal');
-
-  doc.setFont('custom');
-  doc.text(15, 15, 'Hello World');
-  doc.save('prueba.pdf')
-  if (file != null){
-    loader.style.display = "block"
-    loaderIcon.style.display = "block"
-    readXlsxFile(file, { getSheets: true }).then(function(sheets) {
-      for (var i = sheets.length; i > 0; i--) {
-        if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
-          readXlsxFile(file, { sheet: i }).then(function(sheetData) {
-            console.log(sheetData)
-          })
+  try {
+    if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null){
+      loader.style.display = "block"
+      loaderIcon.style.display = "block"
+      finished = 0;
+      readXlsxFile(file, { getSheets: true }).then(function(sheets) {
+        for (var i = sheets.length; i > 0; i--) {
+          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
+            readXlsxFile(file, { sheet: i }).then(function(sheetData) {
+              console.log(sheetData)
+              if (sheetData[0][1] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[3][1] == null 
+                && sheetData[4][1] == null || sheetData[0][4] == null || sheetData[1][4] == null || sheetData[2][4] == null
+                && sheetData[3][4] == null || sheetData[2][6] == null || sheetData[6][2] == null){
+                document.getElementById("alertError").innerHTML='Faltan datos en el excel'
+                loaderIcon.style.display = "none";
+                displayError.style.display = "block";
+                return 
+              }
+              var date = sheetData[3];
+              var fecha = new Date(Date.parse(date[1]))
+              var mes = "";
+              var mesNumber = "";
+              switch (fecha.getMonth())
+              {
+                case 0:
+                  mes = "Enero";
+                  mesNumber = "01";
+                break;
+                case 1:
+                  mes = "Febrero";
+                  mesNumber = "02";
+                break;
+                case 2:
+                  mes = "Marzo";
+                  mesNumber = "03";
+                break;
+                case 3:
+                  mes = "Abril";
+                  mesNumber = "04";
+                break;
+                case 4:
+                  mes = "Mayo";
+                  mesNumber = "05";
+                break;
+                case 5:
+                  mes = "Junio";
+                  mesNumber = "06";
+                break;
+                case 6:
+                  mes = "Julio";
+                  mesNumber = "07";
+                break;
+                case 7:
+                  mes = "Agosto";
+                  mesNumber = "08";
+                break;
+                case 8:
+                  mes = "Septiembre";
+                  mesNumber = "09";
+                break;
+                case 9:
+                  mes = "Octubre";
+                  mesNumber = "10";
+                break;
+                case 10:
+                  mes = "Noviembre";
+                  mesNumber = "11";
+                break;
+                case 11:
+                  mes = "Diciembre";
+                  mesNumber = "12";
+                break;
+              }
+              if (codigos.length > 1)
+              {
+                codigos.pop();
+              }
+              codigos[0] = sheetData[2][4];
+              if (sheetData[3][4] != null)
+              {
+                codigos.push(sheetData[3][4]);
+              }
+  
+              var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
+              var razonSocial = sheetData[0]
+              var date = fecha.getFullYear() + "-" + mesNumber + "-" + dia;
+              var nombreCurso = sheetData[2][1]
+              var founded = true;
+              var position = 0;
+              do
+              {
+                
+                position = nombreCurso.indexOf("/")
+                
+                if (position != -1) 
+                {
+                  
+                  nombreCurso = nombreCurso.replace('/', '-')
+                }
+                else 
+                {
+                  founded = false;
+                }
+              }
+              while (founded == true);
+              var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - " + nombreCurso + " - " + nombreComercial
+              generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date);
+            })
+          }
         }
-      }
-    })
+      })
+      document.getElementById('imgLogo').src = './img/404-error.png'; 
+    document.getElementById('input').files = null; 
+    document.getElementById('txtFile').innerHTML = ''; 
+    document.getElementById('txtFile').style.height = '25px';
+    }
+    else {
+      document.getElementById("alertError").innerHTML='Falta logo y/o archivo excel por seleccionar'
+      loaderIcon.style.display = "none"
+      loader.style.display = "block"
+      displayError.style.display = "block"
+      document.getElementById('imgLogo').src = './img/404-error.png'; 
+    document.getElementById('input').files = null; 
+    document.getElementById('txtFile').innerHTML = ''; 
+    document.getElementById('txtFile').style.height = '25px';
+    }
+  } catch(error) {
+    document.getElementById("alertError").innerHTML='Algo paso, vuelvalo a intentar'
+    loaderIcon.style.display = "none"
+    loader.style.display = "block"
+    displayError.style.display = "block"
+    document.getElementById('imgLogo').src = './img/404-error.png'; 
+    document.getElementById('input').files = null; 
+    document.getElementById('txtFile').innerHTML = ''; 
+    document.getElementById('txtFile').style.height = '25px';
   }
 })
 
@@ -936,6 +1052,64 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
       }
     }
       console.log(finished)
+    if (finished >= sheetsLength - 3)
+      {
+        loaderIcon.style.display = "none"
+        displaySuccess.style.display = "block";
+      }
+      else
+      {
+        finished++;
+      }
+    }
+    catch (error) {
+      document.getElementById("alertError").innerHTML='Algo paso, vuelvalo a intentar'
+      loaderIcon.style.display = "none"
+      loader.style.display = "block"
+      displayError.style.display = "block"
+    }
+}
+
+var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, date) => {
+  try {
+    for (var a = 6; a < sheetData.length; a++)
+    {
+      if (a == 6)
+      {
+        if (sheetData[6][2] != null)
+        {
+          var doc = new jsPDF('p', 'pt', [612, 792]);
+          doc.addFileToVFS("calibril-normal.ttf", font_normal)
+          doc.addFont("calibril-normal.ttf", "calibri-normal", "normal");
+          doc.addFont("calibril-normal.ttf", "calibri-normal", "bold");
+          doc.addFileToVFS("calibril-bold.ttf", font_bold)
+          doc.addFont("calibril-bold.ttf", "calibri-bold", "normal");
+          doc.addFont("calibril-bold.ttf", "calibri-bold", "bold");
+          
+        }
+      }
+      else
+      {
+        if (sheetData[a][2] != null)
+        {
+          doc.addPage(720, 540) //19.05, 25.4
+        }
+      }
+  
+      if(sheetData[a][2] != null)
+      {
+        doc.setFont("calibri-normal");
+        doc.setTextColor( 0, 0, 0 )
+        
+        doc.addImage(imgLavi, "JPEG", 14.1732, 14.1732, 220.9448, 67.3622); // 0.5, 0.5, 9, 2.7
+        doc.addImage(logoClient, "JPEG", 620, 452.5, 40, 40); 
+      }
+    }
+    if (sheetData[6][2] != null)
+    {
+      doc.save(filename + '.pdf')
+    }
+      console.log(sheetsLength)
     if (finished >= sheetsLength - 3)
       {
         loaderIcon.style.display = "none"
