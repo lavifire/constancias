@@ -687,6 +687,9 @@ btnGenerateG.addEventListener("click", () => {
                     for (var i = 0; i < 2; i++) {
                       generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
                       nombreCurso = "Búsqueda y Rescate"
+                      dia = (fecha.getDate() >= 10) ? (fecha.getDate() + 1) : ("0" + (fecha.getDate() + 1))
+                      ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + fecha.getFullYear();
+                      fechaConstancia = dia  + " de " + mes + " de " + fecha.getFullYear();
                       filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Búsqueda y Rescate - " + nombreComercial
                     }
                   }
@@ -1099,11 +1102,205 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
   
       if(sheetData[a][2] != null)
       {
-        doc.setFont("calibri-normal");
-        doc.setTextColor( 0, 0, 0 )
-        
+        doc.setFont("calibri-bold");
+        doc.setTextColor( 255, 255, 255 )
+        doc.setFontSize(10);
         doc.addImage(imgLavi, "JPEG", 14.1732, 14.1732, 220.9448, 67.3622); // 0.5, 0.5, 9, 2.7
-        doc.addImage(logoClient, "JPEG", 620, 452.5, 40, 40); 
+        doc.addImage(logoClient, "JPEG", 620, 452.5, 40, 40);    
+        doc.setLineWidth(1.5);
+        doc.rect(37, 150, 538, 18, 'F'); // filled square 
+        doc.rect(37, 272, 538, 18, 'F');
+        doc.rect(37, 364, 538, 18, 'F');
+        doc.text("DATOS DEL TRABAJADOR", 306, 162, "center") 
+        doc.text("DATOS DE LA EMPRESA", 306, 284, "center")
+        doc.setFontSize(9);
+        doc.text("DATOS DEL PROGRAMA DE CAPACITACIÓN, ADIESTRAMIENTO Y PRODUCTIVIDAD", 306, 376, "center")
+
+        // Datos del trabajador
+        doc.setTextColor( 0, 0, 0 )
+        doc.rect(37.5, 168, 537, 32); // empty square
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Nombre (Anotar apellido paterno, apellido materno y nombre)", 38.5, 178)
+        doc.setFont("calibri-bold");
+        doc.setFontSize(8.5);
+        doc.text(sheetData[a][10], 39.5, 194)
+        doc.rect(37.5, 200, 310.5, 32); // empty square
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Clave Única de Registro de Población", 38.5, 210)
+        doc.setFont("calibri-bold");
+        doc.setFontSize(8.5);
+        doc.text(sheetData[a][4].toUpperCase(), 39.5, 226)
+        doc.rect(348, 200, 226.5, 32); // empty square
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Ocupación específica (Catálogo Nacional de Ocupaciones) ₁", 349, 210)
+        doc.setFont("calibri-bold");
+        doc.setFontSize(8.5);
+        doc.text("07.1 Comercio", 350, 226)
+        doc.rect(37.5, 232, 537, 32); // empty square
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Puesto*", 38.5, 242)
+        doc.setFont("calibri-bold");
+        doc.setFontSize(8.5);
+        doc.text(sheetData[a][5].toUpperCase(), 39.5, 258)
+
+        doc.setDrawColor(0, 0, 0);
+        
+        //Datos de la empresa
+        doc.rect(37.5, 290, 537, 64); // empty square
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Nombre o razón social (En caso de persona física, anotar apellido paterno, apellido matrno y nombre(s))", 38.5, 300)
+        doc.setFont("calibri-bold");
+        doc.setFontSize(8.5);
+        doc.text(razonSocial[1].toUpperCase(), 306, 316, "center")
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Registro Federal de Contribuyentes (SHCP)", 38.5, 332)
+        doc.setFont("calibri-bold");
+        doc.setFontSize(8.5);
+        doc.text(sheetData[2][6].toUpperCase(), 306, 348, "center")
+
+        // DATOS DEL PROGRAMA DE CAPACITACIÓN, ADIESTRAMIENTO Y PRODUCTIVIDAD
+        doc.rect(37.5, 382, 537, 22); // empty square
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Nombre del curso", 38.5, 390)
+        doc.setFont("calibri-bold");
+        doc.setFontSize(8.5);
+        doc.text(sheetData[2][1], 39.5, 401)
+        doc.rect(37.5, 404, 140.5, 22); // empty square
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Duración en horas", 38.5, 412)
+        doc.setFont("calibri-bold");
+        doc.setFontSize(8.5);
+        doc.text("6 horas", 39.5, 423)
+        doc.rect(178, 404, 102, 22); // empty square
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Periodo de ejecición:", 187, 416)
+        doc.text("De", 265, 422)
+        doc.rect(280, 404, 69.25, 22); // AÑO 1
+        doc.setFontSize(8.5);
+        doc.text("Año", 314.625, 412, "center")
+        doc.setFont("calibri-bold");
+        doc.text(date.substr(0, 1), 287.15625, 422.7);
+        doc.text(date.substr(1, 1), 304.46875, 422.7);
+        doc.text(date.substr(2, 1), 321.78125, 422.7);
+        doc.text(date.substr(3, 1), 339.09375, 422.7);
+        // 17.3125
+        doc.line(297.3125, 415, 297.3125, 426);
+        doc.line(314.625, 415, 314.625, 426);
+        doc.line(331.9375, 415, 331.9375, 426);
+
+        doc.rect(349.25, 404, 34.25, 22); // MES 1
+        doc.setFont("calibri-normal");
+        doc.text("Mes", 366.375, 412, "center")
+        doc.setFont("calibri-bold");
+        doc.text(date.substr(5, 1), 356.40625, 422.7);
+        doc.text(date.substr(6, 1), 373.71875, 422.7);
+        // 17.125
+        doc.line(366.375, 415, 366.375, 426);
+
+        doc.rect(383.5, 404, 34.25, 22); // DIA 1
+        doc.setFont("calibri-normal");
+        doc.text("Dia", 400.625, 412, "center")
+        doc.setFont("calibri-bold");
+        doc.text(date.substr(8, 1), 391.03125, 422.7);
+        doc.text(date.substr(9, 1), 408.34375, 422.7);
+        // 17.125
+        doc.line(400.625, 415, 400.625, 426);
+
+        doc.rect(417.75, 404, 19, 22); // empty square
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("a", 425.25, 422)
+
+        doc.rect(436.75, 404, 69.25, 22); // AÑO 2
+        doc.setFontSize(8.5);
+        doc.text("Año", 471.375, 412, "center")
+        doc.setFont("calibri-bold");
+        doc.text(date.substr(0, 1), 443.90625, 422.7);
+        doc.text(date.substr(1, 1), 461.21875, 422.7);
+        doc.text(date.substr(2, 1), 478.53125, 422.7);
+        doc.text(date.substr(3, 1), 495.84375, 422.7);
+        // 17.3125
+        doc.line(454.0625, 415, 454.0625, 426);
+        doc.line(471.375, 415, 471.375, 426);
+        doc.line(488.6875, 415, 488.6875, 426);
+
+        doc.rect(506, 404, 34.25, 22); // MES 2
+        doc.setFont("calibri-normal");
+        doc.text("Mes", 523.125, 412, "center")
+        doc.setFont("calibri-bold");
+        doc.text(date.substr(5, 1), 513.15625, 422.7);
+        doc.text(date.substr(6, 1), 530.46875, 422.7);
+        // 17.125
+        doc.line(523.125, 415, 523.125, 426);
+
+        doc.rect(540.25, 404, 34.25, 22); // DIA 2
+        doc.setFont("calibri-normal");
+        doc.text("Dia", 557.375, 412, "center")
+        doc.setFont("calibri-bold");
+        doc.text(date.substr(8, 1), 547.78125, 422.7);
+        doc.text(date.substr(9, 1), 565.09375, 422.7);
+        // 17.125
+        doc.line(557.375, 415, 557.375, 426);
+
+
+        doc.rect(37.5, 426, 537, 32); // empty square
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Área temática del curso ₂", 38.5, 434)
+        doc.setFont("calibri-bold");
+        doc.setFontSize(8.5);
+        doc.text("6000 - Seguridad", 39.5, 453)
+        doc.rect(37.5, 458, 537, 32); // empty square
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Nombre del agente capacitador o STPS ₃", 38.5, 466)
+        doc.setFont("calibri-bold");
+        doc.setFontSize(8.5);
+        doc.text("LAVI Fire Workshop México, S.A. de C.V. (LFW-160516-NJ1-0013)", 39.5, 485)
+        //574.5
+
+        //Espacio de firmas
+        doc.rect(37.5, 502, 537, 121.6); 
+        doc.setFont("calibri-bold");
+        doc.setFontSize(7);
+        doc.text("Los datos se asientan en esta constancia bajo protesta de decir la verdad, apercibidos de la responsabilidad en que incurre todo aquel que no se", 306, 512, "center")
+        doc.text("conduce con la verdad", 306, 522, "center")
+        doc.setFont("calibri-normal");
+        doc.text("Instructor o tutor", 148, 552, "center")
+        doc.setFont("calibri-bold");
+        doc.setFontSize(9);
+        doc.text("ANTONIO LAVIN VILLA", 148, 602, "center")
+        doc.line(79, 605, 217, 605);
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Nombre y firma", 148, 612, "center")
+        doc.setFont("calibri-normal");
+        doc.text("Patrón o representante legal ₄", 306, 552, "center")
+        doc.setFont("calibri-bold");
+        doc.setFontSize(9);
+        doc.text(sheetData[3][6].toUpperCase(), 306, 602, "center")
+        doc.line(237, 605, 375, 605);
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Nombre y firma", 306, 612, "center")
+        doc.setFont("calibri-normal");
+        doc.text("Representante de los trabajadores ₅", 464, 552, "center")
+        doc.setFont("calibri-bold");
+        doc.setFontSize(9);
+        doc.text(sheetData[4][6].toUpperCase(), 464, 602, "center")
+        doc.line(395, 605, 533, 605);
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Nombre y firma", 464, 612, "center")
       }
     }
     if (sheetData[6][2] != null)
@@ -1126,5 +1323,6 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
       loaderIcon.style.display = "none"
       loader.style.display = "block"
       displayError.style.display = "block"
+      console.log(error)
     }
 }
