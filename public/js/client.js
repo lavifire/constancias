@@ -663,7 +663,103 @@ btnGenerateG.addEventListener("click", () => {
                         for (var i = 0; i < 2; i++) {
                           generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
                           nombreCurso = "Búsqueda y Rescate"
-                          filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Búsqueda y Rescate - " + nombreComercial
+                          var anio = fecha.getFullYear();
+                          dia = (fecha.getDate() >= 10) ? (fecha.getDate() + 1) : ("0" + (fecha.getDate() + 1))
+                          switch(mesNumber) {
+                            case "01":
+                              if (dia > 31) {
+                                dia = "01";
+                                mes = "Febrero"
+                              }
+                              break;
+                              case "02":
+                                var bisiesto = false;
+                                var aniosRestantes = fecha.getFullYear();
+                                do {
+                                  if (aniosRestantes == 2000) {
+                                    bisiesto = true;
+                                  }
+                                  aniosRestantes = aniosRestantes - 4;
+                                }
+                                while (aniosRestantes >= 2000)
+                                if (bisiesto == true) {
+                                  if (dia > 29) {
+                                    dia = "01";
+                                    mes = "Marzo"
+                                  }
+                                }
+                                else {
+                                  if (dia > 28) {
+                                    dia = "01";
+                                    mes = "Marzo"
+                                  }
+                                }
+                              break;
+                              case "03":
+                              if (dia > 31) {
+                                dia = "01";
+                                mes = "Abril"
+                              }
+                              break;
+                              case "04":
+                              if (dia > 30) {
+                                dia = "01";
+                                mes = "Mayo"
+                              }
+                              break;
+                              case "05":
+                              if (dia > 31) {
+                                dia = "01";
+                                mes = "Junio"
+                              }
+                              break;
+                              case "06":
+                              if (dia > 30) {
+                                dia = "01";
+                                mes = "Julio"
+                              }
+                              break;
+                              case "07":
+                              if (dia > 31) {
+                                dia = "01";
+                                mes = "Agosto"
+                              }
+                              break;
+                              case "08":
+                              if (dia > 31) {
+                                dia = "01";
+                                mes = "Septiembre"
+                              }
+                              break;
+                              case "09":
+                              if (dia > 30) {
+                                dia = "01";
+                                mes = "Octubre"
+                              }
+                              break;
+                              case "10":
+                              if (dia > 31) {
+                                dia = "01";
+                                mes = "Noviembre"
+                              }
+                              break;
+                              case "11":
+                              if (dia > 30) {
+                                dia = "01";
+                                mes = "Diciembre"
+                              }
+                              break;
+                              case "12":
+                              if (dia > 31) {
+                                dia = "01";
+                                mes = "Enero"
+                                anio = fecha.getFullYear() + 1;
+                              }
+                              break;
+                          }
+                          ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + anio;
+                          fechaConstancia = dia  + " de " + mes + " de " + anio;
+                          filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias - Búsqueda y Rescate - " + nombreComercial
                         }
                       }
                       else {
@@ -687,10 +783,103 @@ btnGenerateG.addEventListener("click", () => {
                     for (var i = 0; i < 2; i++) {
                       generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
                       nombreCurso = "Búsqueda y Rescate"
+                      var anio = fecha.getFullYear();
                       dia = (fecha.getDate() >= 10) ? (fecha.getDate() + 1) : ("0" + (fecha.getDate() + 1))
-                      ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + fecha.getFullYear();
-                      fechaConstancia = dia  + " de " + mes + " de " + fecha.getFullYear();
-                      filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Búsqueda y Rescate - " + nombreComercial
+                      switch(mesNumber) {
+                        case "01":
+                          if (dia > 31) {
+                            dia = "01";
+                            mes = "Febrero"
+                          }
+                          break;
+                          case "02":
+                            var bisiesto = false;
+                            var aniosRestantes = fecha.getFullYear();
+                            do {
+                              if (aniosRestantes == 2000) {
+                                bisiesto = true;
+                              }
+                              aniosRestantes = aniosRestantes - 4;
+                            }
+                            while (aniosRestantes >= 2000)
+                            if (bisiesto == true) {
+                              if (dia > 29) {
+                                dia = "01";
+                                mes = "Marzo"
+                              }
+                            }
+                            else {
+                              if (dia > 28) {
+                                dia = "01";
+                                mes = "Marzo"
+                              }
+                            }
+                          break;
+                          case "03":
+                          if (dia > 31) {
+                            dia = "01";
+                            mes = "Abril"
+                          }
+                          break;
+                          case "04":
+                          if (dia > 30) {
+                            dia = "01";
+                            mes = "Mayo"
+                          }
+                          break;
+                          case "05":
+                          if (dia > 31) {
+                            dia = "01";
+                            mes = "Junio"
+                          }
+                          break;
+                          case "06":
+                          if (dia > 30) {
+                            dia = "01";
+                            mes = "Julio"
+                          }
+                          break;
+                          case "07":
+                          if (dia > 31) {
+                            dia = "01";
+                            mes = "Agosto"
+                          }
+                          break;
+                          case "08":
+                          if (dia > 31) {
+                            dia = "01";
+                            mes = "Septiembre"
+                          }
+                          break;
+                          case "09":
+                          if (dia > 30) {
+                            dia = "01";
+                            mes = "Octubre"
+                          }
+                          break;
+                          case "10":
+                          if (dia > 31) {
+                            dia = "01";
+                            mes = "Noviembre"
+                          }
+                          break;
+                          case "11":
+                          if (dia > 30) {
+                            dia = "01";
+                            mes = "Diciembre"
+                          }
+                          break;
+                          case "12":
+                          if (dia > 31) {
+                            dia = "01";
+                            mes = "Enero"
+                            anio = fecha.getFullYear() + 1;
+                          }
+                          break;
+                      }
+                      ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + anio;
+                      fechaConstancia = dia  + " de " + mes + " de " + anio;
+                      filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias - Búsqueda y Rescate - " + nombreComercial
                     }
                   }
                   else {
