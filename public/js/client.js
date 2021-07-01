@@ -1292,10 +1292,13 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
       if(sheetData[a][2] != null)
       {
         doc.setFont("calibri-bold");
-        doc.setTextColor( 255, 255, 255 )
         doc.setFontSize(10);
-        doc.addImage(imgLavi, "JPEG", 14.1732, 14.1732, 220.9448, 67.3622); // 0.5, 0.5, 9, 2.7
-        doc.addImage(logoClient, "JPEG", 620, 452.5, 40, 40);    
+        doc.text("FORMATO DC-3", 306, 133, "center")
+        doc.text("CONSTANCIA DE COMPETENCIAS O DE HABILIDADES LABORALES", 306, 142, "center")
+        doc.setTextColor( 255, 255, 255 )
+        
+        doc.addImage(imgLavi, "JPEG", 420.743778, 68.84646, 154.256222, 47.15354); // 0.5, 0.5, 9, 2.7
+        doc.addImage(logoClient, "JPEG", 37, 68.84646, 47.15354, 47.15354);    
         doc.setLineWidth(1.5);
         doc.rect(37, 150, 538, 18, 'F'); // filled square 
         doc.rect(37, 272, 538, 18, 'F');
@@ -1490,6 +1493,24 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
         doc.text("Nombre y firma", 464, 612, "center")
+
+
+        doc.setFont("calibri-bold");
+        doc.setFontSize(9);
+        doc.text("INSTRUCCIONES", 38.5, 643.6)
+        doc.setFont("calibri-normal")
+        doc.setFontSize(6.5);
+        doc.text("- Llenar a máquina o con letra de molde", 43, 655.6)
+        doc.text("- Deberá entregarse al trabajador dentro de los veinte días hábiles siguientes al término del curso de capacitación aprobado.", 43, 664.6)
+        doc.text("1. Las áreas y subáreas ocupacionales del Catálogo Nacional de Ocupaciones se encuentran disponibles en el reverso de este formato y en la página www.stps.gob.mx", 39, 673.6)
+        doc.text("2. Las áreas temáticas de los cursos se encuentran disponibles en el reverso de este formato y en la página www.stps.gob.mx", 39, 682.6)
+        doc.text("3. Cursos impartidos por el área competente de la Secretaria del Trabajo y Previsión Social.", 39, 691.6)
+        doc.text("4. Para empresas con menos de 51 trabajadores. Para empresas con más de 50 trabajadores firmaría el representante del patrón ante la Comisión mixta de capacitación, adiestramiento y productividad.", 39, 700.6)
+        doc.text("5. Solo para empresascon más de 50 trabajadores.", 39, 709.6)
+        doc.text("*Dato no obligatorio.", 39, 718.6)
+        doc.setFontSize(7.5);
+        doc.text("DC-3", 534.5, 723.6)
+        doc.text("ANVERSO", 520.5, 732.6)
       }
     }
     if (sheetData[6][2] != null)
