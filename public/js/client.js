@@ -10,6 +10,7 @@ var btnGenerateDC = document.getElementById("btnGenerateDC")
 var firmaElectronica = document.getElementById("flexSwitchCheckDefault");
 var switchVirtual = document.getElementById("switchVirtual");
 var switchBomberos = document.getElementById("switchBomberos");
+var cursoName = ";"
 var imgLavi = new Image()
 var firmaALV = new Image()
 firmaALV.src = "./img/Firma ALV.PNG"
@@ -80,7 +81,7 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
   {
     if (a == 6)
     {
-      if (sheetData[6][2] != null)
+      if (sheetData[6][1] != null)
       {
         var doc = new jsPDF('l', 'pt', [540, 720]) //19.05, 25.4
         doc.addFileToVFS("calibril-normal.ttf", font_normal)
@@ -94,13 +95,13 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
     }
     else
     {
-      if (sheetData[a][2] != null)
+      if (sheetData[a][1] != null)
       {
         doc.addPage(720, 540) //19.05, 25.4
       }
     }
 
-    if(sheetData[a][2] != null)
+    if(sheetData[a][1] != null)
     {
       doc.setFont("calibri-normal");
       doc.setTextColor( 0, 0, 0 )
@@ -175,7 +176,7 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.setFont("calibri-normal");
       
       doc.text(sheetData[a][8], 720/2, 160.128, 'center'); // 25.4/2, 6
-      doc.text(sheetData[2][1], 720/2, 236.772, 'center'); // 25.4/2, 8
+      doc.text(cursoName, 720/2, 236.772, 'center'); // 25.4/2, 8
       doc.setFontSize(10);
       doc.setTextColor( 206, 206, 206 )
       doc.text("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------", 720/2, 447.874, 'center') // 25.4/2, 15.8
@@ -200,7 +201,7 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       //doc.fromHTML(htmlinfo.innerHTML, 5, 8.5) 
     }
   }
-  if (sheetData[6][2] != null)
+  if (sheetData[6][1] != null)
   {
     doc.save(filename + '.pdf')
   }
@@ -235,15 +236,6 @@ inputLogo.addEventListener("change", () => {
   reader.readAsDataURL(inputLogo.files[0]);
 })
 
-
-function wait(ms){
-  var start = new Date().getTime();
-  var end = start;
-  while(end < start + ms) {
-    end = new Date().getTime();
- }
-}
-
 btnGenerateI.addEventListener("click", () => 
 {
   try {
@@ -258,7 +250,7 @@ btnGenerateI.addEventListener("click", () =>
               console.log(sheetData)
               if (sheetData[0][1] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[3][1] == null 
                 && sheetData[4][1] == null || sheetData[0][4] == null || sheetData[1][4] == null || sheetData[2][4] == null
-                && sheetData[3][4] == null || sheetData[2][6] == null || sheetData[6][2] == null){
+                && sheetData[3][4] == null || sheetData[2][6] == null){
                 document.getElementById("alertError").innerHTML='Faltan datos en el excel'
                 loaderIcon.style.display = "none";
                 displayError.style.display = "block";
@@ -336,6 +328,7 @@ btnGenerateI.addEventListener("click", () =>
               text = 'Impartido el día '+ dia + " de " + mes + " de " + fecha.getFullYear() +', para personal de '+ razonSocial[1]
               var nombreComercial = sheetData[1][1]
               var nombreCurso = sheetData[2][1]
+              cursoName = nombreCurso;
               var founded = true;
               var position = 0;
               do
@@ -358,7 +351,129 @@ btnGenerateI.addEventListener("click", () =>
               // .getDate devuelve el dia
               // .getMonth devuelve el mes 0= Enero, 1 = Febrero, etc
               // .getFullYear devuelve el año completo ej: 1995
-              generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
+              if (sheetData[2][1] == "Evacuación, Búsqueda y Rescate" && sheetData[0][4] == "Jalisco") {
+                nombreCurso = "Evacuación";
+                cursoName = nombreCurso;
+                filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - " + nombreCurso + " - " + nombreComercial
+                generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
+                nombreCurso = "Busqueda y Rescate";
+                cursoName = nombreCurso;
+                var anio = fecha.getFullYear();
+                dia = (fecha.getDate() >= 10) ? (fecha.getDate() + 1) : ("0" + (fecha.getDate() + 1))
+                switch(mesNumber) {
+                  case "01":
+                    if (dia > 31) {
+                      dia = "01";
+                      mes = "Febrero"
+                      mesNumber = "02"
+                    }
+                    break;
+                    case "02":
+                      var bisiesto = false;
+                      var aniosRestantes = fecha.getFullYear();
+                      do {
+                        if (aniosRestantes == 2000) {
+                          bisiesto = true;
+                        }
+                        aniosRestantes = aniosRestantes - 4;
+                      }
+                      while (aniosRestantes >= 2000)
+                      if (bisiesto == true) {
+                        if (dia > 29) {
+                          dia = "01";
+                          mes = "Marzo"
+                          mesNumber = "03"
+                        }
+                      }
+                      else {
+                        if (dia > 28) {
+                          dia = "01";
+                          mes = "Marzo"
+                          mesNumber = "03"
+                        }
+                      }
+                    break;
+                    case "03":
+                    if (dia > 31) {
+                      dia = "01";
+                      mes = "Abril"
+                      mesNumber = "04"
+                    }
+                    break;
+                    case "04":
+                    if (dia > 30) {
+                      dia = "01";
+                      mes = "Mayo"
+                      mesNumber = "05"
+                    }
+                    break;
+                    case "05":
+                    if (dia > 31) {
+                      dia = "01";
+                      mes = "Junio"
+                      mesNumber = "06"
+                    }
+                    break;
+                    case "06":
+                    if (dia > 30) {
+                      dia = "01";
+                      mes = "Julio"
+                      mesNumber = "07"
+                    }
+                    break;
+                    case "07":
+                    if (dia > 31) {
+                      dia = "01";
+                      mes = "Agosto"
+                      mesNumber = "08"
+                    }
+                    break;
+                    case "08":
+                    if (dia > 31) {
+                      dia = "01";
+                      mes = "Septiembre"
+                      mesNumber = "09"
+                    }
+                    break;
+                    case "09":
+                    if (dia > 30) {
+                      dia = "01";
+                      mes = "Octubre"
+                      mesNumber = "10"
+                    }
+                    break;
+                    case "10":
+                    if (dia > 31) {
+                      dia = "01";
+                      mes = "Noviembre"
+                      mesNumber = "11"
+                    }
+                    break;
+                    case "11":
+                    if (dia > 30) {
+                      dia = "01";
+                      mes = "Diciembre"
+                      mesNumber = "12"
+                    }
+                    break;
+                    case "12":
+                    if (dia > 31) {
+                      dia = "01";
+                      mes = "Enero"
+                      mesNumber = "01"
+                      anio = fecha.getFullYear() + 1;
+                    }
+                    break;
+                }
+                var ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + anio;
+                txtInfo = 'Impartido el día **'+ dia + " de " + mes + " de " + anio +'**, para personal de **'+ razonSocial[1]
+                text = 'Impartido el día '+ dia + " de " + mes + " de " + anio +', para personal de '+ razonSocial[1]
+                filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias - " + nombreCurso + " - " + nombreComercial
+                generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
+              }
+              else {
+                generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
+              }
             })
           }
         }
@@ -406,7 +521,7 @@ btnGenerateDC.addEventListener("click", () => {
               console.log(sheetData)
               if (sheetData[0][1] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[3][1] == null 
                 && sheetData[4][1] == null || sheetData[0][4] == null || sheetData[1][4] == null || sheetData[2][4] == null
-                && sheetData[3][4] == null || sheetData[2][6] == null || sheetData[6][2] == null){
+                && sheetData[3][4] == null || sheetData[2][6] == null){
                 document.getElementById("alertError").innerHTML='Faltan datos en el excel'
                 loaderIcon.style.display = "none";
                 displayError.style.display = "block";
@@ -546,7 +661,7 @@ btnGenerateG.addEventListener("click", () => {
               console.log(sheetData)
               if (sheetData[0][1] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[3][1] == null 
                 && sheetData[4][1] == null || sheetData[0][4] == null || sheetData[1][4] == null || sheetData[2][4] == null
-                && sheetData[3][4] == null || sheetData[2][6] == null || sheetData[6][2] == null){
+                && sheetData[3][4] == null || sheetData[2][6] == null){
                 document.getElementById("alertError").innerHTML='Faltan datos en el excel'
                 loaderIcon.style.display = "none";
                 displayError.style.display = "block";
@@ -650,7 +765,7 @@ btnGenerateG.addEventListener("click", () => {
               var mult = false;
               var numC = 1;
               for (var a = 6; a < sheetData.length; a++) {
-                if (sheetData[a][2] != null) {
+                if (sheetData[a][1] != null) {
                   if(participantes.length < 45) {
                     participantes.push(sheetData[a][8])
                   }
@@ -923,7 +1038,7 @@ btnGenerateG.addEventListener("click", () => {
 
 var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets, fechaConstancia, nombreCurso, participantes, mult, numC) => {
   try {
-    if (sheetData[6][2] != null)
+    if (sheetData[6][1] != null)
       {
         console.log("Entro")
         var doc = new jsPDF('p', 'pt', [612, 792]);
@@ -1235,7 +1350,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.text("lavifire@lavi.com.mx",  612/2, 748, 'center')
       }
     
-    if (sheetData[6][2] != null)
+    if (sheetData[6][1] != null)
     {
       if (mult == true) {
         doc.save(filename + '_' + numC  + '.pdf')
@@ -1269,7 +1384,7 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
     {
       if (a == 6)
       {
-        if (sheetData[6][2] != null)
+        if (sheetData[6][1] != null)
         {
           var doc = new jsPDF('p', 'pt', [612, 792]);
           doc.addFileToVFS("calibril-normal.ttf", font_normal)
@@ -1283,216 +1398,220 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
       }
       else
       {
-        if (sheetData[a][2] != null)
+        if (sheetData[a][1] != null)
         {
           doc.addPage(612, 792) //19.05, 25.4
         }
       }
   
-      if(sheetData[a][2] != null)
+      if(sheetData[a][1] != null)
       {
         doc.setFont("calibri-bold");
         doc.setFontSize(10);
-        doc.text("FORMATO DC-3", 306, 133, "center")
-        doc.text("CONSTANCIA DE COMPETENCIAS O DE HABILIDADES LABORALES", 306, 142, "center")
+        doc.text("FORMATO DC-3", 306, 113, "center")
+        doc.text("CONSTANCIA DE COMPETENCIAS O DE HABILIDADES LABORALES", 306, 122, "center")
         doc.setTextColor( 255, 255, 255 )
         
-        doc.addImage(imgLavi, "JPEG", 420.743778, 68.84646, 154.256222, 47.15354); // 0.5, 0.5, 9, 2.7
-        doc.addImage(logoClient, "JPEG", 37, 68.84646, 47.15354, 47.15354);    
+        doc.addImage(imgLavi, "JPEG", 420.743778, 48.84646, 154.256222, 47.15354); // 0.5, 0.5, 9, 2.7
+        doc.addImage(logoClient, "JPEG", 37, 48.84646, 47.15354, 47.15354);    
         doc.setLineWidth(1.5);
-        doc.rect(37, 150, 538, 18, 'F'); // filled square 
-        doc.rect(37, 272, 538, 18, 'F');
-        doc.rect(37, 364, 538, 18, 'F');
-        doc.text("DATOS DEL TRABAJADOR", 306, 162, "center") 
-        doc.text("DATOS DE LA EMPRESA", 306, 284, "center")
+        doc.rect(37, 140, 538, 18, 'F'); // filled square 
+        doc.rect(37, 262, 538, 18, 'F');
+        doc.rect(37, 354, 538, 18, 'F');
+        doc.text("DATOS DEL TRABAJADOR", 306, 152, "center") 
+        doc.text("DATOS DE LA EMPRESA", 306, 274, "center")
         doc.setFontSize(9);
-        doc.text("DATOS DEL PROGRAMA DE CAPACITACIÓN, ADIESTRAMIENTO Y PRODUCTIVIDAD", 306, 376, "center")
+        doc.text("DATOS DEL PROGRAMA DE CAPACITACIÓN, ADIESTRAMIENTO Y PRODUCTIVIDAD", 306, 366, "center")
 
         // Datos del trabajador
         doc.setTextColor( 0, 0, 0 )
-        doc.rect(37.5, 168, 537, 32); // empty square
+        doc.rect(37.5, 158, 537, 32); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Nombre (Anotar apellido paterno, apellido materno y nombre)", 38.5, 178)
+        doc.text("Nombre (Anotar apellido paterno, apellido materno y nombre)", 38.5, 168)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text(sheetData[a][10], 39.5, 194)
-        doc.rect(37.5, 200, 310.5, 32); // empty square
+        doc.text(sheetData[a][10], 39.5, 184)
+        doc.rect(37.5, 190, 310.5, 32); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Clave Única de Registro de Población", 38.5, 210)
+        doc.text("Clave Única de Registro de Población", 38.5, 200)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text(sheetData[a][4].toUpperCase(), 39.5, 226)
-        doc.rect(348, 200, 226.5, 32); // empty square
+        doc.text(sheetData[a][4].toUpperCase(), 39.5, 216)
+        doc.rect(348, 190, 226.5, 32); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Ocupación específica (Catálogo Nacional de Ocupaciones) ₁", 349, 210)
+        doc.text("Ocupación específica (Catálogo Nacional de Ocupaciones) ₁", 349, 200)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text("07.1 Comercio", 350, 226)
-        doc.rect(37.5, 232, 537, 32); // empty square
+        doc.text("07.1 Comercio", 350, 216)
+        doc.rect(37.5, 222, 537, 32); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Puesto*", 38.5, 242)
+        doc.text("Puesto*", 38.5, 232)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text(sheetData[a][5].toUpperCase(), 39.5, 258)
+        doc.text(sheetData[a][5].toUpperCase(), 39.5, 248)
 
         doc.setDrawColor(0, 0, 0);
         
         //Datos de la empresa
-        doc.rect(37.5, 290, 537, 64); // empty square
+        doc.rect(37.5, 280, 537, 64); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Nombre o razón social (En caso de persona física, anotar apellido paterno, apellido matrno y nombre(s))", 38.5, 300)
+        doc.text("Nombre o razón social (En caso de persona física, anotar apellido paterno, apellido materno y nombre(s))", 38.5, 290)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text(razonSocial[1].toUpperCase(), 306, 316, "center")
+        doc.text(razonSocial[1].toUpperCase(), 306, 306, "center")
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Registro Federal de Contribuyentes (SHCP)", 38.5, 332)
+        doc.text("Registro Federal de Contribuyentes (SHCP)", 38.5, 322)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text(sheetData[2][6].toUpperCase(), 306, 348, "center")
+        doc.text(sheetData[2][6].toUpperCase(), 306, 338, "center")
 
         // DATOS DEL PROGRAMA DE CAPACITACIÓN, ADIESTRAMIENTO Y PRODUCTIVIDAD
-        doc.rect(37.5, 382, 537, 22); // empty square
+        doc.rect(37.5, 372, 537, 22); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Nombre del curso", 38.5, 390)
+        doc.text("Nombre del curso", 38.5, 380)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text(sheetData[2][1], 39.5, 401)
-        doc.rect(37.5, 404, 140.5, 22); // empty square
+        doc.text(sheetData[2][1], 39.5, 391)
+        doc.rect(37.5, 394, 140.5, 22); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Duración en horas", 38.5, 412)
+        doc.text("Duración en horas", 38.5, 402)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text("6 horas", 39.5, 423)
-        doc.rect(178, 404, 102, 22); // empty square
+        doc.text("6 horas", 39.5, 413)
+        doc.rect(178, 394, 102, 22); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Periodo de ejecición:", 187, 416)
-        doc.text("De", 265, 422)
-        doc.rect(280, 404, 69.25, 22); // AÑO 1
+        doc.text("Periodo de ejecición:", 187, 406)
+        doc.text("De", 265, 412)
+        doc.rect(280, 394, 69.25, 22); // AÑO 1
         doc.setFontSize(8.5);
-        doc.text("Año", 314.625, 412, "center")
+        doc.text("Año", 314.625, 402, "center")
         doc.setFont("calibri-bold");
-        doc.text(date.substr(0, 1), 287.15625, 422.7);
-        doc.text(date.substr(1, 1), 304.46875, 422.7);
-        doc.text(date.substr(2, 1), 321.78125, 422.7);
-        doc.text(date.substr(3, 1), 339.09375, 422.7);
+        doc.text(date.substr(0, 1), 287.15625, 412.7);
+        doc.text(date.substr(1, 1), 304.46875, 412.7);
+        doc.text(date.substr(2, 1), 321.78125, 412.7);
+        doc.text(date.substr(3, 1), 339.09375, 412.7);
         // 17.3125
-        doc.line(297.3125, 415, 297.3125, 426);
-        doc.line(314.625, 415, 314.625, 426);
-        doc.line(331.9375, 415, 331.9375, 426);
+        doc.line(297.3125, 405, 297.3125, 416);
+        doc.line(314.625, 405, 314.625, 416);
+        doc.line(331.9375, 405, 331.9375, 416);
 
-        doc.rect(349.25, 404, 34.25, 22); // MES 1
+        doc.rect(349.25, 394, 34.25, 22); // MES 1
         doc.setFont("calibri-normal");
-        doc.text("Mes", 366.375, 412, "center")
+        doc.text("Mes", 366.375, 402, "center")
         doc.setFont("calibri-bold");
-        doc.text(date.substr(5, 1), 356.40625, 422.7);
-        doc.text(date.substr(6, 1), 373.71875, 422.7);
+        doc.text(date.substr(5, 1), 356.40625, 412.7);
+        doc.text(date.substr(6, 1), 373.71875, 412.7);
         // 17.125
-        doc.line(366.375, 415, 366.375, 426);
+        doc.line(366.375, 405, 366.375, 416);
 
-        doc.rect(383.5, 404, 34.25, 22); // DIA 1
+        doc.rect(383.5, 394, 34.25, 22); // DIA 1
         doc.setFont("calibri-normal");
-        doc.text("Dia", 400.625, 412, "center")
+        doc.text("Dia", 400.625, 402, "center")
         doc.setFont("calibri-bold");
-        doc.text(date.substr(8, 1), 391.03125, 422.7);
-        doc.text(date.substr(9, 1), 408.34375, 422.7);
+        doc.text(date.substr(8, 1), 391.03125, 412.7);
+        doc.text(date.substr(9, 1), 408.34375, 412.7);
         // 17.125
-        doc.line(400.625, 415, 400.625, 426);
+        doc.line(400.625, 405, 400.625, 416);
 
-        doc.rect(417.75, 404, 19, 22); // empty square
+        doc.rect(417.75, 394, 19, 22); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("a", 425.25, 422)
+        doc.text("a", 425.25, 412)
 
-        doc.rect(436.75, 404, 69.25, 22); // AÑO 2
+        doc.rect(436.75, 394, 69.25, 22); // AÑO 2
         doc.setFontSize(8.5);
-        doc.text("Año", 471.375, 412, "center")
+        doc.text("Año", 471.375, 402, "center")
         doc.setFont("calibri-bold");
-        doc.text(date.substr(0, 1), 443.90625, 422.7);
-        doc.text(date.substr(1, 1), 461.21875, 422.7);
-        doc.text(date.substr(2, 1), 478.53125, 422.7);
-        doc.text(date.substr(3, 1), 495.84375, 422.7);
+        doc.text(date.substr(0, 1), 443.90625, 412.7);
+        doc.text(date.substr(1, 1), 461.21875, 412.7);
+        doc.text(date.substr(2, 1), 478.53125, 412.7);
+        doc.text(date.substr(3, 1), 495.84375, 412.7);
         // 17.3125
-        doc.line(454.0625, 415, 454.0625, 426);
-        doc.line(471.375, 415, 471.375, 426);
-        doc.line(488.6875, 415, 488.6875, 426);
+        doc.line(454.0625, 405, 454.0625, 416);
+        doc.line(471.375, 405, 471.375, 416);
+        doc.line(488.6875, 405, 488.6875, 416);
 
-        doc.rect(506, 404, 34.25, 22); // MES 2
+        doc.rect(506, 394, 34.25, 22); // MES 2
         doc.setFont("calibri-normal");
-        doc.text("Mes", 523.125, 412, "center")
+        doc.text("Mes", 523.125, 402, "center")
         doc.setFont("calibri-bold");
-        doc.text(date.substr(5, 1), 513.15625, 422.7);
-        doc.text(date.substr(6, 1), 530.46875, 422.7);
+        doc.text(date.substr(5, 1), 513.15625, 412.7);
+        doc.text(date.substr(6, 1), 530.46875, 412.7);
         // 17.125
-        doc.line(523.125, 415, 523.125, 426);
+        doc.line(523.125, 405, 523.125, 416);
 
-        doc.rect(540.25, 404, 34.25, 22); // DIA 2
+        doc.rect(540.25, 394, 34.25, 22); // DIA 2
         doc.setFont("calibri-normal");
-        doc.text("Dia", 557.375, 412, "center")
+        doc.text("Dia", 557.375, 402, "center")
         doc.setFont("calibri-bold");
-        doc.text(date.substr(8, 1), 547.78125, 422.7);
-        doc.text(date.substr(9, 1), 565.09375, 422.7);
+        doc.text(date.substr(8, 1), 547.78125, 412.7);
+        doc.text(date.substr(9, 1), 565.09375, 412.7);
         // 17.125
-        doc.line(557.375, 415, 557.375, 426);
+        doc.line(557.375, 405, 557.375, 416);
 
 
-        doc.rect(37.5, 426, 537, 32); // empty square
+        doc.rect(37.5, 416, 537, 29); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Área temática del curso ₂", 38.5, 434)
+        doc.text("Área temática del curso ₂", 38.5, 424)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text("6000 - Seguridad", 39.5, 453)
-        doc.rect(37.5, 458, 537, 32); // empty square
+        doc.text("6000 - Seguridad", 39.5, 440)
+        doc.rect(37.5, 445, 537, 29); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Nombre del agente capacitador o STPS ₃", 38.5, 466)
+        doc.text("Nombre del agente capacitador o STPS ₃", 38.5, 456)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text("LAVI Fire Workshop México, S.A. de C.V. (LFW-160516-NJ1-0013)", 39.5, 485)
+        doc.text("LAVI Fire Workshop México, S.A. de C.V. (LFW-160516-NJ1-0013)", 39.5, 472)
         //574.5
 
         //Espacio de firmas
-        doc.rect(37.5, 502, 537, 121.6); 
+        doc.rect(37.5, 489, 537, 121.6); 
         doc.setFont("calibri-bold");
         doc.setFontSize(7);
-        doc.text("Los datos se asientan en esta constancia bajo protesta de decir la verdad, apercibidos de la responsabilidad en que incurre todo aquel que no se", 306, 512, "center")
-        doc.text("conduce con la verdad", 306, 522, "center")
+        doc.text("Los datos se asientan en esta constancia bajo protesta de decir la verdad, apercibidos de la responsabilidad en que incurre todo aquel que no se", 306, 499, "center")
+        doc.text("conduce con la verdad", 306, 509, "center")
         doc.setFont("calibri-normal");
-        doc.text("Instructor o tutor", 148, 552, "center")
-        doc.setFont("calibri-bold");
-        doc.setFontSize(9);
-        doc.text("ANTONIO LAVIN VILLA", 148, 602, "center")
-        doc.line(79, 605, 217, 605);
-        doc.setFont("calibri-normal");
-        doc.setFontSize(7);
-        doc.text("Nombre y firma", 148, 612, "center")
-        doc.setFont("calibri-normal");
-        doc.text("Patrón o representante legal ₄", 306, 552, "center")
+        doc.text("Instructor o tutor", 148, 539, "center")
         doc.setFont("calibri-bold");
         doc.setFontSize(9);
-        doc.text(sheetData[3][6].toUpperCase(), 306, 602, "center")
-        doc.line(237, 605, 375, 605);
+        doc.text("ANTONIO LAVIN VILLA", 148, 589, "center")
+        doc.line(79, 592, 217, 592);
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Nombre y firma", 306, 612, "center")
+        doc.text("Nombre y firma", 148, 599, "center")
         doc.setFont("calibri-normal");
-        doc.text("Representante de los trabajadores ₅", 464, 552, "center")
+        doc.text("Patrón o representante legal ₄", 306, 539, "center")
         doc.setFont("calibri-bold");
         doc.setFontSize(9);
-        doc.text(sheetData[4][6].toUpperCase(), 464, 602, "center")
-        doc.line(395, 605, 533, 605);
+        if (sheetData[3][6] != null && sheetData[3][6] != '') {
+          doc.text(sheetData[3][6].toUpperCase(), 306, 589, "center")
+        }
+        doc.line(237, 592, 375, 592);
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
-        doc.text("Nombre y firma", 464, 612, "center")
+        doc.text("Nombre y firma", 306, 599, "center")
+        doc.setFont("calibri-normal");
+        doc.text("Representante de los trabajadores ₅", 464, 539, "center")
+        doc.setFont("calibri-bold");
+        doc.setFontSize(9);
+        if (sheetData[4][6] != null && sheetData[4][6] != '') {
+          doc.text(sheetData[4][6].toUpperCase(), 464, 589, "center")
+        }
+        doc.line(395, 592, 533, 592);
+        doc.setFont("calibri-normal");
+        doc.setFontSize(7);
+        doc.text("Nombre y firma", 464, 599, "center")
 
 
         doc.setFont("calibri-bold");
@@ -1513,7 +1632,7 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.text("ANVERSO", 520.5, 732.6)
       }
     }
-    if (sheetData[6][2] != null)
+    if (sheetData[6][1] != null)
     {
       doc.save(filename + '.pdf')
     }
