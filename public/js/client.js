@@ -229,7 +229,19 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
 
 inputLogo.addEventListener("change", () => {
   var reader = new FileReader();
-  reader.onloadend = function() {
+  var imageTemp = new Image();
+  reader.onloadend = async function() {
+    imageTemp.src = reader.result;
+    await new Promise(r => setTimeout(r, 1000));
+    console.log(imageTemp.width)
+    if (imageTemp.width < 3522) {
+      imgLogo.style.width = "230px"
+      imgLogo.style.height = "200px"
+    }
+    else {
+      imgLogo.style.width = "652px"
+      imgLogo.style.height = "193px"
+    }
     imgLogo.src = reader.result;
     logoClient.src = imgLogo.src
 }
@@ -239,7 +251,7 @@ inputLogo.addEventListener("change", () => {
 btnGenerateI.addEventListener("click", () => 
 {
   try {
-    if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null){
+    if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null && imgLogo.style.height == "200px"){
       loader.style.display = "block"
       loaderIcon.style.display = "block"
       finished = 0;
@@ -478,17 +490,21 @@ btnGenerateI.addEventListener("click", () =>
           }
         }
       })
-      document.getElementById('imgLogo').src = './img/404-error.png'; 
+      document.getElementById('imgLogo').src = './img/404-error.png';
+      document.getElementById('imgLogo').style.width = "230px";
+      document.getElementById('imgLogo').style.height = "200px";  
     document.getElementById('input').files = null; 
     document.getElementById('txtFile').innerHTML = ''; 
     document.getElementById('txtFile').style.height = '25px';
     }
     else {
-      document.getElementById("alertError").innerHTML='Falta logo y/o archivo excel por seleccionar'
+      document.getElementById("alertError").innerHTML='Logo erroneo (faltante o formato incorrecto) y/o archivo excel por seleccionar'
       loaderIcon.style.display = "none"
       loader.style.display = "block"
       displayError.style.display = "block"
       document.getElementById('imgLogo').src = './img/404-error.png'; 
+      document.getElementById('imgLogo').style.width = "230px";
+      document.getElementById('imgLogo').style.height = "200px"; 
     document.getElementById('input').files = null; 
     document.getElementById('txtFile').innerHTML = ''; 
     document.getElementById('txtFile').style.height = '25px';
@@ -510,7 +526,7 @@ btnGenerateI.addEventListener("click", () =>
 
 btnGenerateDC.addEventListener("click", () => {
   try {
-    if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null){
+    if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null && imgLogo.style.height == "193px"){
       loader.style.display = "block"
       loaderIcon.style.display = "block"
       finished = 0;
@@ -622,16 +638,20 @@ btnGenerateDC.addEventListener("click", () => {
         }
       })
       document.getElementById('imgLogo').src = './img/404-error.png'; 
+      document.getElementById('imgLogo').style.width = "230px";
+      document.getElementById('imgLogo').style.height = "200px"; 
     document.getElementById('input').files = null; 
     document.getElementById('txtFile').innerHTML = ''; 
     document.getElementById('txtFile').style.height = '25px';
     }
     else {
-      document.getElementById("alertError").innerHTML='Falta logo y/o archivo excel por seleccionar'
+      document.getElementById("alertError").innerHTML='Logo erroneo (faltante o formato incorrecto) y/o archivo excel por seleccionar'
       loaderIcon.style.display = "none"
       loader.style.display = "block"
       displayError.style.display = "block"
       document.getElementById('imgLogo').src = './img/404-error.png'; 
+      document.getElementById('imgLogo').style.width = "230px";
+      document.getElementById('imgLogo').style.height = "200px"; 
     document.getElementById('input').files = null; 
     document.getElementById('txtFile').innerHTML = ''; 
     document.getElementById('txtFile').style.height = '25px';
@@ -642,6 +662,8 @@ btnGenerateDC.addEventListener("click", () => {
     loader.style.display = "block"
     displayError.style.display = "block"
     document.getElementById('imgLogo').src = './img/404-error.png'; 
+    document.getElementById('imgLogo').style.width = "230px";
+      document.getElementById('imgLogo').style.height = "200px"; 
     document.getElementById('input').files = null; 
     document.getElementById('txtFile').innerHTML = ''; 
     document.getElementById('txtFile').style.height = '25px';
@@ -1010,6 +1032,8 @@ btnGenerateG.addEventListener("click", () => {
         }
       })
       document.getElementById('imgLogo').src = './img/404-error.png'; 
+      document.getElementById('imgLogo').style.width = "230px";
+      document.getElementById('imgLogo').style.height = "200px"; 
     document.getElementById('input').files = null; 
     document.getElementById('txtFile').innerHTML = ''; 
     document.getElementById('txtFile').style.height = '25px';
@@ -1019,7 +1043,9 @@ btnGenerateG.addEventListener("click", () => {
       loaderIcon.style.display = "none"
       loader.style.display = "block"
       displayError.style.display = "block"
-      document.getElementById('imgLogo').src = './img/404-error.png'; 
+      document.getElementById('imgLogo').src = './img/404-error.png';
+      document.getElementById('imgLogo').style.width = "230px";
+      document.getElementById('imgLogo').style.height = "200px";  
     document.getElementById('input').files = null; 
     document.getElementById('txtFile').innerHTML = ''; 
     document.getElementById('txtFile').style.height = '25px';
@@ -1030,6 +1056,8 @@ btnGenerateG.addEventListener("click", () => {
     loader.style.display = "block"
     displayError.style.display = "block"
     document.getElementById('imgLogo').src = './img/404-error.png'; 
+    document.getElementById('imgLogo').style.width = "230px";
+      document.getElementById('imgLogo').style.height = "200px"; 
     document.getElementById('input').files = null; 
     document.getElementById('txtFile').innerHTML = ''; 
     document.getElementById('txtFile').style.height = '25px';
@@ -1413,7 +1441,7 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.setTextColor( 255, 255, 255 )
         
         doc.addImage(imgLavi, "JPEG", 420.743778, 48.84646, 154.256222, 47.15354); // 0.5, 0.5, 9, 2.7
-        doc.addImage(logoClient, "JPEG", 37, 48.84646, 47.15354, 47.15354);    
+        doc.addImage(logoClient, "JPEG", 37, 48.84646, 154.256222, 47.15354);    
         doc.setLineWidth(1.5);
         doc.rect(37, 140, 538, 18, 'F'); // filled square 
         doc.rect(37, 262, 538, 18, 'F');
