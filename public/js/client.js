@@ -13,7 +13,11 @@ var switchBomberos = document.getElementById("switchBomberos");
 var cursoName = ";"
 var imgLavi = new Image()
 var firmaALV = new Image()
+var firmaREP1 = new Image()
+var firmaREP2 = new Image()
 firmaALV.src = "./img/Firma ALV.PNG"
+firmaREP1.src = "./img/Firma Representantes Suburbia1.png"
+firmaREP2.src = "./img/Firma Representantes Suburbia2.png"
 var firmaCapacitador = new Image()
 firmaCapacitador.src = "./img/Firma Javier Capacitador.PNG"
 imgLavi.src = "./img/LAVI Fire_HI-RES.jpg"
@@ -26,6 +30,7 @@ var loaderIcon = document.getElementById("loaderIcon")
 loaderIcon.style.display = 'block'
 displaySuccess.style.display = 'none';
 displayError.style.display = 'none';
+var duracion = [];
 
 
 borde.src = "./img/borde/borde-rojo.png"
@@ -257,7 +262,7 @@ btnGenerateI.addEventListener("click", () =>
       finished = 0;
       readXlsxFile(file, { getSheets: true }).then(function(sheets) {
         for (var i = sheets.length; i > 0; i--) {
-          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
+          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
               console.log(sheetData)
               if (sheetData[0][1] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[3][1] == null 
@@ -359,14 +364,14 @@ btnGenerateI.addEventListener("click", () =>
                 }
               }
               while (founded == true);
-              var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - " + nombreCurso + " - " + nombreComercial
+              var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Individuales - " + nombreCurso + " - " + nombreComercial
               // .getDate devuelve el dia
               // .getMonth devuelve el mes 0= Enero, 1 = Febrero, etc
               // .getFullYear devuelve el año completo ej: 1995
               if (sheetData[2][1] == "Evacuación, Búsqueda y Rescate" && sheetData[0][4] == "Jalisco") {
                 nombreCurso = "Evacuación";
                 cursoName = nombreCurso;
-                filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - " + nombreCurso + " - " + nombreComercial
+                filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Individuales - " + nombreCurso + " - " + nombreComercial
                 generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
                 nombreCurso = "Busqueda y Rescate";
                 cursoName = nombreCurso;
@@ -480,7 +485,7 @@ btnGenerateI.addEventListener("click", () =>
                 var ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + anio;
                 txtInfo = 'Impartido el día **'+ dia + " de " + mes + " de " + anio +'**, para personal de **'+ razonSocial[1]
                 text = 'Impartido el día '+ dia + " de " + mes + " de " + anio +', para personal de '+ razonSocial[1]
-                filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias - " + nombreCurso + " - " + nombreComercial
+                filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias Individuales - " + nombreCurso + " - " + nombreComercial
                 generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
               }
               else {
@@ -526,13 +531,14 @@ btnGenerateI.addEventListener("click", () =>
 
 btnGenerateDC.addEventListener("click", () => {
   try {
+    duracion = [];
     if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null && imgLogo.style.height == "193px"){
       loader.style.display = "block"
       loaderIcon.style.display = "block"
       finished = 0;
       readXlsxFile(file, { getSheets: true }).then(function(sheets) {
         for (var i = sheets.length; i > 0; i--) {
-          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
+          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
               console.log(sheetData)
               if (sheetData[0][1] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[3][1] == null 
@@ -631,8 +637,26 @@ btnGenerateDC.addEventListener("click", () => {
                 }
               }
               while (founded == true);
-              var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - " + nombreCurso + " - " + nombreComercial
-              generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date);
+              var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - " + nombreCurso + " - " + nombreComercial
+              if (sheetData[2][1] == "Evacuación, Búsqueda y Rescate"){
+                generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, sheetData[2][1]);
+                var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - Comunicación - " + nombreComercial
+                generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, "Comunicación");
+                var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - Formación de Brigadas e Introducción a la Protección Civil - " + nombreComercial
+                generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, "Formación de Brigadas e Introducción a la Protección Civil");
+
+              }
+              else {
+                generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, sheetData[2][1]);
+              }
+            })
+          }
+          else if (sheets[i - 1].name == "Cursos PC") {
+            readXlsxFile(file, { sheet: i }).then(function(sheetData) {
+              for(var a = 3; a < sheetData.length; a++){
+                duracion.push({"curso": sheetData[a][2], "duracion": sheetData[a][5]});
+                //console.log(duracion[a - 3].curso);
+              }
             })
           }
         }
@@ -678,7 +702,7 @@ btnGenerateG.addEventListener("click", () => {
       finished = 0;
       readXlsxFile(file, { getSheets: true }).then(function(sheets) {
         for (var i = sheets.length; i > 0; i--) {
-          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
+          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
               console.log(sheetData)
               if (sheetData[0][1] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[3][1] == null 
@@ -779,7 +803,7 @@ btnGenerateG.addEventListener("click", () => {
                 }
               }
               while (founded == true);
-              var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - " + nombreCurso + " - " + nombreComercial
+              var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - " + nombreCurso + " - " + nombreComercial
               // .getDate devuelve el dia
               // .getMonth devuelve el mes 0= Enero, 1 = Febrero, etc
               // .getFullYear devuelve el año completo ej: 1995
@@ -796,7 +820,7 @@ btnGenerateG.addEventListener("click", () => {
                     if (sheetData[0][4] == "Jalisco") {
                       if(sheetData[2][1] == "Evacuación, Búsqueda y Rescate"){
                         nombreCurso = "Evacuación"
-                        filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Evacuación - " + nombreComercial
+                        filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - Evacuación - " + nombreComercial
                         for (var i = 0; i < 2; i++) {
                           generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
                           nombreCurso = "Búsqueda y Rescate"
@@ -896,7 +920,7 @@ btnGenerateG.addEventListener("click", () => {
                           }
                           ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + anio;
                           fechaConstancia = dia  + " de " + mes + " de " + anio;
-                          filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias - Búsqueda y Rescate - " + nombreComercial
+                          filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - Búsqueda y Rescate - " + nombreComercial
                         }
                       }
                       else {
@@ -916,7 +940,7 @@ btnGenerateG.addEventListener("click", () => {
                 if (sheetData[0][4] == "Jalisco") {
                   if(sheetData[2][1] == "Evacuación, Búsqueda y Rescate"){
                     nombreCurso = "Evacuación"
-                    filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias - Evacuación - " + nombreComercial
+                    filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - Evacuación - " + nombreComercial
                     for (var i = 0; i < 2; i++) {
                       generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
                       nombreCurso = "Búsqueda y Rescate"
@@ -1016,7 +1040,7 @@ btnGenerateG.addEventListener("click", () => {
                       }
                       ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + anio;
                       fechaConstancia = dia  + " de " + mes + " de " + anio;
-                      filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias - Búsqueda y Rescate - " + nombreComercial
+                      filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - Búsqueda y Rescate - " + nombreComercial
                     }
                   }
                   else {
@@ -1406,7 +1430,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
     }
 }
 
-var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, date) => {
+var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, date, nombreCurso) => {
   try {
     for (var a = 6; a < sheetData.length; a++)
     {
@@ -1439,7 +1463,19 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.text("FORMATO DC-3", 306, 113, "center")
         doc.text("CONSTANCIA DE COMPETENCIAS O DE HABILIDADES LABORALES", 306, 122, "center")
         doc.setTextColor( 255, 255, 255 )
-        
+        var suburbiaChecked= false;
+        if (firmaElectronica.checked == true) {
+          doc.addImage(firmaALV, "PNG", 64, 514, 175, 110)
+          if (razonSocial[1].toUpperCase().includes("SUBURBIA")) {
+            suburbiaChecked = true;
+            if (sheetData[3][6] != null && sheetData[3][6] != '' && sheetData[3][6].toUpperCase() == 'JOSÉ ESCOTO GARCÍA') {
+              doc.addImage(firmaREP1, "PNG", 254, 492, 110, 120)
+            }
+            if (sheetData[4][6] != null && sheetData[4][6] != '' && sheetData[4][6].toUpperCase() == 'ADRIANA RIVERA GUIJOSA') {
+              doc.addImage(firmaREP2, "PNG", 429, 489, 70, 140)
+            }
+          }
+        }
         doc.addImage(imgLavi, "JPEG", 420.743778, 48.84646, 154.256222, 47.15354); // 0.5, 0.5, 9, 2.7
         doc.addImage(logoClient, "JPEG", 37, 48.84646, 154.256222, 47.15354);    
         doc.setLineWidth(1.5);
@@ -1506,14 +1542,18 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.text("Nombre del curso", 38.5, 380)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text(sheetData[2][1], 39.5, 391)
+        doc.text(nombreCurso, 39.5, 391)
         doc.rect(37.5, 394, 140.5, 22); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
         doc.text("Duración en horas", 38.5, 402)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text("6 horas", 39.5, 413)
+        for (var b = 0; b < duracion.length; b++){
+          if (nombreCurso == duracion[b].curso){
+            doc.text((duracion[b].duracion > 1) ? (duracion[b].duracion + " horas") : (duracion[b].duracion +" hora"), 39.5, 413)
+          }
+        }
         doc.rect(178, 394, 102, 22); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
@@ -1664,8 +1704,7 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
     {
       doc.save(filename + '.pdf')
     }
-      console.log(sheetsLength)
-    if (finished >= sheetsLength - 3)
+    if (finished >= sheetsLength - 2)
       {
         loaderIcon.style.display = "none"
         displaySuccess.style.display = "block";
