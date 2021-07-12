@@ -1132,19 +1132,21 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         else {
           info2 = "La capacitación se impartió el día *"+ fechaConstancia +" *en las instalaciones de " + nombreComercial + "; con el programa y participantes siguientes: "
         }
-        
         const arrayOfNormalAndBoldText = info.split('');
         const arrayOfNormalAndBoldText2 = info2.split('');
-
+        
         var startX = 90; // 120
         var BoldFont = false;
         var startY = 160;
         var palabra = "";
         var letrasMayusculas = 0;
         var invalid = false;
+        
         arrayOfNormalAndBoldText.map((mytext, i) => {
           if (mytext == ' ' || mytext == '*') {
             if (mytext == ' ') {
+              //console.log(palabra + ": " + doc.getTextDimensions(palabra, {fontSize: 9.0}).w)
+              //console.log(doc.getTextWidth(palabra))
               if (doc.getTextDimensions(palabra, {fontSize: 9.0}).w + startX < 557) { // 527
                 doc.text(palabra, startX, startY);
                 //if(palabra[palabra.length -1])
@@ -1161,7 +1163,8 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
                     }
                   }
                 }
-                startX += doc.getTextDimensions(palabra, {fontSize: 9.0}).w + 2 - (letrasMayusculas * 0.8);
+                startX += doc.getTextDimensions(palabra, {fontSize: 9.0}).w + 2 - (letrasMayusculas * 0.6);
+                //startX += doc.getTextDimensions(palabra, {fontSize: 9.0}).w + 2;
                 palabra = "";
                 letrasMayusculas = 0;
                 palabra = "";
@@ -1185,6 +1188,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
                   }
                 }
                 startX += doc.getTextDimensions(palabra, {fontSize: 9.0}).w + 2 - (letrasMayusculas * 0.6);
+                //startX += doc.getTextDimensions(palabra, {fontSize: 9.0}).w + 2;
                 palabra = "";
                 letrasMayusculas = 0;
                 invalid = false;
@@ -1202,9 +1206,12 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
             }
           }
           else {
+            //console.log(mytext + ": " + doc.getTextDimensions(mytext, {fontSize: 9.0}).w)
+            console.log(palabra + ": " + doc.getTextDimensions(palabra, {fontSize: 9.0}).w)
             palabra += mytext;
           }
         });
+        
 
         startX = 90; // 120
         startY = 200;
@@ -1246,6 +1253,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
             palabra += mytext;
           }
         });
+        
 
         doc.setFont("calibri-bold");
     
@@ -1423,6 +1431,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
       }
     }
     catch (error) {
+      console.log(error)
       document.getElementById("alertError").innerHTML='Algo paso, vuelvalo a intentar'
       loaderIcon.style.display = "none"
       loader.style.display = "block"
@@ -1461,14 +1470,14 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.setFont("calibri-bold");
         doc.setFontSize(10);
         doc.text("FORMATO DC-3", 306, 113, "center")
-        doc.text("CONSTANCIA DE COMPETENCIAS O DE HABILIDADES LABORALES", 306, 122, "center")
+        doc.text("CONSTANCIA DE COMPETENCIAS O DE HABILIDADES LABORALES", 306, 125, "center")
         doc.setTextColor( 255, 255, 255 )
         var suburbiaChecked= false;
         if (firmaElectronica.checked == true) {
           doc.addImage(firmaALV, "PNG", 64, 514, 175, 110)
           if (razonSocial[1].toUpperCase().includes("SUBURBIA")) {
             suburbiaChecked = true;
-            if (sheetData[3][6] != null && sheetData[3][6] != '' && sheetData[3][6].toUpperCase() == 'JOSÉ ESCOTO GARCÍA') {
+            if (sheetData[3][6] != null && sheetData[3][6] != '' && (sheetData[3][6].toUpperCase() == 'JOSÉ ESCOTO GARCÍA'  || sheetData[3][6].toUpperCase() == 'JOSE ESCOTO GARCIA')) {
               doc.addImage(firmaREP1, "PNG", 254, 492, 110, 120)
             }
             if (sheetData[4][6] != null && sheetData[4][6] != '' && sheetData[4][6].toUpperCase() == 'ADRIANA RIVERA GUIJOSA') {
@@ -1721,4 +1730,11 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
       displayError.style.display = "block"
       console.log(error)
     }
+}
+
+const isBoldOpen = (arrayLength, valueBefore = false) => {
+  const isEven = arrayLength % 2 === 0;
+  const result = valueBefore !== isEven;
+
+  return result;
 }
