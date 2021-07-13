@@ -1119,7 +1119,8 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.text("CONSTANCIA DE CAPACITACION", 612/2, 140, 'center');
         doc.setFontSize(9.0);
         doc.setFont("calibri-normal");
-        var info = "Hago constar que el personal que labora en " + razonSocial[1] + " (" + nombreComercial +"), ubicado en " + sheetData[4][1] + " "
+        var direccion = sheetData[4][1].replace(/\n/g, ' ')
+        var info = "Hago constar que el personal que labora en " + razonSocial[1] + " (" + nombreComercial +"), ubicado en " + direccion + " "
         + sheetData[1][4] + ", " + sheetData[0][4] + ", participó de manera satisfactoria en el *CURSO BASICO DE " + nombreCurso.toUpperCase() 
         + ", *con una carga horaria de 08 h. "
         var info2 = "";
@@ -1250,6 +1251,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
             }
           }
           else {
+            
             palabra += mytext;
           }
         });
