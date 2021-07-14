@@ -11,6 +11,7 @@ var firmaElectronica = document.getElementById("flexSwitchCheckDefault");
 var switchVirtual = document.getElementById("switchVirtual");
 var switchBomberos = document.getElementById("switchBomberos");
 var cursoName = ";"
+var registrosData;
 var imgLavi = new Image()
 var firmaALV = new Image()
 var firmaREP1 = new Image()
@@ -253,14 +254,14 @@ inputLogo.addEventListener("change", () => {
   reader.readAsDataURL(inputLogo.files[0]);
 })
 
-btnGenerateI.addEventListener("click", () => 
+btnGenerateI.addEventListener("click",() => 
 {
   try {
     if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null && imgLogo.style.height == "200px"){
       loader.style.display = "block"
       loaderIcon.style.display = "block"
       finished = 0;
-      readXlsxFile(file, { getSheets: true }).then(function(sheets) {
+      readXlsxFile(file, { getSheets: true }).then(async function(sheets) {
         for (var i = sheets.length; i > 0; i--) {
           if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
@@ -336,6 +337,22 @@ btnGenerateI.addEventListener("click", () =>
               if (sheetData[3][4] != null)
               {
                 codigos.push(sheetData[3][4]);
+              }
+              var vencido = false;
+              for (var a = 3; a < registrosData.length; a++) {
+                if (codigos[0] == registrosData[a][4] || codigos[1] == registrosData[a][4]) {
+                  if (registrosData[a][6] == "Vencido") {
+                    vencido = true;
+                  }
+                }
+              }
+
+              if (vencido == true) {
+                console.log("Entro")
+                document.getElementById("alertError").innerHTML='Los registros estan vencidos'
+                loaderIcon.style.display = "none";
+                displayError.style.display = "block";
+                return 
               }
   
               var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
@@ -493,6 +510,13 @@ btnGenerateI.addEventListener("click", () =>
               }
             })
           }
+          else {
+            if (sheets[i - 1].name == "Registros PC") {
+              readXlsxFile(file, { sheet: i }).then(function(data) {
+                registrosData = data;
+              })
+            }
+          }
         }
       })
       document.getElementById('imgLogo').src = './img/404-error.png';
@@ -613,6 +637,23 @@ btnGenerateDC.addEventListener("click", () => {
               {
                 codigos.push(sheetData[3][4]);
               }
+
+              var vencido = false;
+              for (var a = 3; a < registrosData.length; a++) {
+                if (codigos[0] == registrosData[a][4] || codigos[1] == registrosData[a][4]) {
+                  if (registrosData[a][6] == "Vencido") {
+                    vencido = true;
+                  }
+                }
+              }
+
+              if (vencido == true) {
+                console.log("Entro")
+                document.getElementById("alertError").innerHTML='Los registros estan vencidos'
+                loaderIcon.style.display = "none";
+                displayError.style.display = "block";
+                return 
+              }
   
               var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
               var razonSocial = sheetData[0]
@@ -652,12 +693,20 @@ btnGenerateDC.addEventListener("click", () => {
             })
           }
           else if (sheets[i - 1].name == "Cursos PC") {
+
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
               for(var a = 3; a < sheetData.length; a++){
                 duracion.push({"curso": sheetData[a][2], "duracion": sheetData[a][5]});
                 //console.log(duracion[a - 3].curso);
               }
             })
+          }
+          else {
+            if (sheets[i - 1].name == "Registros PC") {
+              readXlsxFile(file, { sheet: i }).then(function(data) {
+                registrosData = data;
+              })
+            }
           }
         }
       })
@@ -776,6 +825,23 @@ btnGenerateG.addEventListener("click", () => {
               if (sheetData[3][4] != null)
               {
                 codigos.push(sheetData[3][4]);
+              }
+
+              var vencido = false;
+              for (var a = 3; a < registrosData.length; a++) {
+                if (codigos[0] == registrosData[a][4] || codigos[1] == registrosData[a][4]) {
+                  if (registrosData[a][6] == "Vencido") {
+                    vencido = true;
+                  }
+                }
+              }
+
+              if (vencido == true) {
+                console.log("Entro")
+                document.getElementById("alertError").innerHTML='Los registros estan vencidos'
+                loaderIcon.style.display = "none";
+                displayError.style.display = "block";
+                return 
               }
   
               var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
@@ -1052,6 +1118,13 @@ btnGenerateG.addEventListener("click", () => {
                 }
               }
             })
+          }
+          else {
+            if (sheets[i - 1].name == "Registros PC") {
+              readXlsxFile(file, { sheet: i }).then(function(data) {
+                registrosData = data;
+              })
+            }
           }
         }
       })
