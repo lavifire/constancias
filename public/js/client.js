@@ -212,7 +212,8 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
     doc.save(filename + '.pdf')
   }
     console.log(sheetsLength)
-  if (finished >= sheetsLength - 3)
+    console.log(finished)
+  if (finished >= sheetsLength - 4)
     {
       loaderIcon.style.display = "none"
       displaySuccess.style.display = "block";
@@ -1495,7 +1496,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
       }
     }
       console.log(finished)
-    if (finished >= sheetsLength - 3)
+    if (finished >= sheetsLength - 4)
       {
         loaderIcon.style.display = "none"
         displaySuccess.style.display = "block";
@@ -1600,7 +1601,10 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.text("Puesto*", 38.5, 232)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text(sheetData[a][5].toUpperCase(), 39.5, 248)
+        if (sheetData[a][5] != null) {
+          doc.text(sheetData[a][5].toUpperCase(), 39.5, 248)
+        }
+        
 
         doc.setDrawColor(0, 0, 0);
         
