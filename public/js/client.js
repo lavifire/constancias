@@ -7,6 +7,8 @@ var imgLogo = document.getElementById("imgLogo");
 var btnGenerateI = document.getElementById("btnGenerateI")
 var btnGenerateG = document.getElementById("btnGenerateG")
 var btnGenerateDC = document.getElementById("btnGenerateDC")
+var src;
+//var btnConcentrado = document.getElementById("btnConcentrado")
 var firmaElectronica = document.getElementById("flexSwitchCheckDefault");
 var switchVirtual = document.getElementById("switchVirtual");
 var switchBomberos = document.getElementById("switchBomberos");
@@ -51,12 +53,16 @@ telefono.src = "./img/Telefono.png"
 var ubicacion = new Image()
 ubicacion.src = "./img/Ubicacion.png"
 var file = null;
+var path;
 
 var alertSuccess = document.getElementById("alertSuccess");
 alertSuccess.innerHTML = "<strong>Success!</strong><span>Se crearon las constancias correctamente</span>"
 
-inputFile.addEventListener("change", function() {
+inputFile.addEventListener("change", function(event) {
+  console.log(event.target.value)
   file = inputFile.files[0];
+  path = URL.createObjectURL(file)
+  console.log(path)
   txtFile.innerHTML = file.name;
   txtFile.style.height = "auto"
   //else {
@@ -234,25 +240,21 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
   //doc.fromHTML(htmlinfo, 15.5, 2)
 }
 
-inputLogo.addEventListener("change", () => {
-  var reader = new FileReader();
+inputLogo.addEventListener("change", async () => {
+  src = URL.createObjectURL(inputLogo.files[0])
   var imageTemp = new Image();
-  reader.onloadend = async function() {
-    imageTemp.src = reader.result;
-    await new Promise(r => setTimeout(r, 1000));
-    console.log(imageTemp.width)
-    if (imageTemp.width < 3522) {
-      imgLogo.style.width = "230px"
-      imgLogo.style.height = "200px"
-    }
-    else {
-      imgLogo.style.width = "652px"
-      imgLogo.style.height = "193px"
-    }
-    imgLogo.src = reader.result;
-    logoClient.src = imgLogo.src
-}
-  reader.readAsDataURL(inputLogo.files[0]);
+  imageTemp.src = src;
+  await new Promise(r => setTimeout(r, 1000));
+  if (imageTemp.width < 3522) {
+    imgLogo.style.width = "230px"
+    imgLogo.style.height = "200px"
+  }
+  else {
+    imgLogo.style.width = "652px"
+    imgLogo.style.height = "193px"
+  }
+  imgLogo.src = src
+  logoClient.src = src
 })
 
 btnGenerateI.addEventListener("click",() => 
@@ -1282,7 +1284,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
           }
           else {
             //console.log(mytext + ": " + doc.getTextDimensions(mytext, {fontSize: 9.0}).w)
-            console.log(palabra + ": " + doc.getTextDimensions(palabra, {fontSize: 9.0}).w)
+            
             palabra += mytext;
           }
         });
@@ -1495,7 +1497,6 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.save(filename +'.pdf')
       }
     }
-      console.log(finished)
     if (finished >= sheetsLength - 4)
       {
         loaderIcon.style.display = "none"
@@ -1587,7 +1588,10 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.text("Clave Única de Registro de Población", 38.5, 200)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text(sheetData[a][4].toUpperCase(), 39.5, 216)
+        if (sheetData[a][4] != null) {
+          doc.text(sheetData[a][4].toUpperCase(), 39.5, 216)
+        }
+        
         doc.rect(348, 190, 226.5, 32); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
@@ -1811,9 +1815,11 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
     }
 }
 
-const isBoldOpen = (arrayLength, valueBefore = false) => {
-  const isEven = arrayLength % 2 === 0;
-  const result = valueBefore !== isEven;
+/*btnConcentrado.addEventListener("click", () => {
+  Concentrado();
+})
+*/
 
-  return result;
+function Concentrado() {
+  
 }

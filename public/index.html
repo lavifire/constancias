@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="height: 100%;">
+<html lang="en" style="height: auto;">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -72,6 +72,12 @@
   </div>
   <div class="row">
     <div class="col-12 col-md-6">
+      <div class="row" style="position: relative; height: 20px;">
+        <div class="mytooltip">
+          <span class="mynumber">1</span>
+          <span class="mytooltiptext">Seleccione logo del cliente.</span>
+        </div>
+      </div>
       <div class="row leftLabel">
         <label class="labelStyle custom-file-upload" >
           <input type="file" id="inputLogo"/>
@@ -83,6 +89,12 @@
       </div>
     </div>
     <div class="col-12 col-md-6">
+      <div class="row" style="position: relative;">
+        <div class="mytooltip2">
+          <span class="mynumber">2</span>
+          <span class="mytooltiptext">Seleccione listado de capacitación.</span>
+        </div>
+      </div>
       <div class="row rightLabel">
         <label class="labelStyle custom-file-upload" style="width: auto;">
           <input type="file" id="input"/>
@@ -91,6 +103,12 @@
       </div>
       <div class="row">
         <label id="txtFile" class="txtFile" style="margin-top: 20px; margin-left: 38px;"></label>
+      </div>
+      <div class="row" style="position: relative;">
+        <div class="mytooltip2">
+          <span class="mynumber">3</span>
+          <span class="mytooltiptext">Opciones adicionales para las constancias (opcionales).</span>
+        </div>
       </div>
       <div class="row">
         <div class="form-check form-switch switches">
@@ -112,6 +130,12 @@
       </div>
     </div>
   </div>
+  <div class="row" style="position: relative; height: 30px;">
+    <div class="mytooltip4">
+      <span class="mynumber">4</span>
+      <span class="mytooltiptext">Seleccione tipo de contancia a generar.</span>
+    </div>
+  </div>
   <div class="row">
     <div class="col-12 col-md-4 buttonsContainer">
       <button id="btnGenerateI" class="btnGenerate">Constancias Individuales</button>
@@ -125,6 +149,7 @@
   </div>
 </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/read-excel-file@4.1.0/bundle/read-excel-file.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.0/jspdf.debug.js"></script>
