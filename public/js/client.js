@@ -18,14 +18,14 @@ var imgLavi = new Image()
 var firmaALV = new Image()
 var firmaREP1 = new Image()
 var firmaREP2 = new Image()
-firmaALV.src = "./img/Firma ALV.PNG"
-firmaREP1.src = "./img/Firma Representantes Suburbia1.png"
-firmaREP2.src = "./img/Firma Representantes Suburbia2.png"
+firmaALV.src = "./img/Firma ALV.jpg"
+firmaREP1.src = "./img/Firma Representantes Suburbia1.jpg"
+firmaREP2.src = "./img/Firma Representantes Suburbia2.jpg"
 var firmaCapacitador = new Image()
-firmaCapacitador.src = "./img/Firma Javier Capacitador.PNG"
+firmaCapacitador.src = "./img/Firma Javier Capacitador.jpg"
 imgLavi.src = "./img/LAVI Fire_HI-RES.jpg"
 var imgEsquina = new Image()
-imgEsquina.src = "./img/esquina/esquina-rojo.png"
+imgEsquina.src = "./img/esquina/esquina-rojo.jpg"
 var borde = new Image()
 var displayError = document.getElementById("displayError")
 var displaySuccess = document.getElementById("displaySuccess")
@@ -36,7 +36,7 @@ displayError.style.display = 'none';
 var duracion = [];
 
 
-borde.src = "./img/borde/borde-rojo.png"
+borde.src = "./img/borde/borde-rojo.jpg"
 var loader = document.getElementById("loader");
 var txtFile = document.getElementById("txtFile");
 var codigos = [""];
@@ -44,14 +44,14 @@ var txtInfo = "";
 var text = "";
 var logoClient = new Image()
 var image = new Image()
-image.src = "./img/LAVI Fire Profile Pic.png"
+image.src = "./img/LAVI Fire Profile Pic.jpg"
 var finished = 0;
 var correo = new Image()
-correo.src = "./img/Correo.png"
+correo.src = "./img/Correo.jpg"
 var telefono = new Image()
-telefono.src = "./img/Telefono.png"
+telefono.src = "./img/Telefono.jpg"
 var ubicacion = new Image()
-ubicacion.src = "./img/Ubicacion.png"
+ubicacion.src = "./img/Ubicacion.jpg"
 var file = null;
 var path;
 
@@ -118,16 +118,16 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.setFont("calibri-normal");
       doc.setTextColor( 0, 0, 0 )
       
-      doc.addImage(imgEsquina, "PNG", 578.2677, 0, 141.732, 141.732); // 20.4, 0, 5, 5
-      doc.addImage(borde, "PNG", 0, 496.063, 850.394, 42.5197); // 20.4, 0, 5, 5
+      doc.addImage(imgEsquina, "JPEG", 578.2677, 0, 141.732, 141.732); // 20.4, 0, 5, 5
+      doc.addImage(borde, "JPEG", 0, 496.063, 850.394, 42.5197); // 20.4, 0, 5, 5
       doc.addImage(imgLavi, "JPEG", 14.1732, 14.1732, 220.9448, 67.3622); // 0.5, 0.5, 9, 2.7
       doc.addImage(logoClient, "JPEG", 620, 452.5, 40, 40);
-      doc.addImage(correo, "PNG", 310, 465, 15, 15);
-      doc.addImage(telefono, "PNG", 435, 465, 15, 15);
-      doc.addImage(ubicacion, "PNG", 170, 465, 15, 15);
+      doc.addImage(correo, "JPEG", 310, 465, 15, 15);
+      doc.addImage(telefono, "JPEG", 435, 465, 15, 15);
+      doc.addImage(ubicacion, "JPEG", 170, 465, 15, 15);
       
       
-      doc.addImage(image, "png", 56.6929, 452.5, 40, 40) // 2, 15.7, 1.8, 1.8
+      doc.addImage(image, "JPEG", 56.6929, 452.5, 40, 40) // 2, 15.7, 1.8, 1.8
       doc.setFontSize(10);
       //doc.text(text, 720/2, 85.0394, 'center') // 25.4/2, 3
       doc.text(ciudadFecha, 651.969 - doc.getTextDimensions(ciudadFecha).w, 85.0394);
@@ -191,16 +191,16 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.text(cursoName, 720/2, 236.772, 'center'); // 25.4/2, 8
       doc.setFontSize(10);
       doc.setTextColor( 206, 206, 206 )
-      doc.text("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------", 720/2, 447.874, 'center') // 25.4/2, 15.8
       if (firmaElectronica.checked == true) {
         if (sheetData[1][4] == "León") {
-          doc.addImage(firmaALV, "PNG", 89.999055, 344.0236, 175, 110)
-          doc.addImage(firmaCapacitador, "PNG", 494.9990551, 349.0236, 120, 120)
+          doc.addImage(firmaALV, "JPEG", 89.999055, 344.0236, 175, 110)
+          doc.addImage(firmaCapacitador, "JPEG", 494.9990551, 349.0236, 120, 120)
         }
         else {
-          doc.addImage(firmaALV, "PNG", 280, 344.0236, 175, 110)
+          doc.addImage(firmaALV, "JPEG", 280, 344.0236, 175, 110)
         }
       }
+      doc.text("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------", 720/2, 447.874, 'center') // 25.4/2, 15.8
       doc.setTextColor( 177, 177, 177 )
       doc.setFontSize(8.5);
       doc.text("lavifire@lavi.com.mx", 330, 475); // 360
@@ -1180,7 +1180,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.addFont("calibril-bold.ttf", "calibri-bold", "bold");
         doc.addImage(imgLavi, "JPEG", 57, 26, 149.9015, 42.6811); //220.9448 x 67.3622 
         if(firmaElectronica.checked == true) {
-          doc.addImage(firmaALV, "PNG", 227, 564, 175, 110)
+          doc.addImage(firmaALV, "JPEG", 227, 564, 175, 110)
         }
         doc.setDrawColor(255, 0, 0);
         doc.setLineWidth(2.0);
@@ -1551,14 +1551,14 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.setTextColor( 255, 255, 255 )
         var suburbiaChecked= false;
         if (firmaElectronica.checked == true) {
-          doc.addImage(firmaALV, "PNG", 64, 514, 175, 110)
+          doc.addImage(firmaALV, "JPEG", 64, 514, 175, 110)
           if (razonSocial[1].toUpperCase().includes("SUBURBIA")) {
             suburbiaChecked = true;
             if (sheetData[3][6] != null && sheetData[3][6] != '' && (sheetData[3][6].toUpperCase() == 'JOSÉ ESCOTO GARCÍA'  || sheetData[3][6].toUpperCase() == 'JOSE ESCOTO GARCIA')) {
-              doc.addImage(firmaREP1, "PNG", 254, 492, 110, 120)
+              doc.addImage(firmaREP1, "JPEG", 254, 492, 110, 120)
             }
             if (sheetData[4][6] != null && sheetData[4][6] != '' && sheetData[4][6].toUpperCase() == 'ADRIANA RIVERA GUIJOSA') {
-              doc.addImage(firmaREP2, "PNG", 429, 489, 70, 140)
+              doc.addImage(firmaREP2, "JPEG", 429, 489, 70, 140)
             }
           }
         }
