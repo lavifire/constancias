@@ -230,6 +230,7 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
     }
   }
   catch (error) {
+    console.log(error);
     document.getElementById("alertError").innerHTML='Algo paso, vuelvalo a intentar'
     loaderIcon.style.display = "none"
     loader.style.display = "block"
@@ -265,6 +266,17 @@ btnGenerateI.addEventListener("click",() =>
       loaderIcon.style.display = "block"
       finished = 0;
       readXlsxFile(file, { getSheets: true }).then(async function(sheets) {
+        if (sheets.length < 8) {
+          document.getElementById("alertError").innerHTML='Formato de listado incorrecto'
+          loaderIcon.style.display = "none"
+          loader.style.display = "block"
+          displayError.style.display = "block"
+          document.getElementById('imgLogo').src = './img/404-error.png'; 
+          document.getElementById('input').files = null; 
+          document.getElementById('txtFile').innerHTML = ''; 
+          document.getElementById('txtFile').style.height = '25px';
+          return;
+        }
         for (var i = sheets.length; i > 0; i--) {
           if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
@@ -542,6 +554,7 @@ btnGenerateI.addEventListener("click",() =>
     document.getElementById('txtFile').style.height = '25px';
     }
   } catch(error) {
+    console.log(error)
     document.getElementById("alertError").innerHTML='Algo paso, vuelvalo a intentar'
     loaderIcon.style.display = "none"
     loader.style.display = "block"
@@ -564,6 +577,17 @@ btnGenerateDC.addEventListener("click", () => {
       loaderIcon.style.display = "block"
       finished = 0;
       readXlsxFile(file, { getSheets: true }).then(function(sheets) {
+        if (sheets.length < 8) {
+          document.getElementById("alertError").innerHTML='Formato de listado incorrecto'
+          loaderIcon.style.display = "none"
+          loader.style.display = "block"
+          displayError.style.display = "block"
+          document.getElementById('imgLogo').src = './img/404-error.png'; 
+          document.getElementById('input').files = null; 
+          document.getElementById('txtFile').innerHTML = ''; 
+          document.getElementById('txtFile').style.height = '25px';
+          return;
+        }
         for (var i = sheets.length; i > 0; i--) {
           if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
@@ -753,6 +777,17 @@ btnGenerateG.addEventListener("click", () => {
       loaderIcon.style.display = "block"
       finished = 0;
       readXlsxFile(file, { getSheets: true }).then(function(sheets) {
+        if (sheets.length < 8) {
+          document.getElementById("alertError").innerHTML='Formato de listado incorrecto'
+          loaderIcon.style.display = "none"
+          loader.style.display = "block"
+          displayError.style.display = "block"
+          document.getElementById('imgLogo').src = './img/404-error.png'; 
+          document.getElementById('input').files = null; 
+          document.getElementById('txtFile').innerHTML = ''; 
+          document.getElementById('txtFile').style.height = '25px';
+          return;
+        }
         for (var i = sheets.length; i > 0; i--) {
           if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
