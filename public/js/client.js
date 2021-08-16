@@ -8,6 +8,11 @@ var btnGenerateI = document.getElementById("btnGenerateI")
 var btnGenerateG = document.getElementById("btnGenerateG")
 var btnGenerateDC = document.getElementById("btnGenerateDC")
 var src;
+
+import {xlsx} from '../../routes/xlsx.js';
+
+var wb = xlsx.readFile("prueba.xlsx");
+
 //var btnConcentrado = document.getElementById("btnConcentrado")
 var firmaElectronica = document.getElementById("flexSwitchCheckDefault");
 var switchVirtual = document.getElementById("switchVirtual");
