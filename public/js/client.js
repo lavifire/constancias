@@ -9,11 +9,7 @@ var btnGenerateG = document.getElementById("btnGenerateG")
 var btnGenerateDC = document.getElementById("btnGenerateDC")
 var src;
 
-import {xlsx} from '../../routes/xlsx.js';
-
-var wb = xlsx.readFile("prueba.xlsx");
-
-//var btnConcentrado = document.getElementById("btnConcentrado")
+var btnConcentrado = document.getElementById("btnConcentrado")
 var firmaElectronica = document.getElementById("flexSwitchCheckDefault");
 var switchVirtual = document.getElementById("switchVirtual");
 var switchBomberos = document.getElementById("switchBomberos");
@@ -1855,10 +1851,10 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
     }
 }
 
-/*btnConcentrado.addEventListener("click", () => {
+btnConcentrado.addEventListener("click", () => {
   Concentrado();
 })
-*/
+
 
 function Concentrado() {
   
