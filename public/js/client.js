@@ -8,7 +8,7 @@ var btnGenerateI = document.getElementById("btnGenerateI")
 var btnGenerateG = document.getElementById("btnGenerateG")
 var btnGenerateDC = document.getElementById("btnGenerateDC")
 var src;
-
+var vencido = false;
 var btnConcentrado = document.getElementById("btnConcentrado")
 var firmaElectronica = document.getElementById("flexSwitchCheckDefault");
 var switchVirtual = document.getElementById("switchVirtual");
@@ -262,6 +262,9 @@ inputLogo.addEventListener("change", async () => {
 btnGenerateI.addEventListener("click",() => 
 {
   try {
+    vencido = false;
+    displaySuccess.style.backgroundColor = "#04AA6D";
+    alertSuccess.innerHTML = "<strong>Success!</strong><span>Se crearon las constancias correctamente</span>"
     if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null && imgLogo.style.height == "200px"){
       loader.style.display = "block"
       loaderIcon.style.display = "block"
@@ -354,23 +357,7 @@ btnGenerateI.addEventListener("click",() =>
               {
                 codigos.push(sheetData[3][4]);
               }
-              var vencido = false;
-              for (var a = 3; a < registrosData.length; a++) {
-                if (codigos[0] == registrosData[a][4] || codigos[1] == registrosData[a][4]) {
-                  if (registrosData[a][6] == "Vencido") {
-                    vencido = true;
-                  }
-                }
-              }
 
-              if (vencido == true) {
-                console.log("Entro")
-                document.getElementById("alertError").innerHTML='Los registros estan vencidos'
-                loaderIcon.style.display = "none";
-                displayError.style.display = "block";
-                return 
-              }
-  
               var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
               var ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + fecha.getFullYear();
               var razonSocial = sheetData[0]
@@ -572,6 +559,9 @@ btnGenerateI.addEventListener("click",() =>
 
 btnGenerateDC.addEventListener("click", () => {
   try {
+    vencido = false;
+    displaySuccess.style.backgroundColor = "#04AA6D";
+    alertSuccess.innerHTML = "<strong>Success!</strong><span>Se crearon las constancias correctamente</span>"
     duracion = [];
     if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null && imgLogo.style.height == "193px"){
       loader.style.display = "block"
@@ -666,21 +656,14 @@ btnGenerateDC.addEventListener("click", () => {
                 codigos.push(sheetData[3][4]);
               }
 
-              var vencido = false;
               for (var a = 3; a < registrosData.length; a++) {
                 if (codigos[0] == registrosData[a][4] || codigos[1] == registrosData[a][4]) {
                   if (registrosData[a][6] == "Vencido") {
+                    displaySuccess.style.backgroundColor = "#af9003"
+                    alertSuccess.innerHTML = "<strong>Success!</strong><span>Se crearon las constancias correctamente pero con los registros vencido</span>"
                     vencido = true;
                   }
                 }
-              }
-
-              if (vencido == true) {
-                console.log("Entro")
-                document.getElementById("alertError").innerHTML='Los registros estan vencidos'
-                loaderIcon.style.display = "none";
-                displayError.style.display = "block";
-                return 
               }
   
               var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
@@ -773,6 +756,9 @@ btnGenerateDC.addEventListener("click", () => {
 
 btnGenerateG.addEventListener("click", () => {
   try {
+    vencido = false;
+    displaySuccess.style.backgroundColor = "#04AA6D";
+    alertSuccess.innerHTML = "<strong>Success!</strong><span>Se crearon las constancias correctamente</span>"
     if (file != null){
       loader.style.display = "block"
       loaderIcon.style.display = "block"
@@ -866,21 +852,14 @@ btnGenerateG.addEventListener("click", () => {
                 codigos.push(sheetData[3][4]);
               }
 
-              var vencido = false;
               for (var a = 3; a < registrosData.length; a++) {
                 if (codigos[0] == registrosData[a][4] || codigos[1] == registrosData[a][4]) {
                   if (registrosData[a][6] == "Vencido") {
+                    displaySuccess.style.backgroundColor = "#af9003"
+                    alertSuccess.innerHTML = "<strong>Success!</strong><span>Se crearon las constancias correctamente pero con los registros vencido</span>"
                     vencido = true;
                   }
                 }
-              }
-
-              if (vencido == true) {
-                console.log("Entro")
-                document.getElementById("alertError").innerHTML='Los registros estan vencidos'
-                loaderIcon.style.display = "none";
-                displayError.style.display = "block";
-                return 
               }
   
               var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
@@ -924,7 +903,7 @@ btnGenerateG.addEventListener("click", () => {
                     mult = true;
                     if (sheetData[0][4] == "Jalisco") {
                       if(sheetData[2][1] == "Evacuación, Búsqueda y Rescate"){
-                        nombreCurso = "Evacuación"
+                        nombreCurso = "Evacuación de Inmuebles"
                         filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - Evacuación - " + nombreComercial
                         for (var i = 0; i < 2; i++) {
                           generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
@@ -1044,7 +1023,7 @@ btnGenerateG.addEventListener("click", () => {
               if (participantes.length > 0) {
                 if (sheetData[0][4] == "Jalisco") {
                   if(sheetData[2][1] == "Evacuación, Búsqueda y Rescate"){
-                    nombreCurso = "Evacuación"
+                    nombreCurso = "Evacuación de Inmuebles"
                     filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - Evacuación - " + nombreComercial
                     for (var i = 0; i < 2; i++) {
                       generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
