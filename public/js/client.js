@@ -191,7 +191,6 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.text(sheetData[a][8], 720/2, 160.128, 'center'); // 25.4/2, 6
       doc.text(cursoName, 720/2, 236.772, 'center'); // 25.4/2, 8
       doc.setFontSize(10);
-      doc.setTextColor( 206, 206, 206 )
       if (firmaElectronica.checked == true) {
         if (sheetData[1][4] == "León") {
           doc.addImage(firmaALV, "JPEG", 89.999055, 344.0236, 175, 110)
@@ -200,7 +199,13 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
         else {
           doc.addImage(firmaALV, "JPEG", 280, 344.0236, 175, 110)
         }
+        doc.text(codigos[0], 720/2, 350.5903, 'center'); // 25.4/2, 12
+        if (codigos.length > 1)
+        {
+          doc.text(codigos[1], 720/2, 364.764, 'center'); // 25.4/2, 12.5
+        }
       }
+      doc.setTextColor( 206, 206, 206 )
       doc.text("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------", 720/2, 447.874, 'center') // 25.4/2, 15.8
       doc.setTextColor( 177, 177, 177 )
       doc.setFontSize(8.5);
