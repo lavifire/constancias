@@ -363,6 +363,16 @@ btnGenerateI.addEventListener("click",() =>
                 codigos.push(sheetData[3][4]);
               }
 
+              for (var a = 3; a < registrosData.length; a++) {
+                if (codigos[0] == registrosData[a][4] || codigos[1] == registrosData[a][4]) {
+                  if (registrosData[a][6] == "Vencido") {
+                    displaySuccess.style.backgroundColor = "#af9003"
+                    alertSuccess.innerHTML = "<strong>Success!</strong><span>Se crearon las constancias correctamente pero con los registros vencido</span>"
+                    vencido = true;
+                  }
+                }
+              }
+
               var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
               var ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + fecha.getFullYear();
               var razonSocial = sheetData[0]
