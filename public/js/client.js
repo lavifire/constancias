@@ -394,7 +394,7 @@ btnGenerateI.addEventListener("click",() =>
               // .getMonth devuelve el mes 0= Enero, 1 = Febrero, etc
               // .getFullYear devuelve el año completo ej: 1995
               if (sheetData[2][1] == "Evacuación, Búsqueda y Rescate" && sheetData[0][4] == "Jalisco") {
-                nombreCurso = "Evacuación";
+                nombreCurso = "Evacuación de Inmuebles";
                 cursoName = nombreCurso;
                 filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Individuales - " + nombreCurso + " - " + nombreComercial
                 generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
