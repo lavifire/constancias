@@ -546,7 +546,7 @@ btnGenerateI.addEventListener("click",() =>
           }
           else {
             if (sheets[i - 1].name == "Registros PC") {
-              readXlsxFile(file, { sheet: i }).then(function(data) {
+              await readXlsxFile(file, { sheet: i }).then(function(data) {
                 registrosData = data;
               })
             }
