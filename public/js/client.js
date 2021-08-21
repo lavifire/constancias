@@ -64,24 +64,30 @@ inputFile.addEventListener("change", async function(event) {
   file = inputFile.files[0];
   path = URL.createObjectURL(file)
   console.log(path)
-  txtFile.innerHTML = file.name;
-  txtFile.style.height = "auto"
   console.log(file)
   var sheets = null;
-  readXlsxFile(file, { getSheets: true }).then(async function(mysheets) {
+  await readXlsxFile(file, { getSheets: true }).then(async function(mysheets) {
     sheets = mysheets;
   })
-  await new Promise(r => setTimeout(r, 1000));
+  
   for (var i = 0; i < sheets.length; i++) {
-    await readXlsxFile(file, { sheet: i + 1 }).then(function(sheetData) {
+    await readXlsxFile(file, { sheet: i + 1 }).then(async function(sheetData) {
       if (sheets[i].name == "Cursos PC") {
         for(var a = 3; a < sheetData.length; a++){
           duracion.push({"curso": sheetData[a][2], "duracion": sheetData[a][5]});
           //console.log(duracion[a - 3].curso);
         }
       }
+      else if (sheets[i].name == "Registros PC") {
+        await readXlsxFile(file, { sheet: i + 1 }).then(function(data) {
+          registrosData = data;
+        })
+      }
     })
   }
+  await new Promise(r => setTimeout(r, 1000));
+  txtFile.innerHTML = file.name;
+  txtFile.style.height = "auto"
   //else {
   //  alert("No se ha elegido un estado");
   //}
@@ -543,13 +549,6 @@ btnGenerateI.addEventListener("click",() =>
                 generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
               }
             })
-          }
-          else {
-            if (sheets[i - 1].name == "Registros PC") {
-              await readXlsxFile(file, { sheet: i }).then(function(data) {
-                registrosData = data;
-              })
-            }
           }
         }
       })
