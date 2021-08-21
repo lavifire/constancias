@@ -59,13 +59,29 @@ var path;
 var alertSuccess = document.getElementById("alertSuccess");
 alertSuccess.innerHTML = "<strong>Success!</strong><span>Se crearon las constancias correctamente</span>"
 
-inputFile.addEventListener("change", function(event) {
+inputFile.addEventListener("change", async function(event) {
   console.log(event.target.value)
   file = inputFile.files[0];
   path = URL.createObjectURL(file)
   console.log(path)
   txtFile.innerHTML = file.name;
   txtFile.style.height = "auto"
+  console.log(file)
+  var sheets = null;
+  readXlsxFile(file, { getSheets: true }).then(async function(mysheets) {
+    sheets = mysheets;
+  })
+  await new Promise(r => setTimeout(r, 1000));
+  for (var i = 0; i < sheets.length; i++) {
+    await readXlsxFile(file, { sheet: i + 1 }).then(function(sheetData) {
+      if (sheets[i].name == "Cursos PC") {
+        for(var a = 3; a < sheetData.length; a++){
+          duracion.push({"curso": sheetData[a][2], "duracion": sheetData[a][5]});
+          //console.log(duracion[a - 3].curso);
+        }
+      }
+    })
+  }
   //else {
   //  alert("No se ha elegido un estado");
   //}
@@ -577,7 +593,6 @@ btnGenerateDC.addEventListener("click", () => {
     vencido = false;
     displaySuccess.style.backgroundColor = "#04AA6D";
     alertSuccess.innerHTML = "<strong>Success!</strong><span>Se crearon las constancias correctamente</span>"
-    duracion = [];
     if (imgLogo.src.indexOf("img/404-error.png") == -1 && file != null && imgLogo.style.height == "193px"){
       loader.style.display = "block"
       loaderIcon.style.display = "block"
@@ -718,15 +733,6 @@ btnGenerateDC.addEventListener("click", () => {
               }
             })
           }
-          else if (sheets[i - 1].name == "Cursos PC") {
-
-            readXlsxFile(file, { sheet: i }).then(function(sheetData) {
-              for(var a = 3; a < sheetData.length; a++){
-                duracion.push({"curso": sheetData[a][2], "duracion": sheetData[a][5]});
-                //console.log(duracion[a - 3].curso);
-              }
-            })
-          }
           else {
             if (sheets[i - 1].name == "Registros PC") {
               readXlsxFile(file, { sheet: i }).then(function(data) {
@@ -754,6 +760,7 @@ btnGenerateDC.addEventListener("click", () => {
     document.getElementById('input').files = null; 
     document.getElementById('txtFile').innerHTML = ''; 
     document.getElementById('txtFile').style.height = '25px';
+    duracion = [];
     }
   } catch(error) {
     document.getElementById("alertError").innerHTML='Algo paso, vuelvalo a intentar'
@@ -766,6 +773,7 @@ btnGenerateDC.addEventListener("click", () => {
     document.getElementById('input').files = null; 
     document.getElementById('txtFile').innerHTML = ''; 
     document.getElementById('txtFile').style.height = '25px';
+    duracion = [];
   }
 })
 
