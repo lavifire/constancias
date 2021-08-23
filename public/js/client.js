@@ -161,20 +161,7 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       {
         doc.text(codigos[1], 720/2, 364.764, 'center'); // 25.4/2, 12.5
       }
-      if (sheetData[1][4] == "León")
-      {
-        doc.text("Arq. Antonio Lavín Villa", 119.999055, 424.0236); // 4.2333, 14.5
-        doc.text("Javier Everardo Hernández Moreno", 479.9990551, 424.0236); // 16.9333, 14.5
-        doc.setFontSize(8.5);
-        doc.text("Representante Legal", 131.337638, 435.197); // 4.6333, 15
-        doc.text("Instructor del curso", 522.5187402, 435.197); // 18.4333, 15
-      }
-      else
-      {
-        doc.text("Arq. Antonio Lavín Villa", 720/2, 424.0236, 'center'); // 25.4/2, 14.5
-        doc.setFontSize(8.5);
-        doc.text("Representante Legal", 720/2, 435.197, 'center'); // 25.4/2, 15
-      }
+      
       doc.setFontSize(12);
       doc.text("Otorga la presente constancia a:", 720/2, 121.831, 'center'); // 25.4/2, 5
       doc.text("Por haber participado en el curso de:", 720/2, 198.425, 'center'); // 25.4/2, 7
@@ -226,6 +213,20 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
         {
           doc.text(codigos[1], 720/2, 364.764, 'center'); // 25.4/2, 12.5
         }
+      }
+      if (sheetData[1][4] == "León")
+      {
+        doc.text("Arq. Antonio Lavín Villa", 119.999055, 424.0236); // 4.2333, 14.5
+        doc.text("Javier Everardo Hernández Moreno", 479.9990551, 424.0236); // 16.9333, 14.5
+        doc.setFontSize(8.5);
+        doc.text("Representante Legal", 131.337638, 435.197); // 4.6333, 15
+        doc.text("Instructor del curso", 522.5187402, 435.197); // 18.4333, 15
+      }
+      else
+      {
+        doc.text("Arq. Antonio Lavín Villa", 720/2, 424.0236, 'center'); // 25.4/2, 14.5
+        doc.setFontSize(8.5);
+        doc.text("Representante Legal", 720/2, 435.197, 'center'); // 25.4/2, 15
       }
       doc.setTextColor( 206, 206, 206 )
       doc.text("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------", 720/2, 447.874, 'center') // 25.4/2, 15.8
