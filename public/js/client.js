@@ -9,7 +9,6 @@ var btnGenerateG = document.getElementById("btnGenerateG")
 var btnGenerateDC = document.getElementById("btnGenerateDC")
 var src;
 var vencido = false;
-var btnConcentrado = document.getElementById("btnConcentrado")
 var firmaElectronica = document.getElementById("flexSwitchCheckDefault");
 var switchVirtual = document.getElementById("switchVirtual");
 var switchBomberos = document.getElementById("switchBomberos");
@@ -112,11 +111,11 @@ switchBomberos.addEventListener("change", () => {
 var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets) => {
   //console.log(firmaElectronica.checked)
   try {
-  for (var a = 6; a < sheetData.length; a++)
+  for (var a = 7; a < sheetData.length; a++)
   {
-    if (a == 6)
+    if (a == 7)
     {
-      if (sheetData[6][1] != null)
+      if (sheetData[7][1] != null)
       {
         var doc = new jsPDF('l', 'pt', [540, 720]) //19.05, 25.4
         doc.addFileToVFS("calibril-normal.ttf", font_normal)
@@ -201,7 +200,7 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.text(cursoName, 720/2, 236.772, 'center'); // 25.4/2, 8
       doc.setFontSize(10);
       if (firmaElectronica.checked == true) {
-        if (sheetData[1][4] == "León") {
+        if (sheetData[2][4] == "León") {
           doc.addImage(firmaALV, "JPEG", 89.999055, 344.0236, 175, 110)
           doc.addImage(firmaCapacitador, "JPEG", 494.9990551, 349.0236, 120, 120)
         }
@@ -214,7 +213,7 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
           doc.text(codigos[1], 720/2, 364.764, 'center'); // 25.4/2, 12.5
         }
       }
-      if (sheetData[1][4] == "León")
+      if (sheetData[2][4] == "León")
       {
         doc.text("Arq. Antonio Lavín Villa", 119.999055, 424.0236); // 4.2333, 14.5
         doc.text("Javier Everardo Hernández Moreno", 479.9990551, 424.0236); // 16.9333, 14.5
@@ -242,13 +241,13 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       //doc.fromHTML(htmlinfo.innerHTML, 5, 8.5) 
     }
   }
-  if (sheetData[6][1] != null)
+  if (sheetData[7][1] != null)
   {
     doc.save(filename + '.pdf')
   }
     console.log(sheetsLength)
     console.log(finished)
-  if (finished >= sheetsLength - 4)
+  if (finished >= sheetsLength - 2)
     {
       loaderIcon.style.display = "none"
       displaySuccess.style.display = "block";
@@ -298,7 +297,7 @@ btnGenerateI.addEventListener("click",() =>
       loaderIcon.style.display = "block"
       finished = 0;
       readXlsxFile(file, { getSheets: true }).then(async function(sheets) {
-        if (sheets.length < 8) {
+        if (sheets.length < 6) {
           document.getElementById("alertError").innerHTML='Formato de listado incorrecto'
           loaderIcon.style.display = "none"
           loader.style.display = "block"
@@ -310,18 +309,15 @@ btnGenerateI.addEventListener("click",() =>
           return;
         }
         for (var i = sheets.length; i > 0; i--) {
-          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
+          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Direcciones") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
-              console.log(sheetData)
-              if (sheetData[0][1] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[3][1] == null 
-                && sheetData[4][1] == null || sheetData[0][4] == null || sheetData[1][4] == null || sheetData[2][4] == null
-                && sheetData[3][4] == null || sheetData[2][6] == null){
+              if (sheetData[2][1] == null || sheetData[4][1] == null || sheetData[4][6] == null || sheetData[5][6] == null){
                 document.getElementById("alertError").innerHTML='Faltan datos en el excel'
                 loaderIcon.style.display = "none";
                 displayError.style.display = "block";
                 return 
               }
-              var date = sheetData[3];
+              var date = sheetData[4];
               var fecha = new Date(Date.parse(date[1]))
               var mes = "";
               var mesNumber = "";
@@ -380,10 +376,10 @@ btnGenerateI.addEventListener("click",() =>
               {
                 codigos.pop();
               }
-              codigos[0] = sheetData[2][4];
-              if (sheetData[3][4] != null)
+              codigos[0] = sheetData[3][4];
+              if (sheetData[4][4] != null)
               {
-                codigos.push(sheetData[3][4]);
+                codigos.push(sheetData[4][4]);
               }
 
               for (var a = 3; a < registrosData.length; a++) {
@@ -397,12 +393,12 @@ btnGenerateI.addEventListener("click",() =>
               }
 
               var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
-              var ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + fecha.getFullYear();
-              var razonSocial = sheetData[0]
+              var ciudadFecha = sheetData[2][4] + ", " + sheetData[1][4] + " a " + dia  + " de " + mes + " de " + fecha.getFullYear();
+              var razonSocial = sheetData[1]
               txtInfo = 'Impartido el día **'+ dia + " de " + mes + " de " + fecha.getFullYear() +'**, para personal de **'+ razonSocial[1]
               text = 'Impartido el día '+ dia + " de " + mes + " de " + fecha.getFullYear() +', para personal de '+ razonSocial[1]
-              var nombreComercial = sheetData[1][1]
-              var nombreCurso = sheetData[2][1]
+              var nombreComercial = sheetData[2][1]
+              var nombreCurso = sheetData[3][1]
               cursoName = nombreCurso;
               var founded = true;
               var position = 0;
@@ -426,7 +422,7 @@ btnGenerateI.addEventListener("click",() =>
               // .getDate devuelve el dia
               // .getMonth devuelve el mes 0= Enero, 1 = Febrero, etc
               // .getFullYear devuelve el año completo ej: 1995
-              if (sheetData[2][1] == "Evacuación, Búsqueda y Rescate" && sheetData[0][4] == "Jalisco") {
+              if (sheetData[3][1] == "Evacuación, Búsqueda y Rescate" && sheetData[1][4] == "Jalisco") {
                 nombreCurso = "Evacuación de Inmuebles";
                 cursoName = nombreCurso;
                 filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Individuales - " + nombreCurso + " - " + nombreComercial
@@ -540,7 +536,7 @@ btnGenerateI.addEventListener("click",() =>
                     }
                     break;
                 }
-                var ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + anio;
+                var ciudadFecha = sheetData[2][4] + ", " + sheetData[1][4] + " a " + dia  + " de " + mes + " de " + anio;
                 txtInfo = 'Impartido el día **'+ dia + " de " + mes + " de " + anio +'**, para personal de **'+ razonSocial[1]
                 text = 'Impartido el día '+ dia + " de " + mes + " de " + anio +', para personal de '+ razonSocial[1]
                 filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias Individuales - " + nombreCurso + " - " + nombreComercial
@@ -598,7 +594,7 @@ btnGenerateDC.addEventListener("click", () => {
       loaderIcon.style.display = "block"
       finished = 0;
       readXlsxFile(file, { getSheets: true }).then(function(sheets) {
-        if (sheets.length < 8) {
+        if (sheets.length < 6) {
           document.getElementById("alertError").innerHTML='Formato de listado incorrecto'
           loaderIcon.style.display = "none"
           loader.style.display = "block"
@@ -610,18 +606,16 @@ btnGenerateDC.addEventListener("click", () => {
           return;
         }
         for (var i = sheets.length; i > 0; i--) {
-          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
+          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Direcciones") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
               console.log(sheetData)
-              if (sheetData[0][1] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[3][1] == null 
-                && sheetData[4][1] == null || sheetData[0][4] == null || sheetData[1][4] == null || sheetData[2][4] == null
-                && sheetData[3][4] == null || sheetData[2][6] == null){
+              if (sheetData[2][1] == null || sheetData[4][1] == null || sheetData[4][6] == null || sheetData[5][6] == null){
                 document.getElementById("alertError").innerHTML='Faltan datos en el excel'
                 loaderIcon.style.display = "none";
                 displayError.style.display = "block";
                 return 
               }
-              var date = sheetData[3];
+              var date = sheetData[4];
               var fecha = new Date(Date.parse(date[1]))
               var mes = "";
               var mesNumber = "";
@@ -680,10 +674,10 @@ btnGenerateDC.addEventListener("click", () => {
               {
                 codigos.pop();
               }
-              codigos[0] = sheetData[2][4];
-              if (sheetData[3][4] != null)
+              codigos[0] = sheetData[3][4];
+              if (sheetData[4][4] != null)
               {
-                codigos.push(sheetData[3][4]);
+                codigos.push(sheetData[4][4]);
               }
 
               for (var a = 3; a < registrosData.length; a++) {
@@ -697,10 +691,10 @@ btnGenerateDC.addEventListener("click", () => {
               }
   
               var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
-              var razonSocial = sheetData[0]
+              var razonSocial = sheetData[1]
               var date = fecha.getFullYear() + "-" + mesNumber + "-" + dia;
-              var nombreComercial = sheetData[1][1]
-              var nombreCurso = sheetData[2][1]
+              var nombreComercial = sheetData[2][1]
+              var nombreCurso = sheetData[3][1]
               var founded = true;
               var position = 0;
               do
@@ -720,8 +714,8 @@ btnGenerateDC.addEventListener("click", () => {
               }
               while (founded == true);
               var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - " + nombreCurso + " - " + nombreComercial
-              if (sheetData[2][1] == "Evacuación, Búsqueda y Rescate"){
-                generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, sheetData[2][1]);
+              if (sheetData[3][1] == "Evacuación, Búsqueda y Rescate"){
+                generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, sheetData[3][1]);
                 var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - Comunicación - " + nombreComercial
                 generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, "Comunicación");
                 var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - Formación de Brigadas e Introducción a la Protección Civil - " + nombreComercial
@@ -729,17 +723,17 @@ btnGenerateDC.addEventListener("click", () => {
 
               }
               else {
-                generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, sheetData[2][1]);
+                generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, sheetData[3][1]);
               }
             })
           }
-          else {
-            if (sheets[i - 1].name == "Registros PC") {
-              readXlsxFile(file, { sheet: i }).then(function(data) {
-                registrosData = data;
-              })
-            }
-          }
+          //else {
+          //  if (sheets[i - 1].name == "Registros PC") {
+          //    readXlsxFile(file, { sheet: i }).then(function(data) {
+          //      registrosData = data;
+          //    })
+          //  }
+          //}
         }
       })
       document.getElementById('imgLogo').src = './img/404-error.png'; 
@@ -787,7 +781,7 @@ btnGenerateG.addEventListener("click", () => {
       loaderIcon.style.display = "block"
       finished = 0;
       readXlsxFile(file, { getSheets: true }).then(function(sheets) {
-        if (sheets.length < 8) {
+        if (sheets.length < 6) {
           document.getElementById("alertError").innerHTML='Formato de listado incorrecto'
           loaderIcon.style.display = "none"
           loader.style.display = "block"
@@ -799,18 +793,16 @@ btnGenerateG.addEventListener("click", () => {
           return;
         }
         for (var i = sheets.length; i > 0; i--) {
-          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Estados Municipios" && sheets[i - 1].name != "Direcciones" && sheets[i - 1].name != "RFCs") {
+          if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Direcciones") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
               console.log(sheetData)
-              if (sheetData[0][1] == null || sheetData[1][1] == null || sheetData[2][1] == null || sheetData[3][1] == null 
-                && sheetData[4][1] == null || sheetData[0][4] == null || sheetData[1][4] == null || sheetData[2][4] == null
-                && sheetData[3][4] == null || sheetData[2][6] == null){
+              if (sheetData[2][1] == null || sheetData[4][1] == null || sheetData[4][6] == null || sheetData[5][6] == null){
                 document.getElementById("alertError").innerHTML='Faltan datos en el excel'
                 loaderIcon.style.display = "none";
                 displayError.style.display = "block";
                 return 
               }
-              var date = sheetData[3];
+              var date = sheetData[4];
               var fecha = new Date(Date.parse(date[1]))
               var mes = "";
               var mesNumber = "";
@@ -869,10 +861,10 @@ btnGenerateG.addEventListener("click", () => {
               {
                 codigos.pop();
               }
-              codigos[0] = sheetData[2][4];
-              if (sheetData[3][4] != null)
+              codigos[0] = sheetData[3][4];
+              if (sheetData[4][4] != null)
               {
-                codigos.push(sheetData[3][4]);
+                codigos.push(sheetData[4][4]);
               }
 
               for (var a = 3; a < registrosData.length; a++) {
@@ -886,12 +878,12 @@ btnGenerateG.addEventListener("click", () => {
               }
   
               var dia = (fecha.getDate() >= 10) ? (fecha.getDate()) : ("0" + fecha.getDate())
-              var ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + fecha.getFullYear();
+              var ciudadFecha = sheetData[2][4] + ", " + sheetData[1][4] + " a " + dia  + " de " + mes + " de " + fecha.getFullYear();
               var fechaConstancia = dia  + " de " + mes + " de " + fecha.getFullYear();
-              var razonSocial = sheetData[0]
+              var razonSocial = sheetData[1]
               //razonSocial[1]
-              var nombreComercial = sheetData[1][1]
-              var nombreCurso = sheetData[2][1]
+              var nombreComercial = sheetData[2][1]
+              var nombreCurso = sheetData[3][1]
               var founded = true;
               var position = 0;
               do
@@ -917,15 +909,15 @@ btnGenerateG.addEventListener("click", () => {
               var participantes = [];
               var mult = false;
               var numC = 1;
-              for (var a = 6; a < sheetData.length; a++) {
+              for (var a = 7; a < sheetData.length; a++) {
                 if (sheetData[a][1] != null) {
                   if(participantes.length < 45) {
                     participantes.push(sheetData[a][8])
                   }
                   else {
                     mult = true;
-                    if (sheetData[0][4] == "Jalisco") {
-                      if(sheetData[2][1] == "Evacuación, Búsqueda y Rescate"){
+                    if (sheetData[1][4] == "Jalisco") {
+                      if(sheetData[3][1] == "Evacuación, Búsqueda y Rescate"){
                         nombreCurso = "Evacuación de Inmuebles"
                         filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - Evacuación - " + nombreComercial
                         for (var i = 0; i < 2; i++) {
@@ -1025,7 +1017,7 @@ btnGenerateG.addEventListener("click", () => {
                               }
                               break;
                           }
-                          ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + anio;
+                          ciudadFecha = sheetData[2][4] + ", " + sheetData[1][4] + " a " + dia  + " de " + mes + " de " + anio;
                           fechaConstancia = dia  + " de " + mes + " de " + anio;
                           filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - Búsqueda y Rescate - " + nombreComercial
                         }
@@ -1044,8 +1036,8 @@ btnGenerateG.addEventListener("click", () => {
                 }
               }
               if (participantes.length > 0) {
-                if (sheetData[0][4] == "Jalisco") {
-                  if(sheetData[2][1] == "Evacuación, Búsqueda y Rescate"){
+                if (sheetData[1][4] == "Jalisco") {
+                  if(sheetData[3][1] == "Evacuación, Búsqueda y Rescate"){
                     nombreCurso = "Evacuación de Inmuebles"
                     filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - Evacuación - " + nombreComercial
                     for (var i = 0; i < 2; i++) {
@@ -1145,7 +1137,7 @@ btnGenerateG.addEventListener("click", () => {
                           }
                           break;
                       }
-                      ciudadFecha = sheetData[1][4] + ", " + sheetData[0][4] + " a " + dia  + " de " + mes + " de " + anio;
+                      ciudadFecha = sheetData[2][4] + ", " + sheetData[1][4] + " a " + dia  + " de " + mes + " de " + anio;
                       fechaConstancia = dia  + " de " + mes + " de " + anio;
                       filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - Búsqueda y Rescate - " + nombreComercial
                     }
@@ -1160,13 +1152,13 @@ btnGenerateG.addEventListener("click", () => {
               }
             })
           }
-          else {
-            if (sheets[i - 1].name == "Registros PC") {
-              readXlsxFile(file, { sheet: i }).then(function(data) {
-                registrosData = data;
-              })
-            }
-          }
+          //else {
+          //  if (sheets[i - 1].name == "Registros PC") {
+          //    readXlsxFile(file, { sheet: i }).then(function(data) {
+          //      registrosData = data;
+          //    })
+          //  }
+          //}
         }
       })
       document.getElementById('imgLogo').src = './img/404-error.png'; 
@@ -1204,7 +1196,7 @@ btnGenerateG.addEventListener("click", () => {
 
 var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets, fechaConstancia, nombreCurso, participantes, mult, numC) => {
   try {
-    if (sheetData[6][1] != null)
+    if (sheetData[7][1] != null)
       {
         console.log("Entro")
         var doc = new jsPDF('p', 'pt', [612, 792]);
@@ -1233,9 +1225,9 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.text("CONSTANCIA DE CAPACITACION", 612/2, 140, 'center');
         doc.setFontSize(9.0);
         doc.setFont("calibri-normal");
-        var direccion = sheetData[4][1].replace(/\n/g, ' ')
+        var direccion = sheetData[5][1].replace(/\n/g, ' ')
         var info = "Hago constar que el personal que labora en " + razonSocial[1] + " (" + nombreComercial +"), ubicado en " + direccion + " "
-        + sheetData[1][4] + ", " + sheetData[0][4] + ", participó de manera satisfactoria en el *CURSO BASICO DE " + nombreCurso.toUpperCase() 
+        + sheetData[2][4] + ", " + sheetData[1][4] + ", participó de manera satisfactoria en el *CURSO BASICO DE " + nombreCurso.toUpperCase() 
         + ", *con una carga horaria de 08 h. "
         var info2 = "";
         if (switchVirtual.checked) {
@@ -1502,7 +1494,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.text("Arq. Antonio Lavín Villa", 612/2, 640, 'center')
         doc.text("LAVI Fire Workshop México, S.A. de C.V.", 612/2, 650, 'center')
         doc.text("Capacitador en Materia de Protección Civil", 612/2, 660, 'center')
-        doc.text(sheetData[2][4], 612/2, 670, 'center')
+        doc.text(sheetData[3][4], 612/2, 670, 'center')
         doc.text("REG. DE S.T.P.S LFW-160516-NJ1-0013", 612/2, 680, 'center')
         doc.setFontSize(7.5);
         doc.text("Se emite la presente, bajo lo dispuesto por los Artículos 19 Fracción XVII, 41, 42, 43 Fracción I, II, III, IV, V, VI, 45,56, de la Ley General de Protección Civil,", 612/2, 695, 'center')
@@ -1526,7 +1518,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.text("lavifire@lavi.com.mx",  612/2, 748, 'center')
       }
     
-    if (sheetData[6][1] != null)
+    if (sheetData[7][1] != null)
     {
       if (mult == true) {
         doc.save(filename + '_' + numC  + '.pdf')
@@ -1535,7 +1527,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.save(filename +'.pdf')
       }
     }
-    if (finished >= sheetsLength - 4)
+    if (finished >= sheetsLength - 2)
       {
         loaderIcon.style.display = "none"
         displaySuccess.style.display = "block";
@@ -1556,11 +1548,11 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
 
 var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, date, nombreCurso) => {
   try {
-    for (var a = 6; a < sheetData.length; a++)
+    for (var a = 7; a < sheetData.length; a++)
     {
-      if (a == 6)
+      if (a == 7)
       {
-        if (sheetData[6][1] != null)
+        if (sheetData[7][1] != null)
         {
           var doc = new jsPDF('p', 'pt', [612, 792]);
           doc.addFileToVFS("calibril-normal.ttf", font_normal)
@@ -1592,10 +1584,10 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
           doc.addImage(firmaALV, "JPEG", 64, 514, 175, 110)
           if (razonSocial[1].toUpperCase().includes("SUBURBIA")) {
             suburbiaChecked = true;
-            if (sheetData[3][6] != null && sheetData[3][6] != '' && (sheetData[3][6].toUpperCase() == 'JOSÉ ESCOTO GARCÍA'  || sheetData[3][6].toUpperCase() == 'JOSE ESCOTO GARCIA')) {
+            if (sheetData[4][6] != null && sheetData[4][6] != '' && (sheetData[4][6].toUpperCase() == 'JOSÉ ESCOTO GARCÍA'  || sheetData[4][6].toUpperCase() == 'JOSE ESCOTO GARCIA')) {
               doc.addImage(firmaREP1, "JPEG", 254, 492, 110, 120)
             }
-            if (sheetData[4][6] != null && sheetData[4][6] != '' && sheetData[4][6].toUpperCase() == 'ADRIANA RIVERA GUIJOSA') {
+            if (sheetData[5][6] != null && sheetData[5][6] != '' && sheetData[5][6].toUpperCase() == 'ADRIANA RIVERA GUIJOSA') {
               doc.addImage(firmaREP2, "JPEG", 429, 489, 70, 140)
             }
           }
@@ -1663,7 +1655,7 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.text("Registro Federal de Contribuyentes (SHCP)", 38.5, 322)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text(sheetData[2][6].toUpperCase(), 306, 338, "center")
+        doc.text(sheetData[3][6].toUpperCase(), 306, 338, "center")
 
         // DATOS DEL PROGRAMA DE CAPACITACIÓN, ADIESTRAMIENTO Y PRODUCTIVIDAD
         doc.rect(37.5, 372, 537, 22); // empty square
@@ -1792,8 +1784,8 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.text("Patrón o representante legal ₄", 306, 539, "center")
         doc.setFont("calibri-bold");
         doc.setFontSize(9);
-        if (sheetData[3][6] != null && sheetData[3][6] != '') {
-          doc.text(sheetData[3][6].toUpperCase(), 306, 589, "center")
+        if (sheetData[4][6] != null && sheetData[4][6] != '') {
+          doc.text(sheetData[4][6].toUpperCase(), 306, 589, "center")
         }
         doc.line(237, 592, 375, 592);
         doc.setFont("calibri-normal");
@@ -1803,8 +1795,8 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.text("Representante de los trabajadores ₅", 464, 539, "center")
         doc.setFont("calibri-bold");
         doc.setFontSize(9);
-        if (sheetData[4][6] != null && sheetData[4][6] != '') {
-          doc.text(sheetData[4][6].toUpperCase(), 464, 589, "center")
+        if (sheetData[5][6] != null && sheetData[5][6] != '') {
+          doc.text(sheetData[5][6].toUpperCase(), 464, 589, "center")
         }
         doc.line(395, 592, 533, 592);
         doc.setFont("calibri-normal");
@@ -1830,7 +1822,7 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.text("ANVERSO", 520.5, 732.6)
       }
     }
-    if (sheetData[6][1] != null)
+    if (sheetData[7][1] != null)
     {
       doc.save(filename + '.pdf')
     }
@@ -1851,13 +1843,4 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
       displayError.style.display = "block"
       console.log(error)
     }
-}
-
-btnConcentrado.addEventListener("click", () => {
-  Concentrado();
-})
-
-
-function Concentrado() {
-  
 }
