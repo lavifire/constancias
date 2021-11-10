@@ -1,6 +1,7 @@
 import { font_normal } from '../css/calibril-normal.js';
 import { font_bold } from '../css/calibril-bold.js';
 import { font } from '../css/opensans-bold.js';
+var doc = null;
 var inputFile = document.getElementById("input");
 var inputLogo = document.getElementById("inputLogo");
 var imgLogo = document.getElementById("imgLogo");
@@ -108,35 +109,40 @@ switchBomberos.addEventListener("change", () => {
   }
 })
 
-var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets) => {
+var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheetsLength, sheets, cursoNombre) => {
   //console.log(firmaElectronica.checked)
   try {
+    var JaliscoCondition = false;
+    doc = null;
   for (var a = 7; a < sheetData.length; a++)
   {
-    if (a == 7)
+    JaliscoCondition = false;
+
+    if (cursoNombre =="Evacuación de Inmuebles"){
+      if(sheetData[a][11] == "CBYR"){
+        JaliscoCondition = true;
+      }
+    }
+    else if (cursoNombre =="Busqueda y Rescate"){
+      if(sheetData[a][11] != "CBYR"){
+        JaliscoCondition = true;
+      }
+    }
+
+    if(sheetData[a][1] != null && JaliscoCondition == false)
     {
-      if (sheetData[7][1] != null)
-      {
-        var doc = new jsPDF('l', 'pt', [540, 720]) //19.05, 25.4
+      if (doc != null){
+        doc.addPage(720, 540) //19.05, 25.4
+      }
+      else {
+        doc = new jsPDF('l', 'pt', [540, 720]) //19.05, 25.4
         doc.addFileToVFS("calibril-normal.ttf", font_normal)
         doc.addFont("calibril-normal.ttf", "calibri-normal", "normal");
         doc.addFont("calibril-normal.ttf", "calibri-normal", "bold");
         doc.addFileToVFS("calibril-bold.ttf", font_bold)
         doc.addFont("calibril-bold.ttf", "calibri-bold", "normal");
         doc.addFont("calibril-bold.ttf", "calibri-bold", "bold");
-        
       }
-    }
-    else
-    {
-      if (sheetData[a][1] != null)
-      {
-        doc.addPage(720, 540) //19.05, 25.4
-      }
-    }
-
-    if(sheetData[a][1] != null)
-    {
       doc.setFont("calibri-normal");
       doc.setTextColor( 0, 0, 0 )
       
@@ -311,7 +317,7 @@ btnGenerateI.addEventListener("click",() =>
         for (var i = sheets.length; i > 0; i--) {
           if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Direcciones") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
-              if (sheetData[2][1] == null || sheetData[4][1] == null || sheetData[4][6] == null || sheetData[5][6] == null){
+              if (sheetData[2][1] == null || sheetData[4][1] == null){
                 document.getElementById("alertError").innerHTML='Faltan datos en el excel'
                 loaderIcon.style.display = "none";
                 displayError.style.display = "block";
@@ -426,7 +432,7 @@ btnGenerateI.addEventListener("click",() =>
                 nombreCurso = "Evacuación de Inmuebles";
                 cursoName = nombreCurso;
                 filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Individuales - " + nombreCurso + " - " + nombreComercial
-                generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
+                generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, nombreCurso);
                 nombreCurso = "Busqueda y Rescate";
                 cursoName = nombreCurso;
                 var anio = fecha.getFullYear();
@@ -540,10 +546,10 @@ btnGenerateI.addEventListener("click",() =>
                 txtInfo = 'Impartido el día **'+ dia + " de " + mes + " de " + anio +'**, para personal de **'+ razonSocial[1]
                 text = 'Impartido el día '+ dia + " de " + mes + " de " + anio +', para personal de '+ razonSocial[1]
                 filename = anio.toString().substr(-2) + mesNumber + dia + "_Constancias Individuales - " + nombreCurso + " - " + nombreComercial
-                generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
+                generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, nombreCurso);
               }
               else {
-                generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets);
+                generatePDF(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, sheetData[3][1]);
               }
             })
           }
@@ -609,7 +615,7 @@ btnGenerateDC.addEventListener("click", () => {
           if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Direcciones") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
               console.log(sheetData)
-              if (sheetData[2][1] == null || sheetData[4][1] == null || sheetData[4][6] == null || sheetData[5][6] == null){
+              if (sheetData[2][1] == null || sheetData[4][1] == null){
                 document.getElementById("alertError").innerHTML='Faltan datos en el excel'
                 loaderIcon.style.display = "none";
                 displayError.style.display = "block";
@@ -796,7 +802,7 @@ btnGenerateG.addEventListener("click", () => {
           if (sheets[i - 1].name != "Registros PC" && sheets[i - 1].name != "Cursos PC" && sheets[i - 1].name != "Direcciones") {
             readXlsxFile(file, { sheet: i }).then(function(sheetData) {
               console.log(sheetData)
-              if (sheetData[2][1] == null || sheetData[4][1] == null || sheetData[4][6] == null || sheetData[5][6] == null){
+              if (sheetData[2][1] == null || sheetData[4][1] == null){
                 document.getElementById("alertError").innerHTML='Faltan datos en el excel'
                 loaderIcon.style.display = "none";
                 displayError.style.display = "block";
@@ -907,12 +913,20 @@ btnGenerateG.addEventListener("click", () => {
               // .getMonth devuelve el mes 0= Enero, 1 = Febrero, etc
               // .getFullYear devuelve el año completo ej: 1995
               var participantes = [];
+              var participantesEI = [];
+              var participantesBR = [];
               var mult = false;
               var numC = 1;
               for (var a = 7; a < sheetData.length; a++) {
                 if (sheetData[a][1] != null) {
                   if(participantes.length < 45) {
                     participantes.push(sheetData[a][8])
+                    if (sheetData[a][11] == "CBYR") {
+                      participantesBR.push(sheetData[a][8])
+                    }
+                    else {
+                      participantesEI.push(sheetData[a][8])
+                    }
                   }
                   else {
                     mult = true;
@@ -921,7 +935,12 @@ btnGenerateG.addEventListener("click", () => {
                         nombreCurso = "Evacuación de Inmuebles"
                         filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - Evacuación - " + nombreComercial
                         for (var i = 0; i < 2; i++) {
-                          generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
+                          if(nombreCurso == "Evacuación de Inmuebles"){
+                            generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantesEI, mult, numC);
+                          }
+                          else {
+                            generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantesBR, mult, numC);
+                          }
                           nombreCurso = "Búsqueda y Rescate"
                           var anio = fecha.getFullYear();
                           dia = (fecha.getDate() >= 10) ? (fecha.getDate() + 1) : ("0" + (fecha.getDate() + 1))
@@ -1041,7 +1060,12 @@ btnGenerateG.addEventListener("click", () => {
                     nombreCurso = "Evacuación de Inmuebles"
                     filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias Grupales - Evacuación - " + nombreComercial
                     for (var i = 0; i < 2; i++) {
-                      generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantes, mult, numC);
+                      if(nombreCurso == "Evacuación de Inmuebles"){
+                        generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantesEI, mult, numC);
+                      }
+                      else {
+                        generatePDFGrupal(ciudadFecha, razonSocial, nombreComercial, sheetData, filename, sheets.length - 2, sheets, fechaConstancia, nombreCurso, participantesBR, mult, numC);
+                      }
                       nombreCurso = "Búsqueda y Rescate"
                       var anio = fecha.getFullYear();
                       dia = (fecha.getDate() >= 10) ? (fecha.getDate() + 1) : ("0" + (fecha.getDate() + 1))
