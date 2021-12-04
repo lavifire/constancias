@@ -951,11 +951,16 @@ btnGenerateG.addEventListener("click", () => {
                 if (sheetData[a][1] != null) {
                   if(participantes.length < 45) {
                     participantes.push(sheetData[a][8])
-                    if (sheetData[a][11] == "CBYR") {
-                      participantesBR.push(sheetData[a][8])
+                    if (sheetData[a][11] != null) {
+                      if (sheetData[a][11].includes("CBYR") == true) {
+                        participantesBR.push(sheetData[a][8])
+                      }
+                      else {
+                        participantesEI.push(sheetData[a][8])
+                      }
                     }
                     else {
-                      participantesEI.push(sheetData[a][8])
+                      // participantesEI.push(sheetData[a][8])
                     }
                   }
                   else {
@@ -1881,7 +1886,7 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
       }
       }
       else {
-        if (sheetData[a][1] != null && sheetData[a][11] == special)
+        if (sheetData[a][1] != null && sheetData[a][11].includes(special) == true && sheetData[a][11].includes("Agregado") == false)
       {
         if (doc == null) {
           var doc = new jsPDF('p', 'pt', [612, 792]);
