@@ -55,14 +55,14 @@ var ubicacion = new Image()
 ubicacion.src = "./img/Ubicacion.jpg"
 var file = null;
 var path;
-var DC3ErrorFounded = false;
+var ErrorFounded = false;
 
 var alertSuccess = document.getElementById("alertSuccess");
 alertSuccess.innerHTML = "<strong>Success!</strong><span>Se crearon las constancias correctamente</span>"
 
 inputFile.addEventListener("change", async function(event) {
   console.log(event.target.value)
-  DC3ErrorFounded = false;
+  ErrorFounded = false;
   file = inputFile.files[0];
   path = URL.createObjectURL(file)
   console.log(path)
@@ -89,7 +89,7 @@ inputFile.addEventListener("change", async function(event) {
         await readXlsxFile(file, { sheet: i + 1 }).then(function(data) {
           for (var a = 7; data[a][1] != null ; a++) {
             if (data[a][11] == "" || data[a][11] == null) {
-              DC3ErrorFounded = true;
+              ErrorFounded = true;
             }
           }
         })
@@ -314,8 +314,13 @@ btnGenerateI.addEventListener("click",() =>
       loaderIcon.style.display = "block"
       finished = 0;
       readXlsxFile(file, { getSheets: true }).then(async function(sheets) {
-        if (sheets.length < 6) {
-          document.getElementById("alertError").innerHTML='Formato de listado incorrecto'
+        if (sheets.length < 6 || ErrorFounded == true) {
+          if (ErrorFounded == true) {
+            document.getElementById("alertError").innerHTML='Faltan datos en el excel'
+          }
+          else {
+            document.getElementById("alertError").innerHTML='Formato de listado incorrecto'
+          }
           loaderIcon.style.display = "none"
           loader.style.display = "block"
           displayError.style.display = "block"
@@ -611,8 +616,8 @@ btnGenerateDC.addEventListener("click", () => {
       loaderIcon.style.display = "block"
       finished = 0;
       readXlsxFile(file, { getSheets: true }).then(function(sheets) {
-        if (sheets.length < 6 || DC3ErrorFounded == true) {
-          if (DC3ErrorFounded == true) {
+        if (sheets.length < 6 || ErrorFounded == true) {
+          if (ErrorFounded == true) {
             document.getElementById("alertError").innerHTML='Faltan datos en el excel'
           }
           else {
@@ -625,7 +630,7 @@ btnGenerateDC.addEventListener("click", () => {
           document.getElementById('input').files = null; 
           document.getElementById('txtFile').innerHTML = ''; 
           document.getElementById('txtFile').style.height = '25px';
-          DC3ErrorFounded = false;
+          ErrorFounded = false;
           return;
         }
         for (var i = sheets.length; i > 0; i--) {
@@ -817,8 +822,13 @@ btnGenerateG.addEventListener("click", () => {
       loaderIcon.style.display = "block"
       finished = 0;
       readXlsxFile(file, { getSheets: true }).then(function(sheets) {
-        if (sheets.length < 6) {
-          document.getElementById("alertError").innerHTML='Formato de listado incorrecto'
+        if (sheets.length < 6 || ErrorFounded == true) {
+          if (ErrorFounded == true) {
+            document.getElementById("alertError").innerHTML='Faltan datos en el excel'
+          }
+          else {
+            document.getElementById("alertError").innerHTML='Formato de listado incorrecto'
+          }
           loaderIcon.style.display = "none"
           loader.style.display = "block"
           displayError.style.display = "block"
