@@ -87,13 +87,13 @@ inputFile.addEventListener("change", async function(event) {
       }
       else if (sheets[i].name == "Evacuación, Búsqueda y Rescate" && sheetData[1][4] == "Jalisco") {
         await readXlsxFile(file, { sheet: i + 1 }).then(function(data) {
-          var b = 7; 
-          for (var a = b; data[b][1] != null ; a++) {
+          var a = 7; 
+          do {
             if (data[a][11] == "" || data[a][11] == null) {
               ErrorFounded = true;
             }
-            b++;
-          }
+            a++;
+          } while(data[a] != null)
         })
       }
     })
