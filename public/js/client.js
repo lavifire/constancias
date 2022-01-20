@@ -13,6 +13,7 @@ var vencido = false;
 var firmaElectronica = document.getElementById("flexSwitchCheckDefault");
 var switchVirtual = document.getElementById("switchVirtual");
 var switchBomberos = document.getElementById("switchBomberos");
+var switchAvanzado = document.getElementById("switchAvanzado");
 var cursoName = ";"
 var registrosData;
 var imgLavi = new Image()
@@ -254,9 +255,9 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.text("O.    (477) 713 0016", 460, 465);
       doc.text("M1. (477) 670 2737", 460, 475);
       doc.text("M2. (477) 144 3124", 460, 485);
-      doc.text("Av. Las Américas 401-B", 230, 465, 'center');
-      doc.text("Col. Andrade CP 37020", 230, 475, 'center');
-      doc.text("León, Guanajuato", 230, 485, 'center');
+      doc.text("Camino a la presa 301-6", 235, 465, 'center');
+      doc.text("Col. Casa Blanca CP 37170", 235, 475, 'center');
+      doc.text("León, Guanajuato", 235, 485, 'center');
       //doc.fromHTML(htmlinfo.innerHTML, 5, 8.5) 
     }
   }
@@ -266,7 +267,7 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
   }
     console.log(sheetsLength)
     console.log(finished)
-  if (finished >= sheetsLength - 2)
+  if (finished >= sheetsLength - 3)
     {
       loaderIcon.style.display = "none"
       displaySuccess.style.display = "block";
@@ -1297,9 +1298,17 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.setFontSize(9.0);
         doc.setFont("calibri-normal");
         var direccion = sheetData[5][1].replace(/\n/g, ' ')
-        var info = "Hago constar que el personal que labora en " + razonSocial[1] + " (" + nombreComercial +"), ubicado en " + direccion + " "
+
+        if(switchAvanzado.checked && nombreCurso == "Prevención y Combate de Incendios") {
+          var info = "Hago constar que el personal que labora en " + razonSocial[1] + " (" + nombreComercial +"), ubicado en " + direccion + " "
+        + sheetData[2][4] + ", " + sheetData[1][4] + ", participó de manera satisfactoria en el *CURSO AVANZADO DE " + nombreCurso.toUpperCase() 
+        + ", *con una carga horaria de 08 h. "
+        }
+        else {
+          var info = "Hago constar que el personal que labora en " + razonSocial[1] + " (" + nombreComercial +"), ubicado en " + direccion + " "
         + sheetData[2][4] + ", " + sheetData[1][4] + ", participó de manera satisfactoria en el *CURSO BASICO DE " + nombreCurso.toUpperCase() 
         + ", *con una carga horaria de 08 h. "
+        }
         var info2 = "";
         if (switchVirtual.checked) {
           info2 = "La capacitación se impartió el día *"+ fechaConstancia +" *de manera virtual; con el programa y participantes siguientes: "
@@ -1435,8 +1444,13 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         
 
         doc.setFont("calibri-bold");
-    
-        doc.text("PROGRAMA: CURSO BASICO DE " + nombreCurso.toUpperCase(), 57, 235) // 120
+        if(switchAvanzado.checked && nombreCurso == "Prevención y Combate de Incendios") {
+          doc.text("PROGRAMA: CURSO AVANZADO DE " + nombreCurso.toUpperCase(), 57, 235) // 120
+        }
+        else {
+          doc.text("PROGRAMA: CURSO BASICO DE " + nombreCurso.toUpperCase(), 57, 235) // 120
+        }
+        
         doc.setFont("calibri-normal");
         switch(nombreCurso) {
           case "Búsqueda y Rescate":
@@ -1476,8 +1490,41 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
             doc.text("Movilización y traslado de lesionados.", 107, 323)
             break;
           case "Prevención y Combate de Incendios": 
+          if(switchAvanzado.checked) {
             doc.text("a.", 90, 246)
-            doc.text("Conceptos Generales para la Prevención y Combate de Incendios.", 107, 246)
+            doc.text("Conceptos para la Prevención y Combate de Incendios.", 107, 246)
+            doc.text("b.", 90, 257)
+            doc.text("Química del Fuego.", 107, 257)
+            doc.text("c.", 90, 268)
+            doc.text("Prevención y Control de Incendio.", 107, 268)
+            doc.text("a.", 120, 279)
+            doc.text("Clasificación del fuego.", 137, 279)
+            doc.text("b.", 120, 290)
+            doc.text("Agentes extinguidores del fuego.", 137, 290)
+            doc.text("d.", 90, 301)
+            doc.text("Acciones durante un incendio.", 107, 301)
+            doc.text("a.", 120, 312)
+            doc.text("Uso y manejo de extintores.", 137, 312)
+            doc.text("b.", 120, 323)
+            doc.text("¿Qué hacer en caso de un incendio?", 137, 323)
+
+            doc.text("e.", 370, 246)
+            doc.text("Uso y Manejo de Hidrantes.", 387, 246)
+            doc.text("a.", 390, 257)
+            doc.text("Introducción.", 407, 257)
+            doc.text("b.", 390, 268)
+            doc.text("Avance y retroceso.", 407, 268)
+            doc.text("c.", 390, 279)
+            doc.text("Atención a Manguera.", 407, 279)
+            doc.text("d.", 390, 290)
+            doc.text("Métodos de Extinción.", 407, 290)
+            doc.text("e.", 390, 301)
+            doc.text("Manejo de Hidrantes.", 407, 301)
+            break; 
+          }
+          else {
+            doc.text("a.", 90, 246)
+            doc.text("Conceptos para la Prevención y Combate de Incendios.", 107, 246)
             doc.text("b.", 90, 257)
             doc.text("Química del Fuego.", 107, 257)
             doc.text("c.", 90, 268)
@@ -1493,6 +1540,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
             doc.text("b.", 120, 323)
             doc.text("¿Qué hacer en caso de un incendio?", 137, 323)
             break;
+          }
           case "Evacuación":
             doc.text("a.", 90, 246)
             doc.text("Generalidades.", 107, 246)
@@ -1573,7 +1621,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.setFontSize(9.0);
         doc.setDrawColor(255, 0, 0);
         doc.line(57, 715, 557, 715);
-        doc.text("Av. Las Américas 401-B | Col. Andrade CP 37020 | León, Guanajuato",  612/2, 726, 'center')
+        doc.text("Camino a la presa 301-6 | Col. Casa Blanca CP 37170 | León, Guanajuato",  612/2, 726, 'center')
         doc.setFont("calibri-bold");
         doc.text("O.",  194, 737)
         doc.setFont("calibri-normal");
