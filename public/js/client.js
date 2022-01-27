@@ -235,11 +235,16 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       }
       if (sheetData[2][4] == "León")
       {
+        /*
         doc.text("Arq. Antonio Lavín Villa", 119.999055, 424.0236); // 4.2333, 14.5
         doc.text("Javier Everardo Hernández Moreno", 479.9990551, 424.0236); // 16.9333, 14.5
         doc.setFontSize(8.5);
         doc.text("Representante Legal", 131.337638, 435.197); // 4.6333, 15
         doc.text("Instructor del curso", 522.5187402, 435.197); // 18.4333, 15
+        */
+        doc.text("Arq. Antonio Lavín Villa", 720/2, 424.0236, 'center'); // 25.4/2, 14.5
+        doc.setFontSize(8.5);
+        doc.text("Representante Legal", 720/2, 435.197, 'center'); // 25.4/2, 15
       }
       else
       {
@@ -255,7 +260,7 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.text("O.    (477) 713 0016", 460, 465);
       doc.text("M1. (477) 670 2737", 460, 475);
       doc.text("M2. (477) 144 3124", 460, 485);
-      doc.text("Camino a la presa 301-6", 235, 465, 'center');
+      doc.text("Camino a la Presa 301-6", 235, 465, 'center');
       doc.text("Col. Casa Blanca CP 37170", 235, 475, 'center');
       doc.text("León, Guanajuato", 235, 485, 'center');
       //doc.fromHTML(htmlinfo.innerHTML, 5, 8.5) 
@@ -1621,7 +1626,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.setFontSize(9.0);
         doc.setDrawColor(255, 0, 0);
         doc.line(57, 715, 557, 715);
-        doc.text("Camino a la presa 301-6 | Col. Casa Blanca CP 37170 | León, Guanajuato",  612/2, 726, 'center')
+        doc.text("Camino a la Presa 301-6 | Col. Casa Blanca CP 37170 | León, Guanajuato",  612/2, 726, 'center')
         doc.setFont("calibri-bold");
         doc.text("O.",  194, 737)
         doc.setFont("calibri-normal");
