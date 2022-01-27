@@ -221,8 +221,10 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.setFontSize(10);
       if (firmaElectronica.checked == true) {
         if (sheetData[2][4] == "León") {
-          doc.addImage(firmaALV, "JPEG", 89.999055, 344.0236, 175, 110)
+          /*doc.addImage(firmaALV, "JPEG", 89.999055, 344.0236, 175, 110)
           doc.addImage(firmaCapacitador, "JPEG", 494.9990551, 349.0236, 120, 120)
+          */
+          doc.addImage(firmaALV, "JPEG", 280, 344.0236, 175, 110)
         }
         else {
           doc.addImage(firmaALV, "JPEG", 280, 344.0236, 175, 110)
