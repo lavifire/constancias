@@ -1304,7 +1304,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.text("CONSTANCIA DE CAPACITACION", 612/2, 140, 'center');
         doc.setFontSize(9.0);
         doc.setFont("calibri-normal");
-        var direccion = sheetData[5][1].replace(/\n/g, ' ')
+        var direccion = sheetData[5][1].toString().replace(/\n/g, ' ')
 
         if(switchAvanzado.checked && nombreCurso == "Prevención y Combate de Incendios") {
           var info = "Hago constar que el personal que labora en " + razonSocial[1] + " (" + nombreComercial +"), ubicado en " + direccion + " "
