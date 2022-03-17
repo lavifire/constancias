@@ -1749,7 +1749,7 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
         if (sheetData[a][4] != null) {
-          doc.text(sheetData[a][4].toUpperCase(), 39.5, 216)
+          doc.text(sheetData[a][4].toString().toUpperCase(), 39.5, 216)
         }
         
         doc.rect(348, 190, 226.5, 32); // empty square
@@ -2013,7 +2013,7 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
         if (sheetData[a][4] != null) {
-          doc.text(sheetData[a][4].toUpperCase(), 39.5, 216)
+          doc.text(sheetData[a][4].toString().toUpperCase(), 39.5, 216)
         }
         
         doc.rect(348, 190, 226.5, 32); // empty square
