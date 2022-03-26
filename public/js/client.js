@@ -94,7 +94,7 @@ inputFile.addEventListener("change", async function(event) {
               ErrorFounded = true;
             }
             a++;
-          } while(data[a] != null)
+          } while(data[a][3] != null)
         })
       }
     })
