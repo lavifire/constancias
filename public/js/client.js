@@ -1741,7 +1741,7 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.text("Nombre (Anotar apellido paterno, apellido materno y nombre)", 38.5, 168)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        doc.text(sheetData[a][10], 39.5, 184)
+        doc.text(sheetData[a][10].toString().replace(',', ''), 39.5, 184)
         doc.rect(37.5, 190, 310.5, 32); // empty square
         doc.setFont("calibri-normal");
         doc.setFontSize(7);
