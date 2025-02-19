@@ -217,7 +217,7 @@ var generatePDF = (ciudadFecha, razonSocial, nombreComercial, sheetData, filenam
       doc.setFont("calibri-normal");
       
       //doc.text(sheetData[a][8], 720/2, 160.128, 'center'); // 25.4/2, 6 Formato nombre + apellidoPaterno + apellidoMaterno
-      doc.text(sheetData[a][2].toString().trim() + " " + sheetData[a][3].toString().trim() + " " + sheetData[a][4].toString().trim(), 720/2, 160.128, 'center'); // Formato apellidoPaterno + apellidoMaterno + nombre 
+      doc.text(sheetData[a][1].toString().trim() + " " + sheetData[a][2].toString().trim() + " " + sheetData[a][3].toString().trim(), 720/2, 160.128, 'center'); // Formato apellidoPaterno + apellidoMaterno + nombre 
       doc.text(cursoName, 720/2, 236.772, 'center'); // 25.4/2, 8
       doc.setFontSize(10);
       if (firmaElectronica.checked == true) {
