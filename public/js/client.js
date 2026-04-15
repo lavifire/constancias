@@ -1281,10 +1281,10 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         console.log("Entro")
         var doc = new jsPDF('p', 'pt', [612, 792]);
         doc.addFileToVFS("calibril-normal.ttf", font_normal)
-        doc.addFileToVFS("open-sans-condensed.bold.ttf", font)
+        doc.addFileToVFS("OpenSans.ttf", font);
         doc.addFont("calibril-normal.ttf", "calibri-normal", "normal");
         doc.addFont("calibril-normal.ttf", "calibri-normal", "bold");
-        doc.addFont('open-sans-condensed.bold.ttf', 'custom', 'normal');
+        doc.addFont("OpenSans.ttf", "OpenSans", "normal");
         doc.addFileToVFS("calibril-bold.ttf", font_bold)
         doc.addFont("calibril-bold.ttf", "calibri-bold", "normal");
         doc.addFont("calibril-bold.ttf", "calibri-bold", "bold");
@@ -1300,7 +1300,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
         doc.setFontSize(9.5);
         var dim = doc.getTextDimensions(ciudadFecha, {fontSize: 9.5});
         doc.text(ciudadFecha, 557 - dim.w, 105);
-        doc.setFont("custom");
+        doc.setFont("helvetica");
         doc.setFontSize(20.0);
         doc.text("CONSTANCIA DE CAPACITACION", 612/2, 140, 'center');
         doc.setFontSize(9.0);
