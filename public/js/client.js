@@ -21,8 +21,8 @@ var firmaALV = new Image()
 var firmaREP1 = new Image()
 var firmaREP2 = new Image()
 firmaALV.src = "./img/Firma ALV.jpg"
-firmaREP1.src = "./img/Firma Representantes Suburbia1.jpg"
-firmaREP2.src = "./img/Firma Representantes Suburbia2.jpg"
+firmaREP1.src = "./img/FirmaJCV.png"
+firmaREP2.src = "./img/FirmaM.png"
 var firmaCapacitador = new Image()
 firmaCapacitador.src = "./img/Firma Javier Capacitador.jpg"
 imgLavi.src = "./img/LAVI Fire_HI-RES.jpg"
@@ -1713,13 +1713,14 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         var suburbiaChecked= false;
         if (firmaElectronica.checked == true) {
           doc.addImage(firmaALV, "JPEG", 64, 514, 175, 110)
+          console.log("Valor de razon social: " + razonSocial[1].toUpperCase());
           if (razonSocial[1].toUpperCase().includes("SUBURBIA")) {
             suburbiaChecked = true;
-            if (sheetData[4][6] != null && sheetData[4][6] != '' && (sheetData[4][6].toUpperCase() == 'JOSÉ ESCOTO GARCÍA'  || sheetData[4][6].toUpperCase() == 'JOSE ESCOTO GARCIA')) {
-              doc.addImage(firmaREP1, "JPEG", 254, 492, 110, 120)
+            if (sheetData[4][6] != null && sheetData[4][6] != '' && (sheetData[4][6].toUpperCase() == 'JUAN CARLOS VAZQUEZ RUEDA'  || sheetData[4][6].toUpperCase() == 'JUAN CARLOS VAZQUEZ RUEDA')) {
+              doc.addImage(firmaREP1, "PNG", 254, 492, 110, 120)
             }
-            if (sheetData[5][6] != null && sheetData[5][6] != '' && sheetData[5][6].toUpperCase() == 'ADRIANA RIVERA GUIJOSA') {
-              doc.addImage(firmaREP2, "JPEG", 429, 489, 70, 140)
+            if (sheetData[5][6] != null && sheetData[5][6] != '' && sheetData[5][6].toUpperCase() == 'MONICA ESPINOSA MEDRANO') {
+              doc.addImage(firmaREP2, "PNG", 369, 489, 190, 140);
             }
           }
         }
@@ -1979,11 +1980,11 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
           doc.addImage(firmaALV, "JPEG", 64, 514, 175, 110)
           if (razonSocial[1].toUpperCase().includes("SUBURBIA")) {
             suburbiaChecked = true;
-            if (sheetData[4][6] != null && sheetData[4][6] != '' && (sheetData[4][6].toUpperCase() == 'JOSÉ ESCOTO GARCÍA'  || sheetData[4][6].toUpperCase() == 'JOSE ESCOTO GARCIA')) {
-              doc.addImage(firmaREP1, "JPEG", 254, 492, 110, 120)
+            if (sheetData[4][6] != null && sheetData[4][6] != '' && (sheetData[4][6].toUpperCase() == 'JUAN CARLOS VAZQUEZ RUEDA'  || sheetData[4][6].toUpperCase() == 'JUAN CARLOS VAZQUEZ RUEDA')) {
+              doc.addImage(firmaREP1, "PNG", 254, 492, 110, 120)
             }
-            if (sheetData[5][6] != null && sheetData[5][6] != '' && sheetData[5][6].toUpperCase() == 'ADRIANA RIVERA GUIJOSA') {
-              doc.addImage(firmaREP2, "JPEG", 429, 489, 70, 140)
+            if (sheetData[5][6] != null && sheetData[5][6] != '' && sheetData[5][6].toUpperCase() == 'MONICA ESPINOSA MEDRANO') {
+              doc.addImage(firmaREP2, "PNG", 429, 489, 190, 140)
             }
           }
         }
