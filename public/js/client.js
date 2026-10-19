@@ -37,6 +37,29 @@ displaySuccess.style.display = 'none';
 displayError.style.display = 'none';
 var duracion = [];
 
+// IMP-20261019-03: búsqueda tolerante de la duración del curso en el catálogo "Cursos PC" (defecto 1 de Ref4).
+// Antes se comparaba con == exacto, y la hoja de Incendios ("Prevención y Combate de Incendios") no coincidía
+// con el catálogo ("Prevención y Combate de Incendios/Uso y Manejo de Extintores"): la DC-3 salía sin horas.
+// Ahora se aceptan los dos nombres, sin importar acentos, mayúsculas ni espacios, y en cualquiera de los dos lados.
+var normalizarNombreCurso = function (s) {
+  return (s == null ? '' : s.toString()).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+};
+var parteAntesDeDiagonal = function (s) {
+  return s.split('/')[0].trim();
+};
+var buscarDuracion = function (nombreCurso) {
+  var buscado = normalizarNombreCurso(nombreCurso);
+  for (var b = 0; b < duracion.length; b++) {
+    var cat = normalizarNombreCurso(duracion[b].curso);
+    if (cat == '') { continue; }
+    if (cat == buscado || parteAntesDeDiagonal(cat) == parteAntesDeDiagonal(buscado)) {
+      return duracion[b].duracion;
+    }
+  }
+  console.warn('Sin duración en el catálogo "Cursos PC" para el curso: ' + nombreCurso);
+  return null;
+};
+
 
 borde.src = "./img/borde/borde-rojo.jpg"
 var loader = document.getElementById("loader");
@@ -64,6 +87,7 @@ alertSuccess.innerHTML = "<strong>Success!</strong><span>Se crearon las constanc
 inputFile.addEventListener("change", async function(event) {
   console.log(event.target.value)
   ErrorFounded = false;
+  duracion = []; // IMP-20261019-03: el catálogo se vuelve a leer con cada archivo (antes se acumulaba, defecto 9 de Ref4)
   file = inputFile.files[0];
   path = URL.createObjectURL(file)
   console.log(path)
@@ -1803,10 +1827,9 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.text("Duración en horas", 38.5, 402)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        for (var b = 0; b < duracion.length; b++){
-          if (nombreCurso == duracion[b].curso){
-            doc.text((duracion[b].duracion > 1) ? (duracion[b].duracion + " horas") : (duracion[b].duracion +" hora"), 39.5, 413)
-          }
+        var horasCurso = buscarDuracion(nombreCurso); // IMP-20261019-03
+        if (horasCurso != null && horasCurso !== '') {
+          doc.text((horasCurso > 1) ? (horasCurso + " horas") : (horasCurso + " hora"), 39.5, 413)
         }
         doc.rect(178, 394, 102, 22); // empty square
         doc.setFont("calibri-normal");
@@ -2067,10 +2090,9 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
         doc.text("Duración en horas", 38.5, 402)
         doc.setFont("calibri-bold");
         doc.setFontSize(8.5);
-        for (var b = 0; b < duracion.length; b++){
-          if (nombreCurso == duracion[b].curso){
-            doc.text((duracion[b].duracion > 1) ? (duracion[b].duracion + " horas") : (duracion[b].duracion +" hora"), 39.5, 413)
-          }
+        var horasCurso = buscarDuracion(nombreCurso); // IMP-20261019-03
+        if (horasCurso != null && horasCurso !== '') {
+          doc.text((horasCurso > 1) ? (horasCurso + " horas") : (horasCurso + " hora"), 39.5, 413)
         }
         doc.rect(178, 394, 102, 22); // empty square
         doc.setFont("calibri-normal");
