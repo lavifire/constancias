@@ -36,6 +36,10 @@ loaderIcon.style.display = 'block'
 displaySuccess.style.display = 'none';
 displayError.style.display = 'none';
 var duracion = [];
+// IMP-20261019-04 (decisión de Lavín del 19-oct-2026): en Jalisco la DC-3 de la hoja "Evacuación, Búsqueda y Rescate"
+// sale conjunta, sin las filas cuya nota (columna M) contiene "Agregado". Con true vuelve a separarse en
+// Evacuación de Inmuebles (CEVA) y Busqueda y Rescate (CBYR), como antes. Individuales y grupales no cambian.
+var DC3_JALISCO_SEPARADA = false;
 
 // IMP-20261019-03: búsqueda tolerante de la duración del curso en el catálogo "Cursos PC" (defecto 1 de Ref4).
 // Antes se comparaba con == exacto, y la hoja de Incendios ("Prevención y Combate de Incendios") no coincidía
@@ -779,12 +783,20 @@ btnGenerateDC.addEventListener("click", () => {
               while (founded == true);
               var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - " + nombreCurso + " - " + nombreComercial
               if (sheetData[3][1] == "Evacuación, Búsqueda y Rescate"){
-                if(sheetData[1][4] == "Jalisco") {
+                if(DC3_JALISCO_SEPARADA && sheetData[1][4] == "Jalisco") {
                   console.log("Entro a condicion especial")
                   var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - Evacuación de Inmuebles - " + nombreComercial
                   generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, "Evacuación de Inmuebles", true);
                   var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - Busqueda y Rescate - " + nombreComercial
                   generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, "Busqueda y Rescate", true);
+                  var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - Comunicación - " + nombreComercial
+                  generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, "Comunicación", false);
+                  var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - Formación de Brigadas e Introducción a la Protección Civil - " + nombreComercial
+                  generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, "Formación de Brigadas e Introducción a la Protección Civil", false);
+                }
+                else if(sheetData[1][4] == "Jalisco") {
+                  // IMP-20261019-04: DC-3 conjunta en Jalisco, sin las filas "Agregado". Comunicación y Formación, igual que antes.
+                  generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, sheetData[3][1], false, true);
                   var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - Comunicación - " + nombreComercial
                   generatePDFDC3(razonSocial, sheetData, filename, sheets.length - 2, sheets, date, "Comunicación", false);
                   var filename = fecha.getFullYear().toString().substr(-2) + mesNumber + dia + "_Constancias DC3 - Formación de Brigadas e Introducción a la Protección Civil - " + nombreComercial
@@ -1697,7 +1709,7 @@ var generatePDFGrupal = (ciudadFecha, razonSocial, nombreComercial, sheetData, f
     }
 }
 
-var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, date, nombreCurso, jaliscoCon) => {
+var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, date, nombreCurso, jaliscoCon, excluirAgregado) => {
   try {
     doc = null;
     var special = "";
@@ -1714,7 +1726,8 @@ var generatePDFDC3 = (razonSocial, sheetData, filename, sheetsLength, sheets, da
     for (var a = 7; a < sheetData.length; a++)
     {
       if (special == ""){
-        if (sheetData[a][1] != null)
+        // IMP-20261019-04: "Agregado" se detecta igual que en la DC-3 separada (includes, sensible a mayúsculas); nota vacía no truena
+        if (sheetData[a][1] != null && !(excluirAgregado == true && sheetData[a][11] != null && sheetData[a][11].toString().includes("Agregado") == true))
       {
         if (doc == null) {
           var doc = new jsPDF('p', 'pt', [612, 792]);
